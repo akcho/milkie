@@ -52,10 +52,8 @@ npm install
 
 - [QUICKSTART.md](QUICKSTART.md) - Test the demo in 10 minutes
 - [docs/SUMMARY.md](docs/SUMMARY.md) - What we built and why
-- [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) - Roadmap and next steps
 - [docs/PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md) - How to paywall your app
 - [docs/PAYWALL_UX.md](docs/PAYWALL_UX.md) - User experience guide
-- [docs/TODO.md](docs/TODO.md) - Development roadmap
 - [demo/README.md](demo/README.md) - Detailed setup instructions
 
 ## The Vision
@@ -112,10 +110,8 @@ milkie/
 ├── QUICKSTART.md          # Try it in 10 minutes
 ├── docs/                  # Documentation
 │   ├── SUMMARY.md         # What we built
-│   ├── GETTING_STARTED.md # Roadmap
 │   ├── PAYWALL_PATTERNS.md # Usage patterns
-│   ├── PAYWALL_UX.md      # User experience
-│   └── TODO.md            # Task list
+│   └── PAYWALL_UX.md      # User experience
 └── demo/                  # Working prototype
     ├── app/               # Next.js app
     ├── lib/
@@ -129,8 +125,7 @@ milkie/
 
 1. **Try it** → Follow [QUICKSTART.md](QUICKSTART.md)
 2. **Understand it** → Read [docs/SUMMARY.md](docs/SUMMARY.md)
-3. **Build it** → Follow [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)
-4. **Ship it** → Get feedback, iterate, launch
+3. **Learn patterns** → Check out [docs/PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md)
 
 ## Contributing
 

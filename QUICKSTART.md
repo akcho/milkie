@@ -146,5 +146,5 @@ Now you can show this to other developers and get their feedback!
 **Questions?** Read the full docs:
 - [README.md](README.md) - Project overview
 - [demo/README.md](demo/README.md) - Detailed setup
-- [GETTING_STARTED.md](GETTING_STARTED.md) - Roadmap
-- [SUMMARY.md](SUMMARY.md) - What we built
+- [docs/SUMMARY.md](docs/SUMMARY.md) - What we built
+- [docs/PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md) - How to implement paywalls

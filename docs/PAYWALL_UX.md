@@ -13,16 +13,16 @@ When a user tries to access protected content, they see a centered modal with:
 │   Subscribe to access this          │
 │        premium content              │
 │                                     │
-│   ┌───────────────────────────┐   │
-│   │ Email address             │   │
-│   │ you@example.com           │   │
-│   └───────────────────────────┘   │
+│   ┌───────────────────────────┐     │
+│   │ Email address             │     │
+│   │ you@example.com           │     │
+│   └───────────────────────────┘     │
 │                                     │
-│   ┌───────────────────────────┐   │
-│   │     Subscribe Now         │   │
-│   └───────────────────────────┘   │
+│   ┌───────────────────────────┐     │
+│   │     Subscribe Now         │     │
+│   └───────────────────────────┘     │
 │                                     │
-│   You'll be redirected to Stripe   │
+│   You'll be redirected to Stripe    │
 │   to complete your payment          │
 │                                     │
 └─────────────────────────────────────┘
@@ -40,6 +40,7 @@ When a user tries to access protected content, they see a centered modal with:
 ## The User Flow
 
 ### Step 1: User Hits Paywall
+
 ```
 User navigates to /premium
     ↓
@@ -51,6 +52,7 @@ Show paywall UI (default or custom)
 ```
 
 ### Step 2: User Enters Email
+
 ```
 User types: user@example.com
     ↓
@@ -60,6 +62,7 @@ User clicks button
 ```
 
 ### Step 3: Redirect to Stripe
+
 ```
 Creates checkout session via API
     ↓
@@ -74,6 +77,7 @@ User completes payment
 ```
 
 ### Step 4: Back to App
+
 ```
 Stripe redirects back to /success
     ↓
@@ -89,6 +93,7 @@ Can access all premium content
 You have several options to customize what users see:
 
 ### Option 1: Use the Default (What We Built)
+
 ```tsx
 <PaywallGate>
   <PremiumContent />
@@ -98,6 +103,7 @@ You have several options to customize what users see:
 Users see the default Milkie paywall UI.
 
 ### Option 2: Custom Fallback Component
+
 ```tsx
 <PaywallGate fallback={<YourCustomPaywall />}>
   <PremiumContent />
@@ -107,23 +113,24 @@ Users see the default Milkie paywall UI.
 Show your own custom UI when users don't have access.
 
 ### Option 3: Use the Hook for Full Control
-```tsx
-'use client'
 
-import { usePaywall } from 'milkie'
+```tsx
+"use client";
+
+import { usePaywall } from "milkie";
 
 export default function Page() {
-  const { hasAccess, loading } = usePaywall()
+  const { hasAccess, loading } = usePaywall();
 
   if (loading) {
-    return <YourLoadingSpinner />
+    return <YourLoadingSpinner />;
   }
 
   if (!hasAccess) {
-    return <YourFullyCustomPaywall />
+    return <YourFullyCustomPaywall />;
   }
 
-  return <PremiumContent />
+  return <PremiumContent />;
 }
 ```
 
@@ -173,7 +180,7 @@ function CustomPaywall() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 ```
 
@@ -212,13 +219,13 @@ When the user clicks "Subscribe Now":
 │                                     │
 │        Upgrade to Continue          │
 │                                     │
-│   ┌───────────────────────────┐   │
-│   │ user@example.com          │   │
-│   └───────────────────────────┘   │
+│   ┌───────────────────────────┐     │
+│   │ user@example.com          │     │
+│   └───────────────────────────┘     │
 │                                     │
-│   ┌───────────────────────────┐   │
-│   │       Loading...          │   │  ← Button disabled
-│   └───────────────────────────┘   │
+│   ┌───────────────────────────┐     │
+│   │       Loading...          │     │  ← Button disabled
+│   └───────────────────────────┘     │
 │                                     │
 └─────────────────────────────────────┘
 ```
@@ -230,11 +237,13 @@ Then redirects to Stripe Checkout.
 The paywall is fully responsive:
 
 **Desktop** (>768px):
+
 - Centered card, max-width 28rem
 - Large text and buttons
 - Comfortable padding
 
 **Mobile** (<768px):
+
 - Full-width card with margins
 - Adjusted font sizes
 - Touch-friendly button sizes
@@ -245,12 +254,14 @@ The paywall is fully responsive:
 After clicking "Subscribe Now", users see Stripe's checkout:
 
 1. **Professional Stripe-hosted page**
+
    - Your app name at the top
    - Price and billing details
    - Card input fields
    - Apple Pay / Google Pay (if available)
 
 2. **Secure and trusted**
+
    - Stripe branding
    - SSL secure
    - PCI compliant
@@ -265,7 +276,7 @@ Users are redirected to `/success` page:
 
 ```
 ┌─────────────────────────────────────┐
-│              🎉                     │
+│                                     │
 │                                     │
 │     Welcome to Premium!             │
 │                                     │
@@ -313,9 +324,11 @@ Things you can customize:
 ## Code Location
 
 The default paywall UI is defined in:
+
 - [demo/lib/milkie/paywall-gate.tsx](demo/lib/milkie/paywall-gate.tsx) (lines 60-105)
 
 The success page is at:
+
 - [demo/app/success/page.tsx](demo/app/success/page.tsx)
 
 You can edit these files to customize the experience.

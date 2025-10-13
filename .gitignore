@@ -24,7 +24,9 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
-docs/logs/
+
+# Private docs
+docs/private/
 
 # OS
 .DS_Store
