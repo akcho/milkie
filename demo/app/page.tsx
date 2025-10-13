@@ -10,7 +10,7 @@ export default function Home() {
           <h1 className="text-6xl font-bold text-gray-900">
             Milkie Demo
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-700 max-w-2xl mx-auto">
             A simple demonstration of drop-in paywall infrastructure.
             Try accessing the premium content below!
           </p>
@@ -43,8 +43,8 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-6 pt-8">
               <div className="p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
                 <div className="text-3xl mb-4">📄</div>
-                <h3 className="font-bold text-lg mb-2">Single Page Paywall</h3>
-                <p className="text-gray-600 text-sm mb-4">
+                <h3 className="font-bold text-lg mb-2 text-gray-900">Single Page Paywall</h3>
+                <p className="text-gray-800 text-sm mb-4">
                   Protect individual pages or features. Good for content sites
                   or freemium apps.
                 </p>
@@ -57,8 +57,8 @@ export default function Home() {
               </div>
               <div className="p-6 bg-purple-50 rounded-lg border-2 border-purple-200">
                 <div className="text-3xl mb-4">🏢</div>
-                <h3 className="font-bold text-lg mb-2">Full App Paywall</h3>
-                <p className="text-gray-600 text-sm mb-4">
+                <h3 className="font-bold text-lg mb-2 text-gray-900">Full App Paywall</h3>
+                <p className="text-gray-800 text-sm mb-4">
                   Protect your entire app at the layout level. One wrap, all
                   routes protected.
                 </p>
@@ -79,22 +79,22 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-6 pt-8">
               <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
                 <div className="text-3xl mb-4">🔒</div>
-                <h3 className="font-bold text-lg mb-2">Wrap with PaywallGate</h3>
-                <p className="text-gray-600 text-sm">
+                <h3 className="font-bold text-lg mb-2 text-gray-900">Wrap with PaywallGate</h3>
+                <p className="text-gray-700 text-sm">
                   Wrap any component with PaywallGate to restrict access
                 </p>
               </div>
               <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
                 <div className="text-3xl mb-4">💳</div>
-                <h3 className="font-bold text-lg mb-2">Stripe Checkout</h3>
-                <p className="text-gray-600 text-sm">
+                <h3 className="font-bold text-lg mb-2 text-gray-900">Stripe Checkout</h3>
+                <p className="text-gray-700 text-sm">
                   Users are redirected to Stripe&apos;s secure checkout
                 </p>
               </div>
               <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
                 <div className="text-3xl mb-4">✅</div>
-                <h3 className="font-bold text-lg mb-2">Instant Access</h3>
-                <p className="text-gray-600 text-sm">
+                <h3 className="font-bold text-lg mb-2 text-gray-900">Instant Access</h3>
+                <p className="text-gray-700 text-sm">
                   Webhooks update subscription status in real-time
                 </p>
               </div>
