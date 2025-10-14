@@ -85,62 +85,70 @@ export function PaywallGate({
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[400px] p-4">
-      <Card className="max-w-md w-full">
-        <CardHeader className="text-center space-y-4">
-          <div className="flex justify-center">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <Lock className="h-6 w-6 text-primary" />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <CardTitle className="text-2xl">{title}</CardTitle>
-            <CardDescription>{subtitle}</CardDescription>
-          </div>
-        </CardHeader>
+    <div className="relative min-h-[400px]">
+      {/* Blurred content in background */}
+      <div className="blur-sm pointer-events-none select-none" aria-hidden="true">
+        {children}
+      </div>
 
-        <CardContent className="space-y-6">
-          {!email ? (
-            <Button
-              onClick={handleSignIn}
-              className="w-full bg-zinc-800 hover:bg-zinc-900"
-              size="lg"
-            >
-              {signInButtonText}
-            </Button>
-          ) : (
-            <>
-              {/* Signed in - show subscribe button */}
-              <div className="bg-muted rounded-lg p-4">
-                <p className="text-sm text-muted-foreground mb-1">Logged in as</p>
-                <Badge variant="secondary" className="font-normal">
-                  {email}
-                </Badge>
+      {/* Paywall overlay */}
+      <div className="absolute inset-0 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
+        <Card className="max-w-md w-full shadow-lg">
+          <CardHeader className="text-center space-y-4">
+            <div className="flex justify-center">
+              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Lock className="h-6 w-6 text-primary" />
               </div>
+            </div>
+            <div className="space-y-2">
+              <CardTitle className="text-2xl">{title}</CardTitle>
+              <CardDescription>{subtitle}</CardDescription>
+            </div>
+          </CardHeader>
 
+          <CardContent className="space-y-6">
+            {!email ? (
               <Button
-                onClick={handleCheckout}
-                disabled={isCheckingOut}
+                onClick={handleSignIn}
                 className="w-full bg-zinc-800 hover:bg-zinc-900"
                 size="lg"
               >
-                {isCheckingOut ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Loading...
-                  </>
-                ) : (
-                  subscribeButtonText
-                )}
+                {signInButtonText}
               </Button>
+            ) : (
+              <>
+                {/* Signed in - show subscribe button */}
+                <div className="bg-muted rounded-lg p-4">
+                  <p className="text-sm text-muted-foreground mb-1">Logged in as</p>
+                  <Badge variant="secondary" className="font-normal">
+                    {email}
+                  </Badge>
+                </div>
 
-              <p className="text-xs text-center text-muted-foreground">
-                You&apos;ll be redirected to Stripe to complete your payment
-              </p>
-            </>
-          )}
-        </CardContent>
-      </Card>
+                <Button
+                  onClick={handleCheckout}
+                  disabled={isCheckingOut}
+                  className="w-full bg-zinc-800 hover:bg-zinc-900"
+                  size="lg"
+                >
+                  {isCheckingOut ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    subscribeButtonText
+                  )}
+                </Button>
+
+                <p className="text-xs text-center text-muted-foreground">
+                  You&apos;ll be redirected to Stripe to complete your payment
+                </p>
+              </>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
