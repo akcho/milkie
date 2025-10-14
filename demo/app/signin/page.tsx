@@ -3,7 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { MilkieIcon } from "@/components/milkie-icon"
 
-export default function SignInPage() {
+export default function SignInPage({
+  searchParams,
+}: {
+  searchParams: { callbackUrl?: string }
+}) {
+  const redirectTo = searchParams.callbackUrl || "/";
   return (
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <Card className="max-w-md w-full">
@@ -23,7 +28,7 @@ export default function SignInPage() {
           <form
             action={async () => {
               "use server"
-              await signIn("google", { redirectTo: "/" })
+              await signIn("google", { redirectTo })
             }}
           >
             <Button

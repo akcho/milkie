@@ -80,7 +80,9 @@ export function PaywallGate({
     if (onSignIn) {
       onSignIn();
     } else {
-      window.location.href = signInUrl;
+      // Preserve current URL to redirect back after sign-in
+      const callbackUrl = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = `${signInUrl}?callbackUrl=${callbackUrl}`;
     }
   };
 
