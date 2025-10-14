@@ -1,12 +1,7 @@
-import { drizzle as drizzleSqlite } from "drizzle-orm/better-sqlite3";
-import { drizzle as drizzleNeon } from "drizzle-orm/neon-serverless";
-import Database from "better-sqlite3";
+import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
 import * as schema from "./schema";
 
-// Use Postgres in production (Vercel), SQLite locally
-const isProduction = process.env.POSTGRES_URL;
-
-export const db = isProduction
-  ? drizzleNeon(neon(process.env.POSTGRES_URL!), { schema })
-  : drizzleSqlite(new Database("./local.db"), { schema });
+// Use Neon Postgres for both local and production
+const sql = neon(process.env.POSTGRES_URL!);
+export const db = drizzle(sql, { schema });
