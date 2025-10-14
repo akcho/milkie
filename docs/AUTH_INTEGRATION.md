@@ -1,30 +1,24 @@
 # Authentication Integration
 
-Milkie is **auth-agnostic** - it works with any authentication solution. You just need to provide an authenticated user's email address.
+Milkie is **auth-agnostic** - it works with any authentication solution that provides a user email. Pass the authenticated email to the `MilkieProvider` and you're done.
 
-## Two Usage Modes
-
-### 1. With Authentication (Recommended)
-If your app already has user authentication, pass the email to Milkie:
+## Quick Start
 
 ```tsx
-<MilkieProvider email={authenticatedUserEmail}>
-  <App />
-</MilkieProvider>
+import { MilkieProvider } from '@/lib/milkie'
+
+export default function App() {
+  const email = // ... get from your auth solution
+
+  return (
+    <MilkieProvider email={email}>
+      <YourApp />
+    </MilkieProvider>
+  )
+}
 ```
 
-The paywall will show "Logged in as [email]" instead of an email input form.
-
-### 2. Without Authentication
-If you don't have auth, Milkie will ask users for their email:
-
-```tsx
-<MilkieProvider>
-  <App />
-</MilkieProvider>
-```
-
-The paywall will show an email input form. **Note:** This is less secure as emails aren't verified.
+The `email` prop is optional. If not provided, the paywall will prompt users to sign in before accessing premium content.
 
 ---
 
@@ -127,54 +121,83 @@ As long as you can get the user's authenticated email, it works:
 
 ---
 
+## How It Works
+
+When you provide an email to `MilkieProvider`:
+
+1. **Subscription Check**: Milkie checks if the email has an active Stripe subscription
+2. **Access Control**: The `PaywallGate` component uses this status to show/hide content
+3. **Checkout Flow**: When a non-subscriber tries to access gated content:
+   - If authenticated (email provided): Shows subscription button
+   - If not authenticated: Shows "Sign in to subscribe" button with redirect back to current page
+4. **After Payment**: Stripe webhooks update the subscription status in real-time
+
+## Sign-In Redirect Flow
+
+The `PaywallGate` component includes smart redirect handling:
+
+```tsx
+<PaywallGate
+  signInUrl="/signin"  // Default: "/signin"
+  onSignIn={() => {}}  // Optional: custom handler
+>
+  <PremiumContent />
+</PaywallGate>
+```
+
+When a non-authenticated user clicks "Sign in to subscribe":
+- They're redirected to your sign-in page with a `callbackUrl` parameter
+- After signing in, they return to the exact page they were trying to access
+- The paywall then shows the subscription button with their email
+
+This ensures a smooth user experience with no lost context.
+
+## Customization Options
+
+The `PaywallGate` component supports customization:
+
+```tsx
+<PaywallGate
+  title="Unlock this content"
+  subtitle="We promise it's worth it."
+  signInButtonText="Sign in to subscribe"
+  subscribeButtonText="Subscribe now"
+  signInUrl="/signin"
+  onSignIn={() => {
+    // Custom sign-in logic
+  }}
+>
+  <PremiumContent />
+</PaywallGate>
+```
+
 ## Security Considerations
 
-### With Authentication (Secure ✅)
-When you pass an email from your auth system, Milkie trusts that the email is verified and authenticated. The paywall flow is:
+**Authentication is required for production use.** Milkie expects emails from your auth system to be verified and authenticated. The security model relies on:
 
-1. User is authenticated via your auth solution
-2. You pass verified email to Milkie
-3. Milkie checks if email has active Stripe subscription
-4. If not, shows checkout (already knows their email)
-5. After payment, user gains access
+1. Your auth solution verifying email ownership
+2. Your auth solution maintaining session security
+3. Milkie linking subscriptions to verified emails
 
-This is secure because the email comes from your verified auth session.
-
-### Without Authentication (Less Secure ⚠️)
-When no email is provided, Milkie asks users to enter their email. This is convenient but less secure:
-
-1. User enters email manually
-2. Milkie checks if email has subscription
-3. No verification that they own the email
-
-**Risk:** Someone could enter another person's email to gain access.
-
-**When to use:**
-- Low-stakes content
-- MVP/prototypes
-- When you trust your users
-- When you don't need user accounts
-
-**Better alternatives for production:**
-- Add magic link email verification
-- Integrate proper authentication
-- Use license keys instead of emails
+This approach keeps security concerns separate:
+- **Your auth**: Handles identity and verification
+- **Milkie**: Handles subscription and payment gating
 
 ---
 
 ## FAQ
 
-**Q: Can I use Milkie without any authentication?**
-A: Yes, but users will need to enter their email. This works for simple use cases but isn't fully secure.
-
 **Q: Does Milkie replace my auth solution?**
-A: No. Milkie only handles subscription/payment gating. You still need your own authentication for user accounts.
+A: No. Milkie only handles subscription/payment gating. You need your own authentication for user identity and sessions.
 
 **Q: What if my auth doesn't use email?**
-A: Currently Milkie requires an email to link to Stripe customers. Support for other identifiers (user IDs, etc.) may come later.
+A: Currently Milkie requires an email to link to Stripe customers. Support for other identifiers may come later.
 
 **Q: Can I customize the paywall UI?**
-A: Yes! Use the `fallback` prop on `<PaywallGate>` to provide your own upgrade prompt.
+A: Yes! Use the `fallback` prop to provide your own upgrade prompt, or use the customization props like `title`, `subtitle`, etc.
 
 **Q: Does the email need to be verified?**
-A: Milkie doesn't verify emails - that's your auth solution's job. When you pass an email from NextAuth/Clerk/etc., it's assumed to be verified.
+A: Yes, for production use. Milkie doesn't verify emails - your auth solution should handle that. Milkie trusts that emails from your auth system are verified.
+
+**Q: Can I use Milkie with server components?**
+A: The `MilkieProvider` and `PaywallGate` are client components. Wrap them in your client-side layout or use them in client components only.

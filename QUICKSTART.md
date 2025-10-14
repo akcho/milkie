@@ -1,41 +1,28 @@
 # Quick Start
 
-## 🚀 Try the Hosted Demo (30 seconds)
+Get Milkie running in under 15 minutes - locally or on Vercel.
 
-**[milkie-demo.vercel.app](https://milkie-demo.vercel.app)** *(deploy your own - see below)*
+## 🚀 Try the Live Demo (30 seconds)
 
-1. Click "Sign In" → Use your Google account
-2. Navigate to "Single Premium Page" or "Full App (Paywalled)"
-3. See the paywall
-4. Click "Subscribe Now"
-5. Use Stripe test card: `4242 4242 4242 4242` (any expiry/CVC)
-6. Done! You now have access
+**[milkie-demo.vercel.app](https://milkie-demo.vercel.app)** *(coming soon)*
 
-**No setup. No installation. See it working in 30 seconds.**
+1. Sign in with Google
+2. Try accessing premium content - see the paywall
+3. Click "Subscribe now"
+4. Use test card: `4242 4242 4242 4242` (any expiry/CVC)
+5. Access unlocked!
 
----
-
-## 🚢 Deploy Your Own (20 min)
-
-Want to host your own demo? See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for full instructions.
-
-Quick version:
-1. Deploy to Vercel
-2. Add environment variables (Google OAuth + Stripe)
-3. Configure webhooks
-4. Done!
+**Zero setup required - see it working in 30 seconds.**
 
 ---
 
 ## 💻 Run Locally (15 min)
 
-Want to test locally or integrate into your own app?
-
 ### Prerequisites
-- Node.js 18+ installed
-- Google Cloud account (for OAuth)
-- Stripe account (test mode is free)
-- Stripe CLI (for webhook testing)
+- Node.js 18+
+- Google account (for OAuth setup)
+- Stripe account (free test mode)
+- Stripe CLI
 
 ## Step 1: Set Up Google OAuth (3 min)
 
@@ -47,14 +34,16 @@ Want to test locally or integrate into your own app?
 6. Authorized redirect URIs: `http://localhost:3000/api/auth/callback/google`
 7. Click **"Create"** and copy the **Client ID** and **Client Secret**
 
-## Step 2: Get Stripe Keys (2 min)
+## Step 2: Set Up Stripe (5 min)
+
+### Get API Keys
 
 1. Go to https://dashboard.stripe.com/test/apikeys
-2. Copy these two keys:
+2. Copy:
    - **Publishable key** (starts with `pk_test_`)
    - **Secret key** (starts with `sk_test_`)
 
-## Step 2: Create a Product (2 min)
+### Create a Product
 
 1. Go to https://dashboard.stripe.com/test/products
 2. Click **"Add product"**
@@ -131,23 +120,23 @@ Restart Terminal 1 (Ctrl+C then `npm run dev` again)
 
 ## Step 6: Test the Flow
 
-1. Open http://localhost:3000
-2. Click **"Sign In"** → Sign in with your Google account
-3. Click **"Single Premium Page"** or **"Full App (Paywalled)"**
-4. You'll see the paywall showing your email
-5. Click **"Subscribe Now"**
-6. Use test card: `4242 4242 4242 4242`
-7. Any future expiry date, any CVC
-8. Complete checkout
-9. You're redirected back with access!
+1. **Open** http://localhost:3000
+2. **Sign In** with Google
+3. **Try the examples:**
+   - Component Gating ([/mixed](http://localhost:3000/mixed)) - Mixed free/premium content
+   - Layout Gating ([/dashboard](http://localhost:3000/dashboard)) - Full protected section
+4. **See the paywall** - Shows your email, ready to subscribe
+5. **Click "Subscribe now"**
+6. **Enter test card:** `4242 4242 4242 4242` (any expiry/CVC)
+7. **Complete checkout** - Redirected back with access!
 
-## What's Happening Behind the Scenes
+### What's Happening
 
-1. You click subscribe → Creates a Stripe checkout session
-2. You enter payment → Stripe processes it
-3. Webhook fires → Updates your local database
-4. You're redirected → App checks subscription status
-5. You have access! → Content is unlocked
+1. **Subscribe** → Creates Stripe checkout session
+2. **Payment** → Stripe processes test payment
+3. **Webhook** → Updates local database in real-time
+4. **Redirect** → Returns to your page
+5. **Access granted** → Content unlocked!
 
 ## Troubleshooting
 
@@ -172,42 +161,47 @@ Restart Terminal 1 (Ctrl+C then `npm run dev` again)
 - Check that Terminal 2 (stripe listen) is running
 - Look at Terminal 2 to see if webhooks are being received
 
+---
+
 ## Next Steps
 
-Once it's working:
-1. Try accessing the premium content again - you should still have access (persisted in database)
-2. Sign out and sign back in - you'll still have access (subscription is tied to your email)
-3. Look at the code in `demo/lib/milkie/` - that's the SDK
-4. Look at `demo/app/premium/page.tsx` - see how simple the integration is
-5. Try integrating into your own app - works with NextAuth, Clerk, Lucia, Supabase, etc.
+Once you have it running:
 
-## Understanding the Code
+1. **Explore the patterns:**
+   - [/free](http://localhost:3000/free) - Public content
+   - [/mixed](http://localhost:3000/mixed) - Component-level gating
+   - [/dashboard](http://localhost:3000/dashboard) - Layout-level gating
 
-**The SDK** (`demo/lib/milkie/`):
-- This is what would be published to npm
-- Developers would `npm install milkie` and import these components
-- It's currently ~200 lines of code
+2. **Check the code:**
+   - `demo/lib/milkie/` - The SDK (what becomes the npm package)
+   - `demo/app/mixed/page.tsx` - Component gating example
+   - `demo/app/dashboard/layout.tsx` - Layout gating example
 
-**The demo app**:
-- Shows how a developer would use the SDK
-- In production, each developer would run their own version
-- The API routes would eventually be hosted by you (Milkie platform)
+3. **Verify persistence:**
+   - Your subscription persists in the local database
+   - Sign out and back in - you still have access
+   - Refresh the page - no re-authentication needed
 
-## What This Proves
-
-If this works, you've validated:
-- ✅ Stripe integration works
-- ✅ Webhooks work
-- ✅ The SDK works
-- ✅ The developer experience is simple
-- ✅ The concept makes sense
-
-Now you can show this to other developers and get their feedback!
+4. **Read the docs:**
+   - [PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md) - Implementation patterns
+   - [AUTH_INTEGRATION.md](docs/AUTH_INTEGRATION.md) - Works with any auth
 
 ---
 
-**Questions?** Read the full docs:
-- [README.md](README.md) - Project overview
-- [demo/README.md](demo/README.md) - Detailed setup
-- [docs/SUMMARY.md](docs/SUMMARY.md) - What we built
-- [docs/PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md) - How to implement paywalls
+## What You've Validated
+
+If you made it this far, you've proven:
+- ✅ Stripe integration works
+- ✅ Webhooks work in real-time
+- ✅ The SDK is simple to use
+- ✅ Auth-agnostic approach works
+- ✅ The developer experience is smooth
+
+Ready to integrate into your own app? The SDK in `demo/lib/milkie/` is all you need.
+
+---
+
+**Need help?** Check the docs:
+- [README.md](README.md) - Project overview and vision
+- [docs/PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md) - Implementation patterns
+- [docs/AUTH_INTEGRATION.md](docs/AUTH_INTEGRATION.md) - Works with any auth

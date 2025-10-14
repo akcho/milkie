@@ -1,55 +1,75 @@
 # Paywall Patterns with Milkie
 
-How to paywall different parts of your app - from a single page to your entire application.
+How to implement paywalls in your app - from component-level gating to full application protection.
 
-## Pattern 1: Single Page Paywall
+## Pattern 1: Component-Level Gating
 
-Perfect for:
-- Content sites (blog posts, tutorials)
-- Freemium apps (some features free, some paid)
-- Hybrid models (public landing + premium features)
+**Perfect for:**
+- Content sites (blogs, tutorials, articles)
+- Freemium apps with mixed free/premium content
+- Feature previews with locked sections
 
-### Implementation
+Mix free and premium content on the same page by wrapping specific components:
 
 ```tsx
-// app/premium-article/page.tsx
-import { PaywallGate } from 'milkie'
+// app/mixed/page.tsx
+import { PaywallGate } from '@/lib/milkie'
 
-export default function PremiumArticle() {
+export default function ArticlePage() {
   return (
-    <PaywallGate>
-      <article>
-        <h1>Premium Content</h1>
-        <p>This article is only visible to subscribers.</p>
-      </article>
-    </PaywallGate>
+    <div>
+      {/* Free preview - everyone sees this */}
+      <section>
+        <h1>Article Title</h1>
+        <p>Free introduction and preview...</p>
+      </section>
+
+      {/* Premium content - only subscribers */}
+      <PaywallGate
+        fallback={<UpgradePrompt />}
+      >
+        <section>
+          <h2>Premium Section</h2>
+          <p>Full article content here...</p>
+        </section>
+      </PaywallGate>
+    </div>
   )
 }
 ```
 
-**Example in demo**: [/premium](http://localhost:3000/premium)
+**Key features:**
+- Use the `fallback` prop to show a custom teaser for non-subscribers
+- Blur the premium content in the background for visual effect
+- Multiple `PaywallGate` components can be used on the same page
 
-## Pattern 2: Entire App Paywall
+**Example in demo**: [/mixed](http://localhost:3000/mixed)
 
-Perfect for:
+## Pattern 2: Layout-Level Gating
+
+**Perfect for:**
 - SaaS applications
 - Tools/platforms where everything requires payment
 - B2B products
 - Apps with no free tier
 
-### Implementation
+Protect entire route sections by wrapping a layout component:
 
 ```tsx
 // app/dashboard/layout.tsx
-import { PaywallGate } from 'milkie'
+import { PaywallGate } from '@/lib/milkie'
 
 export default function DashboardLayout({ children }) {
   return (
     <PaywallGate>
-      <nav>
-        {/* Your nav - visible to all subscribers */}
-      </nav>
-      {children}  {/* All routes under /dashboard/* are protected */}
+      <div>
+        <nav>
+          {/* Navigation - visible to all subscribers */}
+        </nav>
+        <main>
+          {children}  {/* All child routes protected */}
+        </main>
+      </div>
     </PaywallGate>
   )
 }
@@ -59,30 +79,37 @@ Now every route under `/dashboard/*` is automatically protected:
 - `/dashboard` ✅ Protected
 - `/dashboard/settings` ✅ Protected
 - `/dashboard/billing` ✅ Protected
-- `/dashboard/whatever` ✅ Protected
+
+**Key benefits:**
+- Write `PaywallGate` once, protect all child routes
+- Shared navigation and layouts stay protected
+- Clean separation between public and protected sections
 
 **Example in demo**: [/dashboard](http://localhost:3000/dashboard)
 
-## Pattern 3: Hybrid (Public + Protected)
+## Pattern 3: Hybrid (Public + Protected Routes)
 
-Perfect for:
-- Most SaaS apps
-- Apps with marketing site + actual product
-- Freemium models with clear separation
+**Perfect for:**
+- Most SaaS apps (marketing site + product)
+- Apps with free tier and premium features
+- Products with public documentation + private tools
 
-### Implementation
+Combine public and protected sections in one app:
 
 ```tsx
 // app/layout.tsx (root layout)
-import { MilkieProvider } from 'milkie'
+import { MilkieProvider } from '@/lib/milkie'
+import { SessionProvider } from 'next-auth/react'
 
 export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <MilkieProvider>
-          {children}  {/* Don't wrap here - let each route decide */}
-        </MilkieProvider>
+        <SessionProvider>
+          <MilkieProvider email={session?.user?.email}>
+            {children}
+          </MilkieProvider>
+        </SessionProvider>
       </body>
     </html>
   )
@@ -93,213 +120,186 @@ export default function Home() {
   return (
     <div>
       <h1>Welcome to MyApp</h1>
-      <a href="/app">Get Started →</a>
+      <a href="/dashboard">Get Started →</a>
     </div>
   )
 }
 
-// app/pricing/page.tsx - Public pricing page
-export default function Pricing() {
-  return (
-    <div>
-      <h1>Pricing</h1>
-      {/* ... */}
-    </div>
-  )
+// app/free/page.tsx - Public content
+export default function FreePage() {
+  return <div>Free content accessible to everyone</div>
 }
 
-// app/app/layout.tsx - Protected app section
-import { PaywallGate } from 'milkie'
+// app/dashboard/layout.tsx - Protected app section
+import { PaywallGate } from '@/lib/milkie'
 
-export default function AppLayout({ children }) {
+export default function DashboardLayout({ children }) {
   return (
     <PaywallGate>
-      {children}  {/* Everything under /app/* is protected */}
+      {children}
     </PaywallGate>
   )
 }
 ```
 
-This gives you:
+This structure gives you:
 - `/` - Public ✅
+- `/free` - Public ✅
 - `/pricing` - Public ✅
-- `/blog` - Public ✅
-- `/app/*` - Protected 🔒
-- `/app/dashboard` - Protected 🔒
-- `/app/settings` - Protected 🔒
+- `/dashboard/*` - Protected 🔒
 
-**Example in demo**: The demo uses this pattern!
+**Example in demo**: The demo implements this exact pattern!
 
-## Pattern 4: Conditional Paywalls (Advanced)
+## Pattern 4: Hook-Based Conditional Access
 
-Perfect for:
-- Freemium apps with usage limits
-- Apps with multiple tiers
-- Progressive paywalls
+**Perfect for:**
+- Custom UI flows
+- Complex access logic
+- Programmatic access checks
 
-### Implementation
+Use the `usePaywall` hook for fine-grained control:
 
 ```tsx
 'use client'
 
-import { usePaywall } from 'milkie'
+import { usePaywall } from '@/lib/milkie'
 
 export default function FeaturePage() {
-  const { hasAccess } = usePaywall()
+  const { hasAccess, loading, email, status } = usePaywall()
+
+  if (loading) {
+    return <LoadingSpinner />
+  }
 
   if (!hasAccess) {
-    return (
-      <div>
-        <h1>Premium Feature</h1>
-        <p>Upgrade to access this feature!</p>
-        <button>Upgrade Now</button>
-      </div>
-    )
+    return <CustomUpgradePrompt />
   }
 
   return (
     <div>
       <h1>Premium Feature</h1>
+      <p>Welcome, {email}!</p>
       {/* Your premium feature */}
     </div>
   )
 }
 ```
 
-Or use the fallback prop:
-
-```tsx
-<PaywallGate fallback={<UpgradePrompt />}>
-  <PremiumFeature />
-</PaywallGate>
-```
-
-## Pattern 5: Component-Level Paywalls
-
-Perfect for:
-- Freemium dashboards (some widgets free, some paid)
-- Feature-level paywalls
-- A/B testing premium features
-
-### Implementation
-
-```tsx
-export default function Dashboard() {
-  return (
-    <div>
-      {/* Free widgets - always visible */}
-      <BasicStats />
-      <RecentActivity />
-
-      {/* Premium widgets - only for subscribers */}
-      <PaywallGate fallback={<UpgradeBanner />}>
-        <AdvancedAnalytics />
-        <CustomReports />
-        <TeamCollaboration />
-      </PaywallGate>
-    </div>
-  )
-}
-```
-
-## Best Practices
-
-### 1. Keep Public Roots Accessible
-```tsx
-// ✅ Good - Public homepage
-app/page.tsx
-
-// 🔒 Protected - Actual app
-app/app/layout.tsx → <PaywallGate>
-```
-
-### 2. Use Layouts for Route Groups
-```tsx
-// Protect an entire section at once
-app/dashboard/layout.tsx → <PaywallGate>
-  app/dashboard/page.tsx
-  app/dashboard/settings/page.tsx
-  app/dashboard/billing/page.tsx
-  // All automatically protected!
-```
-
-### 3. Show Clear Value Before the Paywall
-```tsx
-// ❌ Bad - Paywall immediately
-<PaywallGate>
-  <App />
-</PaywallGate>
-
-// ✅ Good - Show value first
-<div>
-  <LandingPage />
-  <Features />
-  <Pricing />
-  <Link to="/app">Try it free →</Link>
-</div>
-
-// Then in /app:
-<PaywallGate>
-  <ActualApp />
-</PaywallGate>
-```
-
-### 4. Use the Hook for Conditional Logic
-```tsx
-const { hasAccess, loading } = usePaywall()
-
-if (loading) return <Spinner />
-
-return (
-  <div>
-    {hasAccess ? (
-      <PremiumFeature />
-    ) : (
-      <UpgradePrompt />
-    )}
-  </div>
-)
-```
-
-## Common Questions
-
-### Q: Can I have multiple paywalls in one app?
-**A:** Yes! You can wrap different sections with different `<PaywallGate>` components. They all check the same subscription status.
-
-### Q: What if I want different tiers?
-**A:** Right now Milkie supports one paid tier. Multiple tiers are on the roadmap! For now, you could:
-- Use different price IDs
-- Check subscription metadata
-- Build custom logic with `usePaywall()`
-
-### Q: Can I mix free and paid content on the same page?
-**A:** Absolutely! Use multiple `<PaywallGate>` components or the `usePaywall()` hook for granular control.
-
-### Q: Does the paywall work on mobile?
-**A:** Yes! The paywall is responsive and works on all devices. The Stripe checkout is mobile-optimized too.
-
-### Q: Can I customize the paywall UI?
-**A:** Yes! Pass a custom `fallback` component:
-```tsx
-<PaywallGate fallback={<YourCustomPaywall />}>
-  <Content />
-</PaywallGate>
-```
-
-## Examples in the Demo
-
-1. **Single Page** → [/premium](http://localhost:3000/premium)
-   - Individual page protection
-   - Default paywall UI
-   - Checkout flow
-
-2. **Full App** → [/dashboard](http://localhost:3000/dashboard)
-   - Layout-level protection
-   - Multiple routes protected
-   - Navigation for subscribers
-
-Try both patterns in the demo to see how they work!
+**Available hook values:**
+- `hasAccess`: boolean - Whether user has an active subscription
+- `loading`: boolean - Whether subscription check is in progress
+- `email`: string | null - User's email from MilkieProvider
+- `status`: string | null - Subscription status from Stripe
+- `checkSubscription`: () => Promise<void> - Manual refresh function
 
 ---
 
-**Next**: Read [QUICKSTART.md](QUICKSTART.md) to test these patterns locally.
+## Best Practices
+
+### 1. Public Routes First
+Always keep your landing page and marketing content public:
+
+```tsx
+// ✅ Good structure
+/                    → Public landing page
+/free               → Public content
+/pricing            → Public pricing
+/dashboard/*        → Protected with PaywallGate
+```
+
+### 2. Use Layouts for Route Protection
+Protect route groups at the layout level instead of individual pages:
+
+```tsx
+// ✅ Good - One PaywallGate protects all routes
+// app/dashboard/layout.tsx
+<PaywallGate>{children}</PaywallGate>
+
+// ❌ Avoid - Repeating PaywallGate in every page
+// app/dashboard/page.tsx, settings/page.tsx, etc.
+```
+
+### 3. Custom Fallbacks for Better UX
+Show value in your fallback content:
+
+```tsx
+<PaywallGate
+  fallback={
+    <div>
+      <h2>Premium Analytics</h2>
+      <ul>
+        <li>Advanced metrics and insights</li>
+        <li>Custom reporting</li>
+        <li>Export to CSV/PDF</li>
+      </ul>
+      <button>Unlock Now</button>
+    </div>
+  }
+>
+  <AdvancedAnalytics />
+</PaywallGate>
+```
+
+### 4. Customize for Your Brand
+Use the customization props to match your app:
+
+```tsx
+<PaywallGate
+  title="Unlock Advanced Features"
+  subtitle="Get full access to all premium tools"
+  subscribeButtonText="Upgrade to Pro"
+>
+  <PremiumContent />
+</PaywallGate>
+```
+
+### 5. Handle Loading States
+Always account for the subscription check:
+
+```tsx
+const { hasAccess, loading } = usePaywall()
+
+if (loading) return <LoadingState />
+if (!hasAccess) return <UpgradePrompt />
+
+return <PremiumContent />
+```
+
+---
+
+## FAQ
+
+**Q: Can I have multiple PaywallGates in one app?**
+Yes! All `PaywallGate` components share the same subscription status from `MilkieProvider`.
+
+**Q: Can I mix free and paid content on the same page?**
+Absolutely! See Pattern 1 (Component-Level Gating) above.
+
+**Q: Does the paywall work on mobile?**
+Yes, fully responsive. The Stripe checkout is also mobile-optimized.
+
+**Q: Can I customize the paywall UI?**
+Yes, either use the `fallback` prop for complete custom UI, or the customization props like `title`, `subtitle`, etc.
+
+**Q: What about multiple subscription tiers?**
+Currently Milkie supports one subscription tier. Multi-tier support is on the roadmap.
+
+**Q: How do I handle the redirect after sign-in?**
+The `PaywallGate` automatically includes `callbackUrl` in the sign-in redirect, so users return to the page they were trying to access.
+
+---
+
+## Live Examples
+
+Try these patterns in the demo:
+
+- **[/free](http://localhost:3000/free)** - Public content (no paywall)
+- **[/mixed](http://localhost:3000/mixed)** - Component-level gating with fallbacks
+- **[/dashboard](http://localhost:3000/dashboard)** - Layout-level gating
+- **[Homepage](http://localhost:3000)** - Hybrid public/protected structure
+
+---
+
+**Next Steps:**
+- Read [AUTH_INTEGRATION.md](AUTH_INTEGRATION.md) to integrate with your auth provider
+- Read [QUICKSTART.md](../QUICKSTART.md) to run the demo locally
