@@ -2,6 +2,10 @@
 
 import { usePaywall } from "./provider";
 import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Loader2 } from "lucide-react";
 
 interface PaywallGateProps {
   children: React.ReactNode;
@@ -15,7 +19,10 @@ export function PaywallGate({ children, fallback }: PaywallGateProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-gray-600">Loading...</div>
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span>Loading...</span>
+        </div>
       </div>
     );
   }
@@ -59,37 +66,45 @@ export function PaywallGate({ children, fallback }: PaywallGateProps) {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[400px]">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg border border-gray-200">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">
-            Upgrade to Continue
-          </h2>
-          <p className="mt-2 text-gray-600">
+    <div className="flex items-center justify-center min-h-[400px] p-4">
+      <Card className="max-w-md w-full">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl">Upgrade to Continue</CardTitle>
+          <CardDescription>
             Subscribe to access this premium content
-          </p>
-        </div>
+          </CardDescription>
+        </CardHeader>
 
-        <div className="space-y-4">
+        <CardContent className="space-y-4">
           {/* Show logged in email */}
-          <div className="bg-gray-50 border border-gray-200 rounded-md p-4">
-            <p className="text-sm text-gray-600 mb-1">Logged in as</p>
-            <p className="font-medium text-gray-900">{email}</p>
+          <div className="bg-muted rounded-lg p-4">
+            <p className="text-sm text-muted-foreground mb-1">Logged in as</p>
+            <Badge variant="secondary" className="font-normal">
+              {email}
+            </Badge>
           </div>
 
-          <button
+          <Button
             onClick={handleCheckout}
             disabled={isCheckingOut}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            className="w-full"
+            size="lg"
           >
-            {isCheckingOut ? "Loading..." : "Subscribe Now"}
-          </button>
+            {isCheckingOut ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "Subscribe Now"
+            )}
+          </Button>
 
-          <p className="text-xs text-center text-gray-500">
+          <p className="text-xs text-center text-muted-foreground">
             You&apos;ll be redirected to Stripe to complete your payment
           </p>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

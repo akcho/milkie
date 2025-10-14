@@ -1,53 +1,77 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Lightbulb } from "lucide-react";
+
 export default function SettingsPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-3xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-700 mt-2">
-          This page is automatically protected too!
+        <h1 className="text-3xl font-bold mb-2">Settings</h1>
+        <p className="text-muted-foreground">
+          This page is automatically protected by the layout-level gate.
         </p>
       </div>
 
-      <div className="bg-white p-8 rounded-lg border border-gray-200">
-        <h2 className="text-xl font-bold mb-4 text-gray-900">Account Settings</h2>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-800 mb-2">
-              Display Name
-            </label>
-            <input
+      <Card>
+        <CardHeader>
+          <CardTitle>Account Settings</CardTitle>
+          <CardDescription>
+            Manage your account preferences
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="display-name">Display Name</Label>
+            <Input
+              id="display-name"
               type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-900"
               placeholder="Your name"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-800 mb-2">
-              Notifications
-            </label>
-            <div className="flex items-center gap-2">
-              <input type="checkbox" id="email-notif" />
-              <label htmlFor="email-notif" className="text-sm text-gray-700">
-                Email notifications
-              </label>
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email Address</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+            />
           </div>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-            Save Changes
-          </button>
-        </div>
-      </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="email-notif"
+              className="h-4 w-4 rounded border-input"
+            />
+            <Label htmlFor="email-notif" className="font-normal cursor-pointer">
+              Receive email notifications
+            </Label>
+          </div>
+          <Button>Save Changes</Button>
+        </CardContent>
+      </Card>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h3 className="font-bold mb-2 text-gray-900">💡 Developer Tip</h3>
-        <p className="text-sm text-gray-800">
-          Notice how you didn&apos;t need to add{" "}
-          <code className="bg-white px-2 py-1 rounded text-gray-900">PaywallGate</code> to
-          this page? It&apos;s inherited from the layout. Every page under{" "}
-          <code className="bg-white px-2 py-1 rounded text-gray-900">/dashboard/*</code> is
-          automatically protected.
-        </p>
-      </div>
+      <Card className="border-primary/50 bg-primary/5">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Lightbulb className="h-5 w-5 text-primary" />
+            <CardTitle className="text-lg">Developer Tip</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <p className="text-sm text-muted-foreground">
+            Notice how you didn&apos;t need to add{" "}
+            <code className="text-xs bg-background px-1.5 py-0.5 rounded">PaywallGate</code>{" "}
+            to this page? It&apos;s inherited from the layout.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Every page under{" "}
+            <code className="text-xs bg-background px-1.5 py-0.5 rounded">/dashboard/*</code>{" "}
+            is automatically protected with zero additional code.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

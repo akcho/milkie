@@ -1,37 +1,74 @@
 "use client";
 
 import { PaywallGate } from "@/lib/milkie";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Home, Settings, CreditCard, ArrowLeft } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  const navItems = [
+    { href: "/dashboard", label: "Dashboard", icon: Home },
+    { href: "/dashboard/settings", label: "Settings", icon: Settings },
+    { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
+  ];
+
   return (
     <PaywallGate>
-      <div className="min-h-screen bg-gray-50">
-        {/* This nav would be visible to all subscribers */}
-        <nav className="bg-white border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <h1 className="text-xl font-bold">My App Dashboard</h1>
-              <div className="flex gap-4">
-                <a href="/dashboard" className="text-gray-600 hover:text-gray-900">
-                  Dashboard
-                </a>
-                <a href="/dashboard/settings" className="text-gray-600 hover:text-gray-900">
-                  Settings
-                </a>
-                <a href="/dashboard/billing" className="text-gray-600 hover:text-gray-900">
-                  Billing
-                </a>
+      <div className="min-h-screen bg-background">
+        {/* Navigation header */}
+        <header className="border-b">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between py-4 gap-4">
+              <div className="flex items-center gap-3 md:gap-6 min-w-0">
+                <Button variant="ghost" size="sm" asChild className="shrink-0">
+                  <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    <span className="hidden sm:inline">Home</span>
+                  </Link>
+                </Button>
+                <div className="hidden md:block h-6 w-px bg-border shrink-0" />
+                <h1 className="text-base md:text-lg font-semibold truncate">Dashboard</h1>
               </div>
+              <nav className="flex gap-1 shrink-0">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href;
+                  return (
+                    <Button
+                      key={item.href}
+                      variant={isActive ? "secondary" : "ghost"}
+                      size="sm"
+                      asChild
+                    >
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          "flex items-center gap-2",
+                          isActive && "font-medium"
+                        )}
+                        title={item.label}
+                      >
+                        <Icon className="h-4 w-4" />
+                        <span className="hidden lg:inline">{item.label}</span>
+                      </Link>
+                    </Button>
+                  );
+                })}
+              </nav>
             </div>
           </div>
-        </nav>
+        </header>
 
         {/* All children routes are automatically protected */}
-        <main className="max-w-7xl mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-8">
           {children}
         </main>
       </div>

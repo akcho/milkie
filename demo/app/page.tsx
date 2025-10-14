@@ -2,126 +2,197 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Lock, CreditCard, CheckCircle, Layers, Layout, Component } from "lucide-react";
 
 export default function Home() {
   const { data: session, status } = useSession();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        {/* Header with sign-in status */}
-        <div className="flex justify-end mb-8">
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <h2 className="text-xl font-semibold">Milkie</h2>
           {status === "loading" ? (
-            <div className="text-gray-500">Loading...</div>
+            <div className="text-muted-foreground text-sm">Loading...</div>
           ) : session ? (
             <div className="flex items-center gap-3">
-              <span className="text-gray-700">Signed in as {session.user?.email}</span>
+              <span className="text-sm text-muted-foreground">
+                {session.user?.email}
+              </span>
             </div>
           ) : (
-            <Link
-              href="/signin"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors"
-            >
-              Sign In
-            </Link>
+            <Button asChild>
+              <Link href="/signin">Sign In</Link>
+            </Button>
           )}
         </div>
+      </header>
 
-        <div className="text-center space-y-8">
-          <h1 className="text-6xl font-bold text-gray-900">
+      <div className="container mx-auto px-4 py-16 max-w-6xl">
+        {/* Hero Section */}
+        <div className="text-center space-y-6 mb-16">
+          <Badge variant="secondary" className="mb-4">
+            Drop-in Paywall Infrastructure
+          </Badge>
+          <h1 className="text-5xl font-bold tracking-tight">
             Milkie Demo
           </h1>
-          <p className="text-xl text-gray-700 max-w-2xl mx-auto">
-            A simple demonstration of drop-in paywall infrastructure with NextAuth.
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Simple, flexible paywall infrastructure with NextAuth and Stripe.
             {!session && " Sign in to try the premium content!"}
           </p>
+        </div>
 
-          <div className="flex flex-wrap gap-4 justify-center pt-8">
-            <Link
-              href="/free"
-              className="px-6 py-3 bg-gray-200 text-gray-900 rounded-lg font-medium hover:bg-gray-300 transition-colors"
-            >
-              Free Content
-            </Link>
-            <Link
-              href="/premium"
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-            >
-              Single Premium Page
-            </Link>
-            <Link
-              href="/dashboard"
-              className="px-6 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-colors"
-            >
-              Full App (Paywalled)
-            </Link>
-          </div>
-
-          <div className="pt-16 space-y-4">
-            <h2 className="text-2xl font-bold text-gray-900">
-              Two Patterns Demo
-            </h2>
-            <div className="grid md:grid-cols-2 gap-6 pt-8">
-              <div className="p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
-                <div className="text-3xl mb-4">📄</div>
-                <h3 className="font-bold text-lg mb-2 text-gray-900">Single Page Paywall</h3>
-                <p className="text-gray-800 text-sm mb-4">
-                  Protect individual pages or features. Good for content sites
-                  or freemium apps.
-                </p>
-                <Link
-                  href="/premium"
-                  className="text-blue-600 hover:underline text-sm font-medium"
-                >
-                  See example →
+        {/* Demo Examples Grid */}
+        <div className="grid md:grid-cols-3 gap-6 mb-16">
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center mb-2">
+                <Layout className="h-5 w-5" />
+              </div>
+              <CardTitle>Free Content</CardTitle>
+              <CardDescription>
+                No restrictions or authentication required
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild variant="outline" className="w-full">
+                <Link href="/free">
+                  View Example <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
-              </div>
-              <div className="p-6 bg-purple-50 rounded-lg border-2 border-purple-200">
-                <div className="text-3xl mb-4">🏢</div>
-                <h3 className="font-bold text-lg mb-2 text-gray-900">Full App Paywall</h3>
-                <p className="text-gray-800 text-sm mb-4">
-                  Protect your entire app at the layout level. One wrap, all
-                  routes protected.
-                </p>
-                <Link
-                  href="/dashboard"
-                  className="text-purple-600 hover:underline text-sm font-medium"
-                >
-                  See example →
-                </Link>
-              </div>
-            </div>
-          </div>
+              </Button>
+            </CardContent>
+          </Card>
 
-          <div className="pt-16 space-y-4">
-            <h2 className="text-2xl font-bold text-gray-900">
-              How it works
-            </h2>
-            <div className="grid md:grid-cols-3 gap-6 pt-8">
-              <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-                <div className="text-3xl mb-4">🔒</div>
-                <h3 className="font-bold text-lg mb-2 text-gray-900">Wrap with PaywallGate</h3>
-                <p className="text-gray-700 text-sm">
-                  Wrap any component with PaywallGate to restrict access
-                </p>
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
+                <Component className="h-5 w-5 text-primary" />
               </div>
-              <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-                <div className="text-3xl mb-4">💳</div>
-                <h3 className="font-bold text-lg mb-2 text-gray-900">Stripe Checkout</h3>
-                <p className="text-gray-700 text-sm">
-                  Users are redirected to Stripe&apos;s secure checkout
-                </p>
+              <CardTitle>Component Gating</CardTitle>
+              <CardDescription>
+                Mix free and premium content on the same page
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/mixed">
+                  View Example <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
+                <Layers className="h-5 w-5 text-primary" />
               </div>
-              <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-                <div className="text-3xl mb-4">✅</div>
-                <h3 className="font-bold text-lg mb-2 text-gray-900">Instant Access</h3>
-                <p className="text-gray-700 text-sm">
-                  Webhooks update subscription status in real-time
+              <CardTitle>Layout Gating</CardTitle>
+              <CardDescription>
+                Protect entire sections at the layout level
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/dashboard">
+                  View Example <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* How It Works Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            How It Works
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card>
+              <CardHeader>
+                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                  <Lock className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Wrap Components</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Use <code className="text-xs bg-muted px-1 py-0.5 rounded">PaywallGate</code> to protect pages, sections, or individual components
                 </p>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                  <CreditCard className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Stripe Checkout</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Users are securely redirected to Stripe&apos;s hosted checkout page
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                  <CheckCircle className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Instant Access</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Webhooks update subscription status in real-time for immediate access
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
+
+        {/* Use Cases Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Flexible Gating Patterns</CardTitle>
+            <CardDescription>
+              Choose the right pattern for your use case
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex gap-4 p-4 border rounded-lg">
+                <div className="h-10 w-10 rounded bg-secondary flex items-center justify-center shrink-0">
+                  <Component className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1">Component-Level Gating</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Perfect for content sites, blogs, or freemium apps. Show previews and teasers, then gate the full content.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 p-4 border rounded-lg">
+                <div className="h-10 w-10 rounded bg-secondary flex items-center justify-center shrink-0">
+                  <Layers className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1">Layout-Level Gating</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Ideal for SaaS applications. Wrap your dashboard layout once to protect all routes and features.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
