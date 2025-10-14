@@ -4,6 +4,7 @@ import "./globals.css";
 import { MilkieProvider } from "@/lib/milkie";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default async function RootLayout({
             {children}
           </MilkieProvider>
         </SessionProvider>
+        <Toaster />
       </body>
     </html>
   );
