@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "@types/better-sqlite3": "^7.6.13",
     "@types/stripe": "^8.0.416",
     "better-sqlite3": "^12.4.1",
