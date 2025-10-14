@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { MilkieProvider } from "@/lib/milkie";
+import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,20 +17,26 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Milkie Demo",
-  description: "Demo app showing Milkie paywall integration",
+  description: "Demo app showing Milkie paywall integration with NextAuth",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <MilkieProvider>{children}</MilkieProvider>
+        <SessionProvider session={session}>
+          <MilkieProvider email={session?.user?.email}>
+            {children}
+          </MilkieProvider>
+        </SessionProvider>
       </body>
     </html>
   );

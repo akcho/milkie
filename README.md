@@ -1,69 +1,81 @@
 # Milkie
 
-> The NextAuth of payments — drop-in paywall infrastructure for developers.
+> Drop-in paywall for Next.js apps with authentication
 
-Add a paywall to your weekend project in 5 minutes. Free until you're making $1k/mo.
-
-## What is this?
-
-Milkie is a plug-and-play paywall SDK for indie hackers and vibe coders. Wrap your content in `<PaywallGate>` and you're done. No Stripe integration, no webhook debugging, no subscription state management.
+Add Stripe subscriptions to your app without the integration headache. Works with NextAuth, Clerk, Lucia, Supabase, and any auth solution.
 
 ```tsx
-<MilkieProvider>
+<MilkieProvider email={session.user.email}>
   <PaywallGate>
     <YourPremiumContent />
   </PaywallGate>
 </MilkieProvider>
 ```
 
-That's it. Seriously.
+That's it.
+
+---
+
+## 🚀 Try the Live Demo
+
+**[milkie-demo.vercel.app](https://milkie-demo.vercel.app)** *(coming soon)*
+
+1. Sign in with Google
+2. Navigate to premium content
+3. See the paywall in action
+4. Test checkout with card: `4242 4242 4242 4242`
+
+**No setup required.** See it working in 30 seconds.
+
+---
 
 ## Current Status
 
 **Working prototype** ✅
 
-We have:
-- ✅ Working SDK components
+What works:
 - ✅ Stripe checkout integration
 - ✅ Webhook handling
-- ✅ Database for subscriptions
-- ✅ Demo application
+- ✅ Auth-agnostic (works with any auth solution)
+- ✅ Subscription status checking
+- ✅ Working demo with NextAuth
 
-We don't have yet:
-- ❌ Multi-tenancy (it's a single demo)
-- ❌ Dashboard for developers
-- ❌ Published npm package
-- ❌ Webhook relay service
-- ❌ Production deployment
+What's next:
+- ⏳ Multi-tenancy
+- ⏳ Developer dashboard
+- ⏳ npm package
+- ⏳ Webhook relay service
 
-## Quick Start
+## 📚 Documentation
 
-Want to try it? Takes 10 minutes:
+- **[docs/AUTH_INTEGRATION.md](docs/AUTH_INTEGRATION.md)** - Works with NextAuth, Clerk, Lucia, Supabase, etc.
+- [docs/PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md) - How to use paywalls in your app
+- [docs/SUMMARY.md](docs/SUMMARY.md) - What we built and why
+- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) - How to deploy your own demo *(coming soon)*
+
+## 💻 Run Locally (Optional)
+
+Want to customize or integrate into your own app?
 
 ```bash
-cd demo
+git clone https://github.com/yourusername/milkie
+cd milkie/demo
 npm install
-# Follow setup in demo/README.md
+cp .env.example .env.local
+# Edit .env.local with your keys
+npm run dev
 ```
 
-**Read this first**: [QUICKSTART.md](QUICKSTART.md) - Get it running in 10 minutes
-
-## Documentation
-
-- [QUICKSTART.md](QUICKSTART.md) - Test the demo in 10 minutes
-- [docs/SUMMARY.md](docs/SUMMARY.md) - What we built and why
-- [docs/PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md) - How to paywall your app
-- [docs/PAYWALL_UX.md](docs/PAYWALL_UX.md) - User experience guide
-- [demo/README.md](demo/README.md) - Detailed setup instructions
+See [demo/README.md](demo/README.md) for detailed setup instructions.
 
 ## The Vision
 
 ### For Developers Using Milkie
 ```tsx
-// That's the entire integration
+// Works with ANY auth solution - NextAuth, Clerk, Lucia, Supabase, etc.
 import { MilkieProvider, PaywallGate } from 'milkie'
 
-<MilkieProvider apiKey={process.env.MILKIE_API_KEY}>
+<MilkieProvider email={session.user.email}> {/* from your auth */}
   <App>
     <PaywallGate>
       <PremiumFeature />
@@ -71,6 +83,8 @@ import { MilkieProvider, PaywallGate } from 'milkie'
   </App>
 </MilkieProvider>
 ```
+
+See [AUTH_INTEGRATION.md](docs/AUTH_INTEGRATION.md) for examples with different auth providers.
 
 ### The Architecture (Eventually)
 - **SDK** - Client libraries for React, Node.js, and more

@@ -9,8 +9,7 @@ interface PaywallGateProps {
 }
 
 export function PaywallGate({ children, fallback }: PaywallGateProps) {
-  const { hasAccess, loading, setEmail } = usePaywall();
-  const [inputEmail, setInputEmail] = useState("");
+  const { hasAccess, loading, email } = usePaywall();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   if (loading) {
@@ -30,18 +29,20 @@ export function PaywallGate({ children, fallback }: PaywallGateProps) {
   }
 
   const handleCheckout = async () => {
-    if (!inputEmail) return;
+    if (!email) {
+      alert("Please sign in first");
+      return;
+    }
 
     try {
       setIsCheckingOut(true);
-      setEmail(inputEmail);
 
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: inputEmail }),
+        body: JSON.stringify({ email }),
       });
 
       const data = await response.json();
@@ -70,27 +71,15 @@ export function PaywallGate({ children, fallback }: PaywallGateProps) {
         </div>
 
         <div className="space-y-4">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Email address
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={inputEmail}
-              onChange={(e) => setInputEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              disabled={isCheckingOut}
-            />
+          {/* Show logged in email */}
+          <div className="bg-gray-50 border border-gray-200 rounded-md p-4">
+            <p className="text-sm text-gray-600 mb-1">Logged in as</p>
+            <p className="font-medium text-gray-900">{email}</p>
           </div>
 
           <button
             onClick={handleCheckout}
-            disabled={!inputEmail || isCheckingOut}
+            disabled={isCheckingOut}
             className="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
           >
             {isCheckingOut ? "Loading..." : "Subscribe Now"}

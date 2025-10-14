@@ -1,18 +1,39 @@
 "use client";
 
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const { data: session, status } = useSession();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <div className="max-w-4xl mx-auto px-4 py-16">
+        {/* Header with sign-in status */}
+        <div className="flex justify-end mb-8">
+          {status === "loading" ? (
+            <div className="text-gray-500">Loading...</div>
+          ) : session ? (
+            <div className="flex items-center gap-3">
+              <span className="text-gray-700">Signed in as {session.user?.email}</span>
+            </div>
+          ) : (
+            <Link
+              href="/signin"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors"
+            >
+              Sign In
+            </Link>
+          )}
+        </div>
+
         <div className="text-center space-y-8">
           <h1 className="text-6xl font-bold text-gray-900">
             Milkie Demo
           </h1>
           <p className="text-xl text-gray-700 max-w-2xl mx-auto">
-            A simple demonstration of drop-in paywall infrastructure.
-            Try accessing the premium content below!
+            A simple demonstration of drop-in paywall infrastructure with NextAuth.
+            {!session && " Sign in to try the premium content!"}
           </p>
 
           <div className="flex flex-wrap gap-4 justify-center pt-8">

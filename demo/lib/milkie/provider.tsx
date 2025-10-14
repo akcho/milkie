@@ -7,17 +7,20 @@ interface PaywallContextType {
   status: string | null;
   loading: boolean;
   email: string | null;
-  setEmail: (email: string) => void;
   checkSubscription: () => Promise<void>;
 }
 
 const PaywallContext = createContext<PaywallContextType | undefined>(undefined);
 
-export function MilkieProvider({ children }: { children: React.ReactNode }) {
+interface MilkieProviderProps {
+  children: React.ReactNode;
+  email?: string | null; // Optional: pass authenticated email from your auth solution
+}
+
+export function MilkieProvider({ children, email }: MilkieProviderProps) {
   const [hasAccess, setHasAccess] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState<string | null>(null);
 
   const checkSubscription = useCallback(async () => {
     if (!email) {
@@ -42,20 +45,12 @@ export function MilkieProvider({ children }: { children: React.ReactNode }) {
     }
   }, [email]);
 
-  useEffect(() => {
-    // Load email from localStorage on mount
-    const savedEmail = localStorage.getItem("milkie_user_email");
-    if (savedEmail) {
-      setEmail(savedEmail);
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
+  // Check subscription when email changes
   useEffect(() => {
     if (email) {
-      localStorage.setItem("milkie_user_email", email);
       checkSubscription();
+    } else {
+      setLoading(false);
     }
   }, [email, checkSubscription]);
 
@@ -65,8 +60,7 @@ export function MilkieProvider({ children }: { children: React.ReactNode }) {
         hasAccess,
         status,
         loading,
-        email,
-        setEmail,
+        email: email || null,
         checkSubscription,
       }}
     >

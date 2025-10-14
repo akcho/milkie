@@ -1,13 +1,53 @@
-# Quick Start - Test Milkie in 10 Minutes
+# Quick Start
 
-Want to see it working? Here's the fastest path:
+## 🚀 Try the Hosted Demo (30 seconds)
 
-## Prerequisites
+**[milkie-demo.vercel.app](https://milkie-demo.vercel.app)** *(deploy your own - see below)*
+
+1. Click "Sign In" → Use your Google account
+2. Navigate to "Single Premium Page" or "Full App (Paywalled)"
+3. See the paywall
+4. Click "Subscribe Now"
+5. Use Stripe test card: `4242 4242 4242 4242` (any expiry/CVC)
+6. Done! You now have access
+
+**No setup. No installation. See it working in 30 seconds.**
+
+---
+
+## 🚢 Deploy Your Own (20 min)
+
+Want to host your own demo? See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for full instructions.
+
+Quick version:
+1. Deploy to Vercel
+2. Add environment variables (Google OAuth + Stripe)
+3. Configure webhooks
+4. Done!
+
+---
+
+## 💻 Run Locally (15 min)
+
+Want to test locally or integrate into your own app?
+
+### Prerequisites
 - Node.js 18+ installed
-- A Stripe account (free to sign up)
-- Homebrew (for Stripe CLI)
+- Google Cloud account (for OAuth)
+- Stripe account (test mode is free)
+- Stripe CLI (for webhook testing)
 
-## Step 1: Get Stripe Keys (2 min)
+## Step 1: Set Up Google OAuth (3 min)
+
+1. Go to https://console.cloud.google.com/apis/credentials
+2. Create a new project or select existing
+3. Click **"Create Credentials"** → **"OAuth 2.0 Client ID"**
+4. Configure consent screen if prompted (External, add your email)
+5. Application type: **Web application**
+6. Authorized redirect URIs: `http://localhost:3000/api/auth/callback/google`
+7. Click **"Create"** and copy the **Client ID** and **Client Secret**
+
+## Step 2: Get Stripe Keys (2 min)
 
 1. Go to https://dashboard.stripe.com/test/apikeys
 2. Copy these two keys:
@@ -42,15 +82,30 @@ brew install stripe/stripe-cli/stripe
 stripe login
 ```
 
-## Step 4: Configure Environment (1 min)
+## Step 4: Configure Environment (2 min)
 
 Edit `demo/.env.local` and paste your keys:
 
 ```env
+# Google OAuth (from Step 1)
+GOOGLE_CLIENT_ID=your_client_id_here
+GOOGLE_CLIENT_SECRET=your_client_secret_here
+
+# NextAuth Secret (generate with: openssl rand -base64 32)
+AUTH_SECRET=your_generated_secret_here
+
+# Stripe (from Steps 2 & 3)
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_YOUR_KEY_HERE
 STRIPE_SECRET_KEY=sk_test_YOUR_KEY_HERE
 STRIPE_PRICE_ID=price_YOUR_PRICE_ID_HERE
+
+# App URL
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+**Generate AUTH_SECRET:**
+```bash
+openssl rand -base64 32
 ```
 
 ## Step 5: Run It (2 min)
@@ -77,13 +132,14 @@ Restart Terminal 1 (Ctrl+C then `npm run dev` again)
 ## Step 6: Test the Flow
 
 1. Open http://localhost:3000
-2. Click **"Premium Content"**
-3. Enter any email (e.g., test@example.com)
-4. Click **"Subscribe Now"**
-5. Use test card: `4242 4242 4242 4242`
-6. Any future expiry date, any CVC
-7. Complete checkout
-8. You're redirected back with access!
+2. Click **"Sign In"** → Sign in with your Google account
+3. Click **"Single Premium Page"** or **"Full App (Paywalled)"**
+4. You'll see the paywall showing your email
+5. Click **"Subscribe Now"**
+6. Use test card: `4242 4242 4242 4242`
+7. Any future expiry date, any CVC
+8. Complete checkout
+9. You're redirected back with access!
 
 ## What's Happening Behind the Scenes
 
@@ -95,6 +151,12 @@ Restart Terminal 1 (Ctrl+C then `npm run dev` again)
 
 ## Troubleshooting
 
+### "Configuration" error or can't sign in with Google
+- Make sure your Google Client ID and Client Secret are correct
+- Check that the redirect URI `http://localhost:3000/api/auth/callback/google` is added in Google Cloud Console
+- Make sure `AUTH_SECRET` is set in `.env.local`
+- Restart the dev server after adding credentials
+
 ### "Webhook signature verification failed"
 - Make sure you copied the webhook secret from Terminal 2
 - Make sure you added it to `.env.local`
@@ -102,7 +164,7 @@ Restart Terminal 1 (Ctrl+C then `npm run dev` again)
 
 ### "Failed to create checkout session"
 - Check your Stripe secret key is correct
-- Check the price ID is correct
+- Check the price ID is correct (starts with `price_`, not `prod_`)
 - Look at Terminal 1 for error messages
 
 ### "Subscription status check failed"
@@ -113,10 +175,11 @@ Restart Terminal 1 (Ctrl+C then `npm run dev` again)
 ## Next Steps
 
 Once it's working:
-1. Try accessing `/premium` again - you should still have access (persisted in localStorage)
-2. Clear localStorage and try again - you'll need to subscribe again
+1. Try accessing the premium content again - you should still have access (persisted in database)
+2. Sign out and sign back in - you'll still have access (subscription is tied to your email)
 3. Look at the code in `demo/lib/milkie/` - that's the SDK
 4. Look at `demo/app/premium/page.tsx` - see how simple the integration is
+5. Try integrating into your own app - works with NextAuth, Clerk, Lucia, Supabase, etc.
 
 ## Understanding the Code
 
