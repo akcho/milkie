@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Lock, CreditCard, CheckCircle, Layers, Component, Newspaper, Github } from "lucide-react";
+import { ArrowRight, Lock, CreditCard, CheckCircle, Layers, Component, Newspaper, Github as GithubIcon } from "lucide-react";
 import { Header } from "@/components/header";
 
 export default function Home() {
@@ -19,14 +19,13 @@ export default function Home() {
         {/* Hero Section */}
         <div className="text-center space-y-6 mb-16">
           <Badge variant="secondary" className="mb-4">
-            Drop-in Paywall Infrastructure
+            Drop-in Paywall SDK
           </Badge>
           <h1 className="text-5xl font-bold tracking-tight">
             Milkie Demo
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Simple, flexible paywall infrastructure with NextAuth and Stripe.
-            {!session && " Sign in to try the premium content!"}
+            Explore live examples of paywalls you can add to your app in minutes.
           </p>
         </div>
 
@@ -157,7 +156,7 @@ export default function Home() {
               </Button>
               <Button asChild size="lg" variant="outline">
                 <Link href="https://github.com/akcho/milkie" target="_blank" rel="noopener noreferrer">
-                  Star GitHub <Github className="ml-2 h-5 w-5" />
+                  Star GitHub <GithubIcon className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
             </div>
