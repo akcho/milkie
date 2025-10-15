@@ -1,6 +1,6 @@
 "use client";
 
-import { usePaywall } from "@milkie/react";
+import { usePaywall, PaywallGate } from "@milkie/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Mail, CreditCard, Shield } from "lucide-react";
@@ -9,11 +9,12 @@ export default function DashboardPage() {
   const { email, status } = usePaywall();
 
   return (
-    <div className="space-y-8 max-w-5xl mx-auto">
+    <PaywallGate>
+      <div className="space-y-8 max-w-5xl mx-auto">
       <div>
         <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
         <p className="text-muted-foreground">
-          Welcome back! This entire section is protected by layout-level gating.
+          Welcome back! This page is protected with page-level gating.
         </p>
       </div>
 
@@ -62,27 +63,25 @@ export default function DashboardPage() {
         <CardHeader>
           <div className="flex items-center gap-2">
             <Shield className="h-5 w-5 text-primary" />
-            <CardTitle>Protected Application</CardTitle>
+            <CardTitle>Protected Content</CardTitle>
           </div>
           <CardDescription>
-            Layout-level protection in action
+            Page-level protection in action
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm">
-            This is where your actual application would live. All routes under{" "}
-            <code className="text-xs bg-muted px-1.5 py-0.5 rounded">/dashboard/*</code>{" "}
-            are automatically protected because the{" "}
+            This page is protected with{" "}
             <code className="text-xs bg-muted px-1.5 py-0.5 rounded">PaywallGate</code>{" "}
-            is wrapped at the layout level.
+            while other pages like Settings and Billing remain accessible to all logged-in users.
           </p>
           <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-            <p className="text-sm font-medium">Benefits of Layout-Level Gating:</p>
+            <p className="text-sm font-medium">Benefits of Page-Level Gating:</p>
             <ul className="text-sm text-muted-foreground space-y-1">
-              <li>• Protect all child routes with one wrapper</li>
-              <li>• No need to add PaywallGate to every page</li>
-              <li>• Perfect for SaaS applications</li>
-              <li>• Shared navigation stays protected</li>
+              <li>• Granular control over which pages require subscription</li>
+              <li>• Settings and billing pages stay accessible</li>
+              <li>• Users can manage their subscription even when inactive</li>
+              <li>• Perfect for SaaS with free account features</li>
             </ul>
           </div>
         </CardContent>
@@ -94,22 +93,24 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           <div className="relative">
-            <pre className="text-xs overflow-x-auto p-4 bg-muted rounded-lg border max-w-full"><code className="language-tsx">{`// app/dashboard/layout.tsx
+            <pre className="text-xs overflow-x-auto p-4 bg-muted rounded-lg border max-w-full"><code className="language-tsx">{`// app/dashboard/page.tsx
 import { PaywallGate } from "@milkie/react";
 
-export default function DashboardLayout({ children }) {
+export default function DashboardPage() {
   return (
     <PaywallGate>
-      <nav>Dashboard Navigation</nav>
-      <main>{children}</main>
+      <div>
+        {/* Your premium content here */}
+      </div>
     </PaywallGate>
   );
 }
 
-// All pages under /dashboard/* are now protected!`}</code></pre>
+// Only this page is protected - Settings and Billing remain accessible!`}</code></pre>
           </div>
         </CardContent>
       </Card>
     </div>
+    </PaywallGate>
   );
 }

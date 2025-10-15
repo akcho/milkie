@@ -84,7 +84,10 @@ export function PaywallGate({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({
+            email,
+            callbackUrl: window.location.pathname + window.location.search,
+          }),
         });
 
         if (!response.ok) {

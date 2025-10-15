@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
   try {
-    const { email } = await req.json();
+    const { email, callbackUrl } = await req.json();
 
     if (!email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -41,6 +41,15 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Use callbackUrl if provided, otherwise default to homepage
+    const successUrl = callbackUrl
+      ? `${process.env.NEXT_PUBLIC_APP_URL}${callbackUrl}?session_id={CHECKOUT_SESSION_ID}`
+      : `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
+
+    const cancelUrl = callbackUrl
+      ? `${process.env.NEXT_PUBLIC_APP_URL}${callbackUrl}`
+      : `${process.env.NEXT_PUBLIC_APP_URL}/`;
+
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -51,8 +60,8 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: "subscription",
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/`,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
       metadata: {
         email,
       },

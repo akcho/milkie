@@ -1,3 +1,6 @@
+"use client";
+
+import { AuthGate } from "@milkie/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -6,11 +9,12 @@ import { Lightbulb } from "lucide-react";
 
 export default function SettingsPage() {
   return (
-    <div className="space-y-8 max-w-3xl mx-auto">
+    <AuthGate>
+      <div className="space-y-8 max-w-3xl mx-auto">
       <div>
         <h1 className="text-3xl font-bold mb-2">Settings</h1>
         <p className="text-muted-foreground">
-          This page is automatically protected by the layout-level gate.
+          Manage your account preferences and settings.
         </p>
       </div>
 
@@ -61,17 +65,21 @@ export default function SettingsPage() {
         </CardHeader>
         <CardContent className="space-y-2">
           <p className="text-sm text-muted-foreground">
-            Notice how you didn&apos;t need to add{" "}
-            <code className="text-xs bg-background px-1.5 py-0.5 rounded">PaywallGate</code>{" "}
-            to this page? It&apos;s inherited from the layout.
+            This page uses{" "}
+            <code className="text-xs bg-background px-1.5 py-0.5 rounded">AuthGate</code>{" "}
+            to require authentication but not subscription. All signed-in users can access their settings,
+            regardless of subscription status.
           </p>
           <p className="text-sm text-muted-foreground">
-            Every page under{" "}
-            <code className="text-xs bg-background px-1.5 py-0.5 rounded">/dashboard/*</code>{" "}
-            is automatically protected with zero additional code.
+            The main dashboard uses{" "}
+            <code className="text-xs bg-background px-1.5 py-0.5 rounded">PaywallGate</code>{" "}
+            for subscription-gated content, while settings and billing use{" "}
+            <code className="text-xs bg-background px-1.5 py-0.5 rounded">AuthGate</code>{" "}
+            for auth-only protection.
           </p>
         </CardContent>
       </Card>
     </div>
+    </AuthGate>
   );
 }
