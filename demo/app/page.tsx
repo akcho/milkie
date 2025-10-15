@@ -5,32 +5,15 @@ import { useSession } from "next-auth/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Lock, CreditCard, CheckCircle, Layers, Component, Newspaper, Github, BookOpen } from "lucide-react";
+import { ArrowRight, Lock, CreditCard, CheckCircle, Layers, Component, Newspaper, Github } from "lucide-react";
+import { Header } from "@/components/header";
 
 export default function Home() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Milkie</h2>
-          {status === "loading" ? (
-            <div className="text-muted-foreground text-sm">Loading...</div>
-          ) : session ? (
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-muted-foreground">
-                {session.user?.email}
-              </span>
-            </div>
-          ) : (
-            <Button asChild>
-              <Link href="/signin">Sign In</Link>
-            </Button>
-          )}
-        </div>
-      </header>
+      <Header />
 
       <div className="container mx-auto px-4 py-16 max-w-6xl">
         {/* Hero Section */}

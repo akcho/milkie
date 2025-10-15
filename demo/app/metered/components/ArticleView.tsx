@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { PaywallGate } from "@milkie/react";
 import { ArrowLeft, Clock, User } from "lucide-react";
+import { Header } from "@/components/header";
 
 interface Article {
   id: string;
@@ -54,6 +55,7 @@ const PREVIEW_CONTENT = (
 export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
   return (
     <div className="min-h-screen bg-background">
+      <Header />
       <div className="container mx-auto px-4 py-8 max-w-3xl">
         <Button variant="ghost" onClick={onBack} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />

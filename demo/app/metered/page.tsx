@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { usePaywall } from "@milkie/react";
 import {
-  getArticleViewCount,
   getRemainingArticles,
   hasReachedLimit,
   recordArticleView,
@@ -13,6 +12,7 @@ import {
 import { ArticleCard } from "./components/ArticleCard";
 import { ArticleView } from "./components/ArticleView";
 import { ArticleListHeader } from "./components/ArticleListHeader";
+import { Header } from "@/components/header";
 
 // Sample articles for demo
 const SAMPLE_ARTICLES = [
@@ -69,12 +69,10 @@ const SAMPLE_ARTICLES = [
 export default function MeteredPage() {
   const { hasAccess: isPremium } = usePaywall();
   const [selectedArticle, setSelectedArticle] = useState<string | null>(null);
-  const [viewCount, setViewCount] = useState(0);
   const [remaining, setRemaining] = useState(FREE_ARTICLE_LIMIT);
 
   // Update counts on mount and when returning to list
   useEffect(() => {
-    setViewCount(getArticleViewCount());
     setRemaining(getRemainingArticles());
   }, [selectedArticle]);
 
@@ -88,7 +86,6 @@ export default function MeteredPage() {
     // Record the view (only increments if new and not at limit)
     if (!alreadyViewed && !reachedLimit) {
       recordArticleView(articleId);
-      setViewCount(getArticleViewCount());
       setRemaining(getRemainingArticles());
     }
 
@@ -114,6 +111,7 @@ export default function MeteredPage() {
   // Show article list
   return (
     <div className="min-h-screen bg-background">
+      <Header />
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <ArticleListHeader
           isPremium={isPremium}

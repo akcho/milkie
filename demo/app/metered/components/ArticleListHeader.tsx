@@ -1,7 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Gift } from "lucide-react";
-import Link from "next/link";
+import { Gift } from "lucide-react";
 
 interface ArticleListHeaderProps {
   isPremium: boolean;
@@ -12,13 +10,6 @@ interface ArticleListHeaderProps {
 export function ArticleListHeader({ isPremium, remaining, freeArticleLimit }: ArticleListHeaderProps) {
   return (
     <div className="mb-8">
-      <Button variant="ghost" asChild className="mb-6">
-        <Link href="/">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Home
-        </Link>
-      </Button>
-
       <div className="flex items-start justify-between mb-4">
         <div>
           <h1 className="text-4xl font-bold mb-2">Premium Articles</h1>

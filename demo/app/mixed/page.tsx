@@ -1,25 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { PaywallGate } from "@milkie/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Lock, Sparkles } from "lucide-react";
+import { Lock, Sparkles } from "lucide-react";
+import { Header } from "@/components/header";
 
 export default function MixedContentPage() {
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4">
-          <Button variant="ghost" asChild>
-            <Link href="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
-          </Button>
-        </div>
-      </header>
+      <Header />
 
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <div className="mb-8">
