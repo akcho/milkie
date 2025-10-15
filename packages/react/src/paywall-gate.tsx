@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from "./components/ui/card";
 import { Button } from "./components/ui/button";
-import { Badge } from "./components/ui/badge";
 import { MilkieIcon } from "./components/milkie-icon";
 import { Loader2, AlertCircle } from "lucide-react";
 
@@ -163,13 +162,13 @@ export function PaywallGate({
             ) : (
               <>
                 {/* Signed in - show subscribe button */}
-                <div className="bg-muted rounded-lg p-4">
-                  <p className="text-sm text-muted-foreground mb-1">
+                <div className="bg-muted rounded-lg p-4 space-y-1">
+                  <p className="text-xs text-muted-foreground">
                     Logged in as
                   </p>
-                  <Badge variant="secondary" className="font-normal">
+                  <p className="text-sm font-medium">
                     {email}
-                  </Badge>
+                  </p>
                 </div>
 
                 {checkoutError && (
