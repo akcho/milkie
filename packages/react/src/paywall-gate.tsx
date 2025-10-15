@@ -211,7 +211,7 @@ export function PaywallGate({
               <p className="text-center text-muted-foreground/50 mt-6" style={{ fontSize: '10px' }}>
                 Powered by{" "}
                 <a
-                  href="https://milkie.dev"
+                  href="https://github.com/akcho/milkie"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-medium hover:text-muted-foreground transition-colors"
