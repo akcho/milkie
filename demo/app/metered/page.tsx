@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { usePaywall } from "@/lib/milkie";
-import { toast } from "sonner";
 import {
   getArticleViewCount,
   getRemainingArticles,
@@ -83,16 +82,11 @@ export default function MeteredPage() {
     const alreadyViewed = hasViewedArticle(articleId);
     const reachedLimit = hasReachedLimit();
 
-    // Prevent opening locked articles
-    if (!isPremium && !alreadyViewed && reachedLimit) {
-      toast.error("You've reached your free article limit", {
-        description: "Subscribe to continue reading unlimited articles"
-      });
-      return;
-    }
+    // Allow clicking locked articles to show preview + CTA
+    // They won't be able to read full content, but can see what they're missing
 
-    // Record the view (only increments if new)
-    if (!alreadyViewed) {
+    // Record the view (only increments if new and not at limit)
+    if (!alreadyViewed && !reachedLimit) {
       recordArticleView(articleId);
       setViewCount(getArticleViewCount());
       setRemaining(getRemainingArticles());
@@ -140,7 +134,7 @@ export default function MeteredPage() {
                 viewed={viewed}
                 locked={locked}
                 isPremium={isPremium}
-                onClick={() => !locked && handleArticleClick(article.id)}
+                onClick={() => handleArticleClick(article.id)}
               />
             );
           })}

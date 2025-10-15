@@ -93,16 +93,17 @@ export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
               </div>
 
               {/* Paywall overlay */}
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background h-32 -mt-32" />
-                <PaywallGate>
-                  <div className="prose prose-gray max-w-none blur-sm select-none pointer-events-none">
-                    <p>
-                      [Premium content hidden - Subscribe to continue reading...]
-                    </p>
-                  </div>
-                </PaywallGate>
-              </div>
+              <PaywallGate
+                title="You've reached your free article limit"
+                subtitle="Subscribe for unlimited access to all premium content"
+                subscribeButtonText="Get unlimited access"
+              >
+                <div className="prose prose-gray max-w-none blur-sm select-none pointer-events-none">
+                  <p>
+                    [Premium content hidden - Subscribe to continue reading...]
+                  </p>
+                </div>
+              </PaywallGate>
             </div>
           )}
         </article>

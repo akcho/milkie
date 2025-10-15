@@ -18,8 +18,8 @@ interface ArticleCardProps {
 export function ArticleCard({ article, viewed, locked, isPremium, onClick }: ArticleCardProps) {
   return (
     <Card
-      className={`transition-all ${
-        locked ? 'opacity-60 cursor-not-allowed' : 'hover:shadow-lg cursor-pointer'
+      className={`transition-all hover:shadow-lg cursor-pointer ${
+        locked ? 'opacity-75' : ''
       }`}
       onClick={onClick}
     >

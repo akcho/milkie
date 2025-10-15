@@ -104,8 +104,8 @@ export function PaywallGate({
       </div>
 
       {/* Paywall overlay */}
-      <div className="absolute inset-0 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
-        <Card className="max-w-md w-full shadow-lg">
+      <div className="absolute inset-0 flex items-center justify-center p-8 bg-background/80 backdrop-blur-sm">
+        <Card className="max-w-md w-full shadow-none">
           <CardHeader className="text-center space-y-4">
             <div className="flex justify-center">
               <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
