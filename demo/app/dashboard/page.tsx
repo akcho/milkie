@@ -1,6 +1,6 @@
 "use client";
 
-import { usePaywall } from "@/lib/milkie";
+import { usePaywall } from "@milkie/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Mail, CreditCard, Shield } from "lucide-react";
@@ -95,7 +95,7 @@ export default function DashboardPage() {
         <CardContent>
           <div className="relative">
             <pre className="text-xs overflow-x-auto p-4 bg-muted rounded-lg border max-w-full"><code className="language-tsx">{`// app/dashboard/layout.tsx
-import { PaywallGate } from "@/lib/milkie";
+import { PaywallGate } from "@milkie/react";
 
 export default function DashboardLayout({ children }) {
   return (

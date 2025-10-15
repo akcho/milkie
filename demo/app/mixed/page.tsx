@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PaywallGate } from "@/lib/milkie";
+import { PaywallGate } from "@milkie/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

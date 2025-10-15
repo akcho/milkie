@@ -1,0 +1,8 @@
+{
+  "name": "milkie-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "demo"
+  ]
+}

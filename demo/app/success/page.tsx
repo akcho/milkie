@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { usePaywall } from "@/lib/milkie";
+import { usePaywall } from "@milkie/react";
 
 export default function SuccessPage() {
   const { checkSubscription } = usePaywall();

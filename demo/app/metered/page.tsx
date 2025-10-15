@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { usePaywall } from "@/lib/milkie";
+import { usePaywall } from "@milkie/react";
 import {
   getArticleViewCount,
   getRemainingArticles,
