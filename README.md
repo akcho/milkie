@@ -33,6 +33,7 @@ That's it. Your content is now behind a paywall.
 **Working Demo** ✅
 
 Fully functional:
+
 - ✅ Stripe checkout & subscription management
 - ✅ Real-time webhook handling
 - ✅ Auth-agnostic design (works with any auth provider)
@@ -43,6 +44,7 @@ Fully functional:
 - ✅ Toast notifications for errors
 
 On the roadmap:
+
 - 📦 Published npm package
 - 🏢 Multi-tenancy support
 - 📊 Developer dashboard
@@ -75,23 +77,23 @@ Full instructions in [QUICKSTART.md](QUICKSTART.md).
 
 ```tsx
 // 1. Wrap your app with MilkieProvider
-import { MilkieProvider } from '@/lib/milkie'
+import { MilkieProvider } from "@/lib/milkie";
 
 <MilkieProvider email={session.user.email}>
   <YourApp />
-</MilkieProvider>
+</MilkieProvider>;
 
 // 2. Protect content with PaywallGate
-import { PaywallGate } from '@/lib/milkie'
+import { PaywallGate } from "@/lib/milkie";
 
 <PaywallGate>
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 
 // 3. Or use the hook for custom logic
-import { usePaywall } from '@/lib/milkie'
+import { usePaywall } from "@/lib/milkie";
 
-const { hasAccess, loading } = usePaywall()
+const { hasAccess, loading } = usePaywall();
 ```
 
 **Three components. That's the entire SDK.**
@@ -103,6 +105,7 @@ const { hasAccess, loading } = usePaywall()
 Adding subscriptions shouldn't take 2 days. Here's what Milkie handles for you:
 
 **What you'd normally build:**
+
 - ❌ Stripe checkout session creation
 - ❌ Webhook endpoint configuration
 - ❌ Subscription status tracking
@@ -111,6 +114,7 @@ Adding subscriptions shouldn't take 2 days. Here's what Milkie handles for you:
 - ❌ Error handling and edge cases
 
 **With Milkie:**
+
 - ✅ Wrap your content with `<PaywallGate>`
 - ✅ That's it
 
@@ -121,6 +125,7 @@ Adding subscriptions shouldn't take 2 days. Here's what Milkie handles for you:
 ## Tech Stack
 
 **Demo app:**
+
 - Next.js 15 with App Router
 - TypeScript
 - NextAuth.js (Google OAuth)
@@ -130,6 +135,7 @@ Adding subscriptions shouldn't take 2 days. Here's what Milkie handles for you:
 - Sonner (toast notifications)
 
 **SDK:** (`demo/lib/milkie/`)
+
 - React Context for state management
 - TypeScript for type safety
 - ~200 lines of code total
@@ -140,31 +146,47 @@ Adding subscriptions shouldn't take 2 days. Here's what Milkie handles for you:
 
 ```
 milkie/
+├── LICENSE                     # MIT License
 ├── README.md                   # You are here
 ├── QUICKSTART.md               # Get running in 15 min
 ├── docs/
 │   ├── AUTH_INTEGRATION.md    # Works with any auth
 │   └── PAYWALL_PATTERNS.md    # Implementation patterns
 └── demo/                       # Working prototype
-    ├── app/                    # Example pages
+    ├── .env.example           # Environment variables template
+    ├── app/                    # Next.js app directory
     │   ├── page.tsx           # Public homepage
-    │   ├── free/              # Public content
-    │   ├── mixed/             # Component-level gating
-    │   └── dashboard/         # Layout-level gating
-    ├── lib/milkie/            # 🚀 THE SDK
-    │   ├── provider.tsx       # MilkieProvider + usePaywall
-    │   ├── paywall-gate.tsx   # PaywallGate component
-    │   └── index.ts           # Public exports
-    └── lib/
-        ├── db/                # Database schema
-        └── stripe.ts          # Stripe configuration
+    │   ├── free/              # Public content example
+    │   ├── mixed/             # Component-level gating example
+    │   ├── premium/           # Full-page gating example
+    │   ├── dashboard/         # Layout-level gating example
+    │   ├── signin/            # Sign-in page
+    │   ├── success/           # Post-checkout success page
+    │   └── api/               # API routes
+    │       ├── auth/          # NextAuth endpoints
+    │       ├── checkout/      # Stripe checkout session
+    │       ├── subscription/  # Subscription status check
+    │       └── webhooks/      # Stripe webhook handler
+    ├── components/            # UI components
+    │   ├── ui/               # shadcn/ui components
+    │   └── milkie-icon.tsx   # Milkie mascot icon
+    ├── lib/
+    │   ├── milkie/           # 🚀 THE SDK
+    │   │   ├── provider.tsx       # MilkieProvider + usePaywall
+    │   │   ├── paywall-gate.tsx   # PaywallGate component
+    │   │   └── index.ts           # Public exports
+    │   ├── db/               # Database schema & client
+    │   └── stripe.ts         # Stripe configuration
+    ├── drizzle/              # Database migrations
+    ├── auth.ts               # NextAuth configuration
+    └── package.json          # Dependencies
 ```
 
 ---
 
 ## Get Started
 
-1. **[Try the demo](https://milkie-demo.vercel.app)** *(coming soon)*
+1. **[Try the demo](https://milkie-demo.vercel.app)**
 2. **[Run locally](QUICKSTART.md)** - 15 minutes
 3. **[Learn the patterns](docs/PAYWALL_PATTERNS.md)** - Component vs layout gating
 4. **[Integrate with your auth](docs/AUTH_INTEGRATION.md)** - Works with any provider
@@ -176,6 +198,7 @@ milkie/
 This is an early-stage project. Feedback is incredibly valuable!
 
 **Open an issue if you:**
+
 - Find bugs or unexpected behavior
 - Have feature requests or ideas
 - Want to discuss the implementation approach
@@ -185,4 +208,4 @@ This is an early-stage project. Feedback is incredibly valuable!
 
 ## License
 
-TBD - Likely MIT once business model is finalized
+MIT

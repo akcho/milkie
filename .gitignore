@@ -34,6 +34,7 @@ docs/private/
 # IDEs
 .vscode/
 .idea/
+.claude/
 *.sublime-project
 *.sublime-workspace
 
