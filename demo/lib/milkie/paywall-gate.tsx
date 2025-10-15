@@ -2,7 +2,13 @@
 
 import { usePaywall } from "./provider";
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Lock, AlertCircle } from "lucide-react";
@@ -27,7 +33,7 @@ export function PaywallGate({
   title = "Unlock this content",
   subtitle = "We promise it's worth it.",
   signInButtonText = "Sign in to subscribe",
-  subscribeButtonText = "Subscribe now"
+  subscribeButtonText = "Subscribe now",
 }: PaywallGateProps) {
   const { hasAccess, loading, email } = usePaywall();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -78,7 +84,8 @@ export function PaywallGate({
       }
     } catch (error) {
       console.error("Checkout failed:", error);
-      const errorMessage = error instanceof Error ? error.message : "Failed to start checkout";
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to start checkout";
       setCheckoutError(errorMessage);
       toast.error("Failed to start checkout. Please try again.");
     } finally {
@@ -91,7 +98,9 @@ export function PaywallGate({
       onSignIn();
     } else {
       // Preserve current URL to redirect back after sign-in
-      const callbackUrl = encodeURIComponent(window.location.pathname + window.location.search);
+      const callbackUrl = encodeURIComponent(
+        window.location.pathname + window.location.search
+      );
       window.location.href = `${signInUrl}?callbackUrl=${callbackUrl}`;
     }
   };
@@ -99,7 +108,10 @@ export function PaywallGate({
   return (
     <div className="relative min-h-[400px]">
       {/* Blurred content in background */}
-      <div className="blur-sm pointer-events-none select-none" aria-hidden="true">
+      <div
+        className="blur-sm pointer-events-none select-none pt-4"
+        aria-hidden="true"
+      >
         {children}
       </div>
 
@@ -131,7 +143,9 @@ export function PaywallGate({
               <>
                 {/* Signed in - show subscribe button */}
                 <div className="bg-muted rounded-lg p-4">
-                  <p className="text-sm text-muted-foreground mb-1">Logged in as</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Logged in as
+                  </p>
                   <Badge variant="secondary" className="font-normal">
                     {email}
                   </Badge>

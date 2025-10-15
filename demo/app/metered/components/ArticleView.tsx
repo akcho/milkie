@@ -20,14 +20,15 @@ interface ArticleViewProps {
 const ARTICLE_CONTENT = (
   <>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat.
     </p>
     <p>
-      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-      fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-      culpa qui officia deserunt mollit anim id est laborum.
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p>
     <h2>Key Takeaways</h2>
     <ul>
@@ -36,17 +37,17 @@ const ARTICLE_CONTENT = (
       <li>Testing and iteration lead to better outcomes</li>
     </ul>
     <p>
-      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-      laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-      architecto beatae vitae dicta sunt explicabo.
+      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+      doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
+      inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
     </p>
   </>
 );
 
 const PREVIEW_CONTENT = (
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua...
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua...
   </p>
 );
 
@@ -83,27 +84,22 @@ export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
               {ARTICLE_CONTENT}
             </div>
           ) : (
-            <div className="relative">
-              {/* Preview content */}
-              <div className="prose prose-gray max-w-none mb-8">
-                <p className="lead text-lg text-muted-foreground mb-6">
-                  {article.excerpt}
-                </p>
-                {PREVIEW_CONTENT}
-              </div>
+            <div className="prose prose-gray max-w-none">
+              <p className="lead text-lg text-muted-foreground mb-6">
+                {article.excerpt}
+              </p>
+              {PREVIEW_CONTENT}
 
-              {/* Paywall overlay */}
-              <PaywallGate
-                title="You've reached your free article limit"
-                subtitle="Subscribe for unlimited access to all premium content"
-                subscribeButtonText="Get unlimited access"
-              >
-                <div className="prose prose-gray max-w-none blur-sm select-none pointer-events-none">
-                  <p>
-                    [Premium content hidden - Subscribe to continue reading...]
-                  </p>
-                </div>
-              </PaywallGate>
+              {/* Paywall gate positioned after preview */}
+              <div className="relative -mx-4 my-8">
+                <PaywallGate
+                  title="You've reached your free article limit"
+                  subtitle="Subscribe for unlimited access to all premium content"
+                  subscribeButtonText="Get unlimited access"
+                >
+                  <div className="px-4">{ARTICLE_CONTENT}</div>
+                </PaywallGate>
+              </div>
             </div>
           )}
         </article>
