@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Lock } from "lucide-react";
+import { Loader2, Lock, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface PaywallGateProps {
@@ -31,6 +31,7 @@ export function PaywallGate({
 }: PaywallGateProps) {
   const { hasAccess, loading, email } = usePaywall();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   if (loading) {
     return (
@@ -54,6 +55,7 @@ export function PaywallGate({
   const handleCheckout = async () => {
     try {
       setIsCheckingOut(true);
+      setCheckoutError(null); // Clear any previous errors
 
       const response = await fetch("/api/checkout", {
         method: "POST",
@@ -63,13 +65,21 @@ export function PaywallGate({
         body: JSON.stringify({ email }),
       });
 
+      if (!response.ok) {
+        throw new Error(`Checkout failed with status ${response.status}`);
+      }
+
       const data = await response.json();
 
       if (data.url) {
         window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL returned");
       }
     } catch (error) {
       console.error("Checkout failed:", error);
+      const errorMessage = error instanceof Error ? error.message : "Failed to start checkout";
+      setCheckoutError(errorMessage);
       toast.error("Failed to start checkout. Please try again.");
     } finally {
       setIsCheckingOut(false);
@@ -127,6 +137,20 @@ export function PaywallGate({
                   </Badge>
                 </div>
 
+                {checkoutError && (
+                  <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 flex items-start gap-2">
+                    <AlertCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-destructive">
+                      <p className="font-medium">Checkout failed</p>
+                      <p className="text-xs mt-1 opacity-90">
+                        {checkoutError.includes("status")
+                          ? "Unable to connect to checkout service. Please try again."
+                          : checkoutError}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 <Button
                   onClick={handleCheckout}
                   disabled={isCheckingOut}
@@ -138,6 +162,8 @@ export function PaywallGate({
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Loading...
                     </>
+                  ) : checkoutError ? (
+                    "Try again"
                   ) : (
                     subscribeButtonText
                   )}

@@ -3,12 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { MilkieIcon } from "@/components/milkie-icon"
 
-export default function SignInPage({
+export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: { callbackUrl?: string }
+  searchParams: Promise<{ callbackUrl?: string }>
 }) {
-  const redirectTo = searchParams.callbackUrl || "/";
+  const params = await searchParams;
+  const redirectTo = params.callbackUrl || "/";
   return (
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <Card className="max-w-md w-full">
