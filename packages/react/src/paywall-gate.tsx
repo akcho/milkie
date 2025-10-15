@@ -12,7 +12,7 @@ import {
 import { Button } from "./components/ui/button";
 import { Badge } from "./components/ui/badge";
 import { MilkieIcon } from "./components/milkie-icon";
-import { Loader2, AlertCircle, Lock } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
 
 interface PaywallGateProps {
   children: React.ReactNode;
