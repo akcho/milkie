@@ -18,15 +18,13 @@ That's it. Your content is now behind a paywall.
 
 ## 🚀 Try the Live Demo
 
-**[milkie-demo.vercel.app](https://milkie-demo.vercel.app)** *(coming soon)*
+**[milkie-demo.vercel.app](https://milkie-demo.vercel.app)**
 
 1. Sign in with Google
-2. Try accessing premium content
+2. Try the gated examples (Component Gating or Layout Gating)
 3. See the paywall with built-in checkout flow
 4. Subscribe with test card: `4242 4242 4242 4242`
 5. Content unlocked!
-
-**Zero setup. See it working in 30 seconds.**
 
 ---
 
@@ -98,13 +96,6 @@ const { hasAccess, loading } = usePaywall()
 
 **Three components. That's the entire SDK.**
 
-### The Platform (Future Vision)
-
-- **SDK** → Installable package: `npm install milkie`
-- **API** → Hosted entitlement engine and webhook relay
-- **Dashboard** → Manage projects, view analytics, configure Stripe
-- **Templates** → Pre-built paywall designs and integration examples
-
 ---
 
 ## Why Milkie?
@@ -125,13 +116,6 @@ Adding subscriptions shouldn't take 2 days. Here's what Milkie handles for you:
 
 **Time saved:** Days → Minutes
 
-## The Business Model
-
-**Target:** Indie hackers monetizing side projects
-**Problem:** Stripe integration kills momentum
-**Solution:** Drop-in paywall that works instantly
-**Pricing:** Free until $1k MRR, then 2% of revenue
-
 ---
 
 ## Tech Stack
@@ -141,7 +125,7 @@ Adding subscriptions shouldn't take 2 days. Here's what Milkie handles for you:
 - TypeScript
 - NextAuth.js (Google OAuth)
 - Stripe Checkout & Webhooks
-- Drizzle ORM with SQLite
+- Drizzle ORM with PostgreSQL
 - Tailwind CSS + shadcn/ui
 - Sonner (toast notifications)
 
