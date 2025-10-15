@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Lock, CreditCard, CheckCircle, Layers, Layout, Component } from "lucide-react";
+import { ArrowRight, Lock, CreditCard, CheckCircle, Layers, Component, Newspaper, Github, BookOpen } from "lucide-react";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -49,27 +49,27 @@ export default function Home() {
 
         {/* Demo Examples Grid */}
         <div className="grid md:grid-cols-3 gap-6 mb-16">
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center mb-2">
-                <Layout className="h-5 w-5" />
+          <Card className="hover:shadow-lg transition-shadow flex flex-col">
+            <CardHeader className="flex-grow">
+              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
+                <Newspaper className="h-5 w-5 text-primary" />
               </div>
-              <CardTitle>Free Content</CardTitle>
+              <CardTitle>Metered Paywall</CardTitle>
               <CardDescription>
-                No restrictions or authentication required
+                Give users a taste with limited free access per month
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button asChild variant="outline" className="w-full">
-                <Link href="/free">
+              <Button asChild className="w-full">
+                <Link href="/metered">
                   View Example <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
+          <Card className="hover:shadow-lg transition-shadow flex flex-col">
+            <CardHeader className="flex-grow">
               <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                 <Component className="h-5 w-5 text-primary" />
               </div>
@@ -87,8 +87,8 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
+          <Card className="hover:shadow-lg transition-shadow flex flex-col">
+            <CardHeader className="flex-grow">
               <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                 <Layers className="h-5 w-5 text-primary" />
               </div>
@@ -157,39 +157,26 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Use Cases Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Flexible Gating Patterns</CardTitle>
-            <CardDescription>
-              Choose the right pattern for your use case
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex gap-4 p-4 border rounded-lg">
-                <div className="h-10 w-10 rounded bg-secondary flex items-center justify-center shrink-0">
-                  <Component className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-1">Component-Level Gating</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Perfect for content sites, blogs, or freemium apps. Show previews and teasers, then gate the full content.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4 p-4 border rounded-lg">
-                <div className="h-10 w-10 rounded bg-secondary flex items-center justify-center shrink-0">
-                  <Layers className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-1">Layout-Level Gating</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Ideal for SaaS applications. Wrap your dashboard layout once to protect all routes and features.
-                  </p>
-                </div>
-              </div>
+        {/* CTA Section */}
+        <Card className="text-center">
+          <CardContent className="pt-12 pb-12">
+            <h2 className="text-3xl font-bold mb-4">
+              Ready to Add Paywalls to Your App?
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Milkie is open source and MIT licensed. Get started in minutes with our documentation.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button asChild size="lg">
+                <Link href="https://github.com/akcho/milkie#readme" target="_blank" rel="noopener noreferrer">
+                  Get Started
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="https://github.com/akcho/milkie" target="_blank" rel="noopener noreferrer">
+                  Star GitHub <Github className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
