@@ -5,9 +5,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Lightbulb } from "lucide-react";
+import { Lightbulb, LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 export default function SettingsPage() {
+  const pathname = usePathname();
+
   return (
     <AuthGate>
       <div className="space-y-8 max-w-3xl mx-auto">
@@ -53,6 +57,16 @@ export default function SettingsPage() {
             </Label>
           </div>
           <Button>Save Changes</Button>
+
+          <div className="pt-4 border-t">
+            <Button
+              variant="outline"
+              onClick={() => signOut({ callbackUrl: pathname })}
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
+            </Button>
+          </div>
         </CardContent>
       </Card>
 

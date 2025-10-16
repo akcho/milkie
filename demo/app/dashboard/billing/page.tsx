@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, XCircle, CreditCard, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function BillingPage() {
   const { status, email, hasAccess, checkSubscription } = usePaywall();
@@ -38,7 +39,7 @@ export default function BillingPage() {
       }
     } catch (error) {
       console.error("Checkout failed:", error);
-      alert("Failed to start checkout. Please try again.");
+      toast.error("Failed to start checkout. Please try again.");
     } finally {
       setIsCheckingOut(false);
     }
@@ -64,10 +65,10 @@ export default function BillingPage() {
       // Refresh subscription status
       await checkSubscription();
 
-      alert("Subscription canceled successfully!");
+      toast.success("Subscription canceled successfully!");
     } catch (error) {
       console.error("Cancel failed:", error);
-      alert("Failed to cancel subscription. Please try again.");
+      toast.error("Failed to cancel subscription. Please try again.");
     } finally {
       setIsCanceling(false);
     }

@@ -4,9 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { MilkieIcon } from "@milkie/react";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Github } from "lucide-react";
+import { Github, LogOut } from "lucide-react";
 
 export function Header() {
   const { data: session, status } = useSession();
@@ -34,9 +40,18 @@ export function Header() {
           {status === "loading" ? (
             <div className="text-muted-foreground text-sm">Loading...</div>
           ) : session ? (
-            <Button onClick={() => signOut({ callbackUrl: pathname })} size="sm" variant="outline">
-              Sign Out
-            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button onClick={() => signOut({ callbackUrl: pathname })} size="sm" variant="ghost">
+                    <LogOut className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Sign Out</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           ) : (
             <Button asChild size="sm">
               <Link href={`/signin?callbackUrl=${encodeURIComponent(pathname)}`}>Sign In</Link>
