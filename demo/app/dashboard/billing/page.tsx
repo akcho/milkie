@@ -223,10 +223,6 @@ export default function BillingPage() {
             to require sign-in but not an active subscription. This is critical for billing pages -
             users must be able to manage their subscriptions even when they&apos;re not active.
           </p>
-          <p className="text-sm text-muted-foreground">
-            In production, integrate Stripe&apos;s Customer Portal for self-service subscription
-            management. Milkie can generate secure Customer Portal links for you automatically.
-          </p>
         </CardContent>
       </Card>
     </div>
