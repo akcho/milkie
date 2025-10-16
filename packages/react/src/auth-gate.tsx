@@ -19,7 +19,7 @@ export function AuthGate({
   signInUrl = "/signin",
   onSignIn,
   title = "Sign in required",
-  subtitle = "Please sign in to access this page.",
+  subtitle = "Please sign in to access this content.",
   signInButtonText = "Sign in",
 }: AuthGateProps) {
   const { loading, email } = usePaywall();
@@ -52,30 +52,41 @@ export function AuthGate({
   };
 
   return (
-    <div className="flex items-start justify-center pt-16 min-h-[400px]">
-      <Card className="max-w-md w-full">
-        <CardHeader className="text-center space-y-4">
-          <div className="flex justify-center">
-            <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
-              <Lock className="h-6 w-6 text-muted-foreground" />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <CardTitle className="text-2xl">{title}</CardTitle>
-            <p className="text-sm text-muted-foreground">{subtitle}</p>
-          </div>
-        </CardHeader>
+    <div className="relative min-h-[400px]">
+      {/* Blurred content in background */}
+      <div
+        className="blur-sm pointer-events-none select-none pt-4"
+        aria-hidden="true"
+      >
+        {children}
+      </div>
 
-        <CardContent>
-          <Button
-            onClick={handleSignIn}
-            className="w-full"
-            size="lg"
-          >
-            {signInButtonText}
-          </Button>
-        </CardContent>
-      </Card>
+      {/* Auth overlay */}
+      <div className="absolute inset-0 flex items-center justify-center p-8 bg-background/80 backdrop-blur-sm">
+        <Card className="max-w-md w-full shadow-none">
+          <CardHeader className="text-center space-y-4">
+            <div className="flex justify-center">
+              <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
+                <Lock className="h-6 w-6 text-muted-foreground" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <CardTitle className="text-2xl">{title}</CardTitle>
+              <p className="text-sm text-muted-foreground">{subtitle}</p>
+            </div>
+          </CardHeader>
+
+          <CardContent>
+            <Button
+              onClick={handleSignIn}
+              className="w-full"
+              size="lg"
+            >
+              {signInButtonText}
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
