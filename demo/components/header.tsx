@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { MilkieIcon } from "@milkie/react";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -9,6 +10,7 @@ import { Github } from "lucide-react";
 
 export function Header() {
   const { data: session, status } = useSession();
+  const pathname = usePathname();
 
   return (
     <header className="border-b">
@@ -32,12 +34,12 @@ export function Header() {
           {status === "loading" ? (
             <div className="text-muted-foreground text-sm">Loading...</div>
           ) : session ? (
-            <span className="text-sm text-muted-foreground">
-              {session.user?.email}
-            </span>
+            <Button onClick={() => signOut({ callbackUrl: pathname })} size="sm" variant="outline">
+              Sign Out
+            </Button>
           ) : (
             <Button asChild size="sm">
-              <Link href="/signin">Sign In</Link>
+              <Link href={`/signin?callbackUrl=${encodeURIComponent(pathname)}`}>Sign In</Link>
             </Button>
           )}
         </div>

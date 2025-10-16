@@ -70,9 +70,11 @@ export default function MeteredPage() {
   const { hasAccess: isPremium } = usePaywall();
   const [selectedArticle, setSelectedArticle] = useState<string | null>(null);
   const [remaining, setRemaining] = useState(FREE_ARTICLE_LIMIT);
+  const [mounted, setMounted] = useState(false);
 
   // Update counts on mount and when returning to list
   useEffect(() => {
+    setMounted(true);
     setRemaining(getRemainingArticles());
   }, [selectedArticle]);
 
@@ -121,21 +123,35 @@ export default function MeteredPage() {
 
         {/* Article Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SAMPLE_ARTICLES.map((article) => {
-            const viewed = hasViewedArticle(article.id);
-            const locked = !isPremium && !viewed && hasReachedLimit();
-
-            return (
+          {!mounted ? (
+            // Render placeholder cards during SSR to avoid hydration mismatch
+            SAMPLE_ARTICLES.map((article) => (
               <ArticleCard
                 key={article.id}
                 article={article}
-                viewed={viewed}
-                locked={locked}
+                viewed={false}
+                locked={false}
                 isPremium={isPremium}
-                onClick={() => handleArticleClick(article.id)}
+                onClick={() => {}}
               />
-            );
-          })}
+            ))
+          ) : (
+            SAMPLE_ARTICLES.map((article) => {
+              const viewed = hasViewedArticle(article.id);
+              const locked = !isPremium && !viewed && hasReachedLimit();
+
+              return (
+                <ArticleCard
+                  key={article.id}
+                  article={article}
+                  viewed={viewed}
+                  locked={locked}
+                  isPremium={isPremium}
+                  onClick={() => handleArticleClick(article.id)}
+                />
+              );
+            })
+          )}
         </div>
       </div>
     </div>
