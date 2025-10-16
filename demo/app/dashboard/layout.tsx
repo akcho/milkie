@@ -21,6 +21,8 @@ export default function DashboardLayout({
     { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
   ];
 
+  const currentPage = navItems.find((item) => item.href === pathname)?.label || "Dashboard";
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation header */}
@@ -35,7 +37,7 @@ export default function DashboardLayout({
                 </Link>
               </Button>
               <div className="hidden md:block h-6 w-px bg-border shrink-0" />
-              <h1 className="text-base md:text-lg font-semibold truncate">Dashboard</h1>
+              <h1 className="text-base md:text-lg font-semibold truncate">{currentPage}</h1>
             </div>
             <nav className="flex gap-1 shrink-0 items-center">
               <ThemeToggle />
