@@ -1,7 +1,7 @@
 import { signIn } from "@/auth"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { MilkieIcon } from "@/components/milkie-icon"
+import { MilkieIcon } from "@milkie/react"
 
 export default async function SignInPage({
   searchParams,
@@ -15,9 +15,7 @@ export default async function SignInPage({
       <Card className="max-w-md w-full">
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">
-            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-              <MilkieIcon className="h-10 w-10 text-primary" />
-            </div>
+            <MilkieIcon className="h-16 w-16" />
           </div>
           <div className="space-y-2">
             <CardTitle className="text-2xl">Welcome to Milkie</CardTitle>
