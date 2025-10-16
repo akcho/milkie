@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { MilkieIcon } from "@milkie/react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Github } from "lucide-react";
 
 export function Header() {
   const { data: session, status } = useSession();
@@ -22,6 +23,12 @@ export function Header() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
 
+          <Button asChild size="sm" variant="ghost">
+            <Link href="https://github.com/akcho/milkie" target="_blank" rel="noopener noreferrer">
+              <Github className="h-4 w-4" />
+            </Link>
+          </Button>
+
           {status === "loading" ? (
             <div className="text-muted-foreground text-sm">Loading...</div>
           ) : session ? (
@@ -29,7 +36,7 @@ export function Header() {
               {session.user?.email}
             </span>
           ) : (
-            <Button asChild>
+            <Button asChild size="sm">
               <Link href="/signin">Sign In</Link>
             </Button>
           )}

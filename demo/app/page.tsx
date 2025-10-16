@@ -22,10 +22,10 @@ export default function Home() {
             Drop-in Paywall SDK
           </Badge>
           <h1 className="text-5xl font-bold tracking-tight">
-            Milkie Demo
+            Monetize Your Next.js App
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Explore live examples of paywalls you can add to your app in minutes.
+            Explore live examples of paywalls you can add to your app in minutes
           </p>
         </div>
 
@@ -143,7 +143,7 @@ export default function Home() {
         <Card className="text-center">
           <CardContent className="pt-12 pb-12">
             <h2 className="text-3xl font-bold mb-4">
-              Ready to Add Paywalls to Your App?
+              Ready to add paywalls to your app?
             </h2>
             <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
               Milkie is open source and MIT licensed. Get started in minutes with our documentation.
