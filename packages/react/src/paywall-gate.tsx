@@ -154,7 +154,7 @@ export function PaywallGate({
             {!email ? (
               <Button
                 onClick={handleSignIn}
-                className="w-full bg-zinc-800 hover:bg-zinc-900"
+                className="w-full"
                 size="lg"
               >
                 {signInButtonText}
@@ -188,7 +188,7 @@ export function PaywallGate({
                 <Button
                   onClick={handleCheckout}
                   disabled={isCheckingOut}
-                  className="w-full bg-zinc-800 hover:bg-zinc-900"
+                  className="w-full"
                   size="lg"
                 >
                   {isCheckingOut ? (

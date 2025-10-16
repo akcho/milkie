@@ -3,7 +3,6 @@
 import { usePaywall } from "./provider";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Button } from "./components/ui/button";
-import { MilkieIcon } from "./components/milkie-icon";
 import { Loader2, Lock } from "lucide-react";
 
 interface AuthGateProps {
@@ -70,7 +69,7 @@ export function AuthGate({
         <CardContent>
           <Button
             onClick={handleSignIn}
-            className="w-full bg-zinc-800 hover:bg-zinc-900"
+            className="w-full"
             size="lg"
           >
             {signInButtonText}
