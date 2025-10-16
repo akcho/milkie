@@ -10,6 +10,7 @@ export interface Subscription {
 export interface SubscriptionDatabaseAdapter {
   findUserByEmail(email: string): Promise<{ id: string } | null>;
   findActiveSubscription(userId: string): Promise<Subscription | null>;
+  findUserWithSubscription(email: string): Promise<{ id: string; subscription: Subscription | null } | null>;
 }
 
 export interface SubscriptionStatusRouteConfig {
@@ -37,19 +38,10 @@ export function createSubscriptionStatusRoute(
     }
 
     try {
-      const user = await db.findUserByEmail(email);
+      // Use optimized single-query method to fetch user + subscription together
+      const result = await db.findUserWithSubscription(email);
 
-      if (!user) {
-        return NextResponse.json({
-          hasAccess: false,
-          status: "no_subscription",
-        });
-      }
-
-      // Check if user has an active subscription
-      const activeSubscription = await db.findActiveSubscription(user.id);
-
-      if (!activeSubscription) {
+      if (!result || !result.subscription) {
         return NextResponse.json({
           hasAccess: false,
           status: "no_subscription",
@@ -57,13 +49,13 @@ export function createSubscriptionStatusRoute(
       }
 
       const hasAccess =
-        activeSubscription.status === "active" ||
-        activeSubscription.status === "trialing";
+        result.subscription.status === "active" ||
+        result.subscription.status === "trialing";
 
       return NextResponse.json({
         hasAccess,
-        status: activeSubscription.status,
-        currentPeriodEnd: activeSubscription.currentPeriodEnd,
+        status: result.subscription.status,
+        currentPeriodEnd: result.subscription.currentPeriodEnd,
       });
     } catch (error) {
       console.error("Subscription status check error:", error);

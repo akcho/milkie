@@ -12,9 +12,10 @@ import * as schema from "./db/schema";
 // Drizzle adapter for checkout routes
 export const checkoutAdapter: CheckoutDatabaseAdapter = {
   async findUserByEmail(email: string) {
-    return await db.query.users.findFirst({
+    const user = await db.query.users.findFirst({
       where: eq(schema.users.email, email),
     });
+    return user || null;
   },
 
   async createUser(data: CreateUserData) {
@@ -33,30 +34,56 @@ export const checkoutAdapter: CheckoutDatabaseAdapter = {
 // Drizzle adapter for subscription status routes
 export const subscriptionAdapter: SubscriptionDatabaseAdapter = {
   async findUserByEmail(email: string) {
-    return await db.query.users.findFirst({
+    const user = await db.query.users.findFirst({
       where: eq(schema.users.email, email),
     });
+    return user || null;
   },
 
   async findActiveSubscription(userId: string) {
-    return await db.query.subscriptions.findFirst({
+    const subscription = await db.query.subscriptions.findFirst({
       where: eq(schema.subscriptions.userId, userId),
     });
+    return subscription || null;
+  },
+
+  async findUserWithSubscription(email: string) {
+    const user = await db.query.users.findFirst({
+      where: eq(schema.users.email, email),
+      with: {
+        subscriptions: true,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    // Return the first subscription (if any)
+    // Most users should only have one active subscription
+    const subscription = user.subscriptions?.[0] || null;
+
+    return {
+      id: user.id,
+      subscription,
+    };
   },
 };
 
 // Drizzle adapter for webhook routes
 export const webhookAdapter: WebhookDatabaseAdapter = {
   async findUserByCustomerId(customerId: string) {
-    return await db.query.users.findFirst({
+    const user = await db.query.users.findFirst({
       where: eq(schema.users.stripeCustomerId, customerId),
     });
+    return user || null;
   },
 
   async findSubscription(subscriptionId: string) {
-    return await db.query.subscriptions.findFirst({
+    const subscription = await db.query.subscriptions.findFirst({
       where: eq(schema.subscriptions.id, subscriptionId),
     });
+    return subscription || null;
   },
 
   async upsertSubscription(data: SubscriptionData) {
