@@ -4,22 +4,10 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { MilkieIcon } from "@milkie/react";
-import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Header() {
   const { data: session, status } = useSession();
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    // Check if dark mode is enabled on mount
-    setIsDark(document.documentElement.classList.contains('dark'));
-  }, []);
-
-  const toggleDarkMode = () => {
-    document.documentElement.classList.toggle('dark');
-    setIsDark(!isDark);
-  };
 
   return (
     <header className="border-b">
@@ -32,14 +20,7 @@ export function Header() {
 
         {/* Right side - Session status and dark mode toggle */}
         <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleDarkMode}
-            aria-label="Toggle dark mode"
-          >
-            {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </Button>
+          <ThemeToggle />
 
           {status === "loading" ? (
             <div className="text-muted-foreground text-sm">Loading...</div>

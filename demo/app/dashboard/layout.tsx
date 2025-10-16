@@ -4,9 +4,9 @@ import { PaywallGate } from "@milkie/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Home, Settings, CreditCard, ArrowLeft, Moon, Sun } from "lucide-react";
+import { Home, Settings, CreditCard, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function DashboardLayout({
   children,
@@ -14,17 +14,6 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    // Check if dark mode is enabled on mount
-    setIsDark(document.documentElement.classList.contains('dark'));
-  }, []);
-
-  const toggleDarkMode = () => {
-    document.documentElement.classList.toggle('dark');
-    setIsDark(!isDark);
-  };
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
@@ -49,15 +38,7 @@ export default function DashboardLayout({
               <h1 className="text-base md:text-lg font-semibold truncate">Dashboard</h1>
             </div>
             <nav className="flex gap-1 shrink-0 items-center">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9"
-                onClick={toggleDarkMode}
-                aria-label="Toggle dark mode"
-              >
-                {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </Button>
+              <ThemeToggle />
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
