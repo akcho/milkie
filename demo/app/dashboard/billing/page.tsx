@@ -4,6 +4,7 @@ import { usePaywall, AuthGate } from "@milkie/react";
 import { ActiveSubscriptionCard } from "@/components/billing/active-subscription-card";
 import { NoSubscriptionCard } from "@/components/billing/no-subscription-card";
 import { ImplementationTip } from "@/components/implementation-tip";
+import { PageHeader } from "@/components/page-header";
 import { useCheckout } from "@/hooks/use-checkout";
 import { useCancelSubscription } from "@/hooks/use-cancel-subscription";
 
@@ -25,12 +26,10 @@ export default function BillingPage() {
   return (
     <AuthGate>
       <div className="space-y-8 max-w-3xl mx-auto">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Billing</h1>
-          <p className="text-muted-foreground">
-            Manage your subscription and billing information
-          </p>
-        </div>
+        <PageHeader
+          title="Billing"
+          description="Manage your subscription and billing information"
+        />
 
         {hasAccess ? (
           <ActiveSubscriptionCard

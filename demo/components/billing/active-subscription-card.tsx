@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BillingInfoRow } from "./billing-info-row";
-import { LoadingButton } from "./loading-button";
+import { LoadingButton } from "@/components/loading-button";
 import { SubscriptionStatus } from "./subscription-status";
 import { PREMIUM_PRICE } from "./premium-plan-card";
 

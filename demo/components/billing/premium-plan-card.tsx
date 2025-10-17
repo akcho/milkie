@@ -1,5 +1,5 @@
 import { CheckCircle, CreditCard } from "lucide-react";
-import { LoadingButton } from "./loading-button";
+import { LoadingButton } from "@/components/loading-button";
 
 const PREMIUM_FEATURES = [
   "Access to premium dashboard features",
