@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
+/**
+ * Subscription data structure for database operations
+ */
 export interface SubscriptionData {
   id: string;
   userId: string;
@@ -10,22 +13,63 @@ export interface SubscriptionData {
   currentPeriodEnd: Date | null;
   cancelAtPeriodEnd: boolean;
   updatedAt: Date;
-  createdAt?: Date;
+  /**
+   * Timestamp from Stripe indicating when the subscription was originally created.
+   * This value is sourced from Stripe's subscription.created field and remains constant.
+   */
+  createdAt: Date;
 }
 
+/**
+ * Database adapter interface for webhook operations.
+ * Implement this interface to connect the webhook route to your database.
+ */
 export interface WebhookDatabaseAdapter {
   findUserByCustomerId(customerId: string): Promise<{ id: string } | null>;
-  findSubscription(subscriptionId: string): Promise<{ id: string } | null>;
   upsertSubscription(data: SubscriptionData): Promise<void>;
-  updateSubscriptionStatus(subscriptionId: string, status: string): Promise<void>;
+  updateSubscriptionStatus(
+    subscriptionId: string,
+    status: string
+  ): Promise<void>;
 }
 
+/**
+ * Configuration options for the webhook route
+ */
 export interface WebhookRouteConfig {
+  /** Initialized Stripe instance */
   stripe: Stripe;
+  /** Database adapter implementation */
   db: WebhookDatabaseAdapter;
+  /** Stripe webhook signing secret */
   webhookSecret: string;
 }
 
+/**
+ * Creates a Stripe webhook handler for Next.js applications.
+ * Handles subscription lifecycle events from Stripe.
+ *
+ * @param config - Configuration object for the webhook route
+ * @returns Next.js route handler function (POST)
+ *
+ * @throws {Error} If any required configuration is missing
+ *
+ * @example
+ * ```ts
+ * // In your Next.js app/api/webhooks/stripe/route.ts
+ * import { createWebhookRoute } from '@milkie/react/api/webhooks';
+ * import Stripe from 'stripe';
+ * import { db } from '@/lib/db';
+ *
+ * const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+ *
+ * export const POST = createWebhookRoute({
+ *   stripe,
+ *   db,
+ *   webhookSecret: process.env.STRIPE_WEBHOOK_SECRET
+ * });
+ * ```
+ */
 export function createWebhookRoute(config: WebhookRouteConfig) {
   const { stripe, db, webhookSecret } = config;
 
@@ -57,20 +101,18 @@ export function createWebhookRoute(config: WebhookRouteConfig) {
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
     } catch (error) {
       console.error("Webhook signature verification failed:", error);
-      return NextResponse.json(
-        { error: "Invalid signature" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
     }
 
     try {
       switch (event.type) {
         case "checkout.session.completed": {
-          const session = event.data.object as Stripe.Checkout.Session;
+          const session = event.data.object;
 
           if (session.mode === "subscription" && session.subscription) {
+            const subscriptionId = getSubscriptionId(session.subscription);
             const subscription = await stripe.subscriptions.retrieve(
-              session.subscription as string
+              subscriptionId
             );
 
             await handleSubscriptionUpdate(subscription, db);
@@ -80,14 +122,14 @@ export function createWebhookRoute(config: WebhookRouteConfig) {
 
         case "customer.subscription.updated":
         case "customer.subscription.created": {
-          const subscription = event.data.object as Stripe.Subscription;
+          const subscription = event.data.object;
           await handleSubscriptionUpdate(subscription, db);
           break;
         }
 
         case "customer.subscription.deleted": {
-          const subscription = event.data.object as Stripe.Subscription;
-          await handleSubscriptionDeleted(subscription, db);
+          const subscription = event.data.object;
+          await db.updateSubscriptionStatus(subscription.id, "canceled");
           break;
         }
 
@@ -106,48 +148,54 @@ export function createWebhookRoute(config: WebhookRouteConfig) {
   };
 }
 
+/**
+ * Helper function to extract customer ID from a customer reference
+ */
+function getCustomerId(
+  customer: string | Stripe.Customer | Stripe.DeletedCustomer
+): string {
+  return typeof customer === "string" ? customer : customer.id;
+}
+
+/**
+ * Helper function to extract subscription ID from a subscription reference
+ */
+function getSubscriptionId(subscription: string | Stripe.Subscription): string {
+  return typeof subscription === "string" ? subscription : subscription.id;
+}
+
+/**
+ * Helper function to handle subscription creation and updates
+ */
 async function handleSubscriptionUpdate(
   subscription: Stripe.Subscription,
   db: WebhookDatabaseAdapter
 ) {
-  const customerId = subscription.customer as string;
+  const customerId = getCustomerId(subscription.customer);
 
-  // Find user by Stripe customer ID
   const user = await db.findUserByCustomerId(customerId);
 
   if (!user) {
-    console.error(`User not found for customer ${customerId}`);
-    return;
+    throw new Error(`User not found for customer ${customerId}`);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sub = subscription as any;
-
-  // Get current_period_end from subscription items if not at top level
-  const currentPeriodEnd =
-    sub.current_period_end ||
-    subscription.items.data[0]?.current_period_end;
+  const firstItem = subscription.items.data[0];
 
   const subscriptionData: SubscriptionData = {
     id: subscription.id,
     userId: user.id,
     stripeCustomerId: customerId,
     status: subscription.status,
-    priceId: subscription.items.data[0].price.id,
-    currentPeriodEnd: currentPeriodEnd
-      ? new Date(currentPeriodEnd * 1000)
+    priceId: firstItem.price.id,
+    // Note: current_period_end exists on SubscriptionItem, not on Subscription itself
+    currentPeriodEnd: firstItem.current_period_end
+      ? new Date(firstItem.current_period_end * 1000)
       : null,
-    cancelAtPeriodEnd: sub.cancel_at_period_end || false,
+    cancelAtPeriodEnd: subscription.cancel_at_period_end,
     updatedAt: new Date(),
-    createdAt: new Date(),
+    // Use Stripe's creation timestamp - this will be the same value on updates
+    createdAt: new Date(subscription.created * 1000),
   };
 
   await db.upsertSubscription(subscriptionData);
-}
-
-async function handleSubscriptionDeleted(
-  subscription: Stripe.Subscription,
-  db: WebhookDatabaseAdapter
-) {
-  await db.updateSubscriptionStatus(subscription.id, "canceled");
 }
