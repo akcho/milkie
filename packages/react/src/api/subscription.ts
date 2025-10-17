@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isValidEmail } from "./utils";
 
 /**
  * Represents a user's subscription in the system
@@ -17,22 +18,12 @@ export interface Subscription {
 /**
  * Database adapter interface for subscription operations.
  * Implement this interface to connect the subscription route to your database.
+ *
+ * Note: This interface uses a single optimized query method for performance.
+ * If you need more granular database operations, you can implement them
+ * in your adapter class and use them elsewhere in your application.
  */
 export interface SubscriptionDatabaseAdapter {
-  /**
-   * Finds a user by their email address
-   * @param email - User's email address
-   * @returns User object with id, or null if not found
-   */
-  findUserByEmail(email: string): Promise<{ id: string } | null>;
-
-  /**
-   * Finds a subscription by user ID
-   * @param userId - The user's unique identifier
-   * @returns Subscription object or null if not found
-   */
-  findSubscription(userId: string): Promise<Subscription | null>;
-
   /**
    * Optimized method to fetch user and subscription in a single query
    * @param email - User's email address
@@ -76,21 +67,6 @@ export interface SubscriptionStatusResponse {
 export interface SubscriptionErrorResponse {
   error: string;
   code: SubscriptionErrorCode;
-}
-
-/**
- * Validates email format
- * @param email - Email string to validate
- * @returns true if email format is valid
- */
-export function validateEmail(email: string): boolean {
-  if (!email || typeof email !== "string") {
-    return false;
-  }
-
-  // Basic email validation regex
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email.trim());
 }
 
 /**
@@ -142,8 +118,11 @@ export function createSubscriptionStatusRoute(
       );
     }
 
+    // Normalize email: trim whitespace and convert to lowercase
+    const normalizedEmail = email.trim().toLowerCase();
+
     // Validate email format
-    if (!validateEmail(email)) {
+    if (!isValidEmail(normalizedEmail)) {
       return NextResponse.json(
         {
           error: "Invalid email format",
@@ -153,16 +132,26 @@ export function createSubscriptionStatusRoute(
       );
     }
 
+    // Additional security check: validate maximum length
+    if (normalizedEmail.length > 254) {
+      return NextResponse.json(
+        {
+          error: "Email address too long",
+          code: SubscriptionErrorCode.INVALID_EMAIL
+        } satisfies SubscriptionErrorResponse,
+        { status: 400 }
+      );
+    }
+
     try {
       // Use optimized single-query method to fetch user + subscription together
-      const result = await db.findUserWithSubscription(email);
+      const result = await db.findUserWithSubscription(normalizedEmail);
 
       if (!result || !result.subscription) {
         return NextResponse.json({
           hasAccess: false,
           status: "no_subscription",
-          code: SubscriptionErrorCode.NO_SUBSCRIPTION,
-        });
+        } satisfies SubscriptionStatusResponse);
       }
 
       const hasAccess = allowedStatuses.includes(result.subscription.status);
