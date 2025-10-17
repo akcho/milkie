@@ -4,11 +4,11 @@ import { usePaywall } from "@milkie/react";
 import { FREE_ARTICLE_LIMIT } from "@/lib/metered-access";
 import { Header } from "@/components/header";
 import { SAMPLE_ARTICLES } from "./constants";
-import { useArticleList } from "./hooks/useArticleList";
-import { useArticleView } from "./hooks/useArticleView";
-import { ArticleCard } from "./components/ArticleCard";
-import { ArticleView } from "./components/ArticleView";
-import { ArticleListHeader } from "./components/ArticleListHeader";
+import { useArticleList } from "./hooks/use-article-list";
+import { useArticleView } from "./hooks/use-article-view";
+import { ArticleCard } from "./components/article-card";
+import { ArticleView } from "./components/article-view";
+import { ArticleListHeader } from "./components/article-list-header";
 import { useMemo } from "react";
 
 export default function MeteredPage() {

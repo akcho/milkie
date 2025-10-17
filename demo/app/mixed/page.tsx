@@ -1,12 +1,12 @@
 "use client";
 
 import { Header } from "@/components/header";
-import { MixedPageHeader } from "./components/MixedPageHeader";
-import { FreePreviewCard } from "./components/FreePreviewCard";
-import { PremiumTutorialSection } from "./components/PremiumTutorialSection";
-import { MoreFreeContentCard } from "./components/MoreFreeContentCard";
-import { AdvancedFeaturesSection } from "./components/AdvancedFeaturesSection";
-import { ImplementationExample } from "./components/ImplementationExample";
+import { MixedPageHeader } from "./components/mixed-page-header";
+import { FreePreviewCard } from "./components/free-preview-card";
+import { PremiumTutorialSection } from "./components/premium-tutorial-section";
+import { MoreFreeContentCard } from "./components/more-free-content-card";
+import { AdvancedFeaturesSection } from "./components/advanced-features-section";
+import { ImplementationExample } from "./components/implementation-example";
 
 export default function MixedContentPage() {
   return (

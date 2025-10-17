@@ -3,7 +3,7 @@ import { PaywallGate } from "@milkie/react";
 import { ArrowLeft, Clock, User } from "lucide-react";
 import { Header } from "@/components/header";
 import { ArticleViewProps } from "../types";
-import { ArticleContent, PreviewContent } from "./ArticleContent";
+import { ArticleContent, PreviewContent } from "./article-content";
 
 export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
   return (
