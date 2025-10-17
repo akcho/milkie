@@ -1,3 +1,7 @@
+/**
+ * Card component from shadcn/ui
+ * @see https://ui.shadcn.com/docs/components/card
+ */
 import * as React from "react"
 
 import { cn } from "@/lib/utils"

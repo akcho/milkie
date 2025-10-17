@@ -1,3 +1,7 @@
+/**
+ * Tooltip component from shadcn/ui
+ * @see https://ui.shadcn.com/docs/components/tooltip
+ */
 "use client"
 
 import * as React from "react"
