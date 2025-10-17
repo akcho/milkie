@@ -8,7 +8,7 @@ import { handleSignInRedirect } from "./utils";
 
 interface AuthGateProps {
   children: React.ReactNode;
-  fallback?: React.ReactNode;
+  customUi?: React.ReactNode;
   signInUrl?: string;
   onSignIn?: () => void;
   title?: string;
@@ -18,7 +18,7 @@ interface AuthGateProps {
 
 export function AuthGate({
   children,
-  fallback,
+  customUi,
   signInUrl = "/signin",
   onSignIn,
   title = "Sign in required",
@@ -35,8 +35,8 @@ export function AuthGate({
     return <>{children}</>;
   }
 
-  if (fallback) {
-    return <>{fallback}</>;
+  if (customUi) {
+    return <>{customUi}</>;
   }
 
   const handleSignIn = () => {

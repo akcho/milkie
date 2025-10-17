@@ -37,11 +37,13 @@ npm install @milkie/react
 ## Requirements
 
 **Runtime:**
+
 - React 18+ or 19+
 - Next.js 13+ (App Router)
 - Tailwind CSS (components use Tailwind classes)
 
 **Services:**
+
 - Stripe account for payment processing
 - Database (PostgreSQL, MySQL, SQLite, etc.) for subscription storage
 - Auth provider (NextAuth, Clerk, Lucia, Supabase, etc.)
@@ -63,9 +65,7 @@ export default async function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <MilkieProvider email={session?.user?.email}>
-          {children}
-        </MilkieProvider>
+        <MilkieProvider email={session?.user?.email}>{children}</MilkieProvider>
       </body>
     </html>
   );
@@ -112,13 +112,12 @@ export function MyComponent() {
 Wrap your app to provide subscription context.
 
 **Props:**
+
 - `email?: string | null` - User's email from your auth provider
 - `children: ReactNode` - Your app content
 
 ```tsx
-<MilkieProvider email={session?.user?.email}>
-  {children}
-</MilkieProvider>
+<MilkieProvider email={session?.user?.email}>{children}</MilkieProvider>
 ```
 
 ---
@@ -128,8 +127,9 @@ Wrap your app to provide subscription context.
 Gate content behind a subscription paywall with built-in checkout flow.
 
 **Props:**
+
 - `children: ReactNode` - Premium content to protect
-- `fallback?: ReactNode` - Custom paywall UI (optional)
+- `customUi?: ReactNode` - Custom paywall UI (optional)
 - `signInUrl?: string` - Where to redirect for sign-in (default: `/signin`)
 - `title?: string` - Paywall card title
 - `subtitle?: string` - Paywall card subtitle
@@ -139,6 +139,7 @@ Gate content behind a subscription paywall with built-in checkout flow.
 - `onSignIn?: () => void` - Custom sign-in handler
 
 **Basic usage:**
+
 ```tsx
 <PaywallGate>
   <PremiumContent />
@@ -146,6 +147,7 @@ Gate content behind a subscription paywall with built-in checkout flow.
 ```
 
 **Custom paywall UI:**
+
 ```tsx
 <PaywallGate
   title="Unlock Premium Features"
@@ -156,9 +158,10 @@ Gate content behind a subscription paywall with built-in checkout flow.
 </PaywallGate>
 ```
 
-**Full custom fallback:**
+**Full custom UI:**
+
 ```tsx
-<PaywallGate fallback={<CustomPaywallUI />}>
+<PaywallGate customUi={<CustomPaywallUI />}>
   <PremiumContent />
 </PaywallGate>
 ```
@@ -170,10 +173,12 @@ Gate content behind a subscription paywall with built-in checkout flow.
 Gate content that requires sign-in but NOT an active subscription.
 
 **Props:**
+
 - `children: ReactNode` - Content requiring authentication
 - `signInUrl?: string` - Where to redirect for sign-in (default: `/signin`)
 
 **Usage:**
+
 ```tsx
 <AuthGate>
   <UserSettings />
@@ -189,15 +194,17 @@ Perfect for billing pages, account settings, etc. where users need to be logged 
 Hook to access subscription state in client components.
 
 **Returns:**
+
 ```tsx
 {
-  email: string | null;        // User's email from provider
-  hasAccess: boolean;          // True if user has active subscription
-  loading: boolean;            // True while checking subscription status
+  email: string | null; // User's email from provider
+  hasAccess: boolean; // True if user has active subscription
+  loading: boolean; // True while checking subscription status
 }
 ```
 
 **Usage:**
+
 ```tsx
 "use client";
 import { usePaywall } from "@milkie/react";
@@ -331,6 +338,7 @@ export const subscriptionAdapter: SubscriptionDatabaseAdapter = {
 **📚 Complete Guide:** [Backend Setup Documentation](https://github.com/akcho/milkie/blob/main/docs/BACKEND_SETUP.md)
 
 Includes:
+
 - Database schema (SQL + Drizzle example)
 - Complete adapter implementations
 - Stripe webhook configuration
@@ -363,9 +371,7 @@ export default async function RootLayout({ children }) {
   const session = await auth();
 
   return (
-    <MilkieProvider email={session?.user?.email}>
-      {children}
-    </MilkieProvider>
+    <MilkieProvider email={session?.user?.email}>{children}</MilkieProvider>
   );
 }
 ```
@@ -393,13 +399,11 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function RootLayout({ children }) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return (
-    <MilkieProvider email={user?.email}>
-      {children}
-    </MilkieProvider>
-  );
+  return <MilkieProvider email={user?.email}>{children}</MilkieProvider>;
 }
 ```
 
@@ -492,8 +496,9 @@ The components use CSS variables for theming (compatible with shadcn/ui):
 **If you're using shadcn/ui**, you already have these variables and Milkie will match your theme automatically.
 
 **If not**, you can either:
+
 1. Add these CSS variables to your `globals.css`
-2. Provide a fully custom `fallback` component for complete control
+2. Provide a fully custom `customUi` component for complete control
 
 ---
 

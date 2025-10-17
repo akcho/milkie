@@ -13,7 +13,7 @@ import {
 
 interface PaywallGateProps {
   children: React.ReactNode;
-  fallback?: React.ReactNode;
+  customUi?: React.ReactNode;
   signInUrl?: string;
   onSignIn?: () => void;
   title?: string;
@@ -29,7 +29,7 @@ interface PaywallGateProps {
 
 export function PaywallGate({
   children,
-  fallback,
+  customUi,
   signInUrl = "/signin",
   onSignIn,
   title = "Unlock this content",
@@ -54,8 +54,8 @@ export function PaywallGate({
     return <>{children}</>;
   }
 
-  if (fallback) {
-    return <>{fallback}</>;
+  if (customUi) {
+    return <>{customUi}</>;
   }
 
   const handleCheckout = async () => {
@@ -113,9 +113,7 @@ export function PaywallGate({
   // When blur is disabled, just show the paywall card inline
   if (disableBlur) {
     return (
-      <div className="flex items-center justify-center py-8">
-        {paywallCard}
-      </div>
+      <div className="flex items-center justify-center py-8">{paywallCard}</div>
     );
   }
 

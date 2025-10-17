@@ -8,7 +8,7 @@ const EXAMPLE_CODE = `// Mix free and premium content on the same page
 </Card>
 
 <PaywallGate
-  fallback={<LockedPreview />}
+  customUi={<LockedPreview />}
 >
   <Card>
     <CardTitle>Premium Content</CardTitle>

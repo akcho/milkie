@@ -4,7 +4,7 @@ import { PremiumTutorialUnlocked } from "./premium-tutorial-unlocked";
 
 export function PremiumTutorialSection() {
   return (
-    <PaywallGate fallback={<PremiumTutorialLocked />}>
+    <PaywallGate customUi={<PremiumTutorialLocked />}>
       <PremiumTutorialUnlocked />
     </PaywallGate>
   );

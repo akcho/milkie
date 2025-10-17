@@ -4,7 +4,7 @@ import { AdvancedFeaturesUnlocked } from "./advanced-features-unlocked";
 
 export function AdvancedFeaturesSection() {
   return (
-    <PaywallGate fallback={<AdvancedFeaturesLocked />}>
+    <PaywallGate customUi={<AdvancedFeaturesLocked />}>
       <AdvancedFeaturesUnlocked />
     </PaywallGate>
   );

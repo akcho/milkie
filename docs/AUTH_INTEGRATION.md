@@ -27,8 +27,8 @@ The `email` prop is optional. If not provided, the paywall will prompt users to 
 ### With NextAuth
 
 ```tsx
-import { useSession } from 'next-auth/react';
-import { MilkieProvider } from '@milkie/react';
+import { useSession } from "next-auth/react";
+import { MilkieProvider } from "@milkie/react";
 
 export default function App({ Component, pageProps }) {
   const { data: session } = useSession();
@@ -44,8 +44,8 @@ export default function App({ Component, pageProps }) {
 ### With Clerk
 
 ```tsx
-import { useUser } from '@clerk/nextjs';
-import { MilkieProvider } from '@milkie/react';
+import { useUser } from "@clerk/nextjs";
+import { MilkieProvider } from "@milkie/react";
 
 export default function App({ children }) {
   const { user } = useUser();
@@ -61,50 +61,40 @@ export default function App({ children }) {
 ### With Lucia Auth
 
 ```tsx
-import { useAuth } from '@/lib/auth';
-import { MilkieProvider } from '@milkie/react';
+import { useAuth } from "@/lib/auth";
+import { MilkieProvider } from "@milkie/react";
 
 export default function App({ children }) {
   const { user } = useAuth();
 
-  return (
-    <MilkieProvider email={user?.email}>
-      {children}
-    </MilkieProvider>
-  );
+  return <MilkieProvider email={user?.email}>{children}</MilkieProvider>;
 }
 ```
 
 ### With Supabase Auth
 
 ```tsx
-import { useSupabaseUser } from '@/lib/supabase';
-import { MilkieProvider } from '@milkie/react';
+import { useSupabaseUser } from "@/lib/supabase";
+import { MilkieProvider } from "@milkie/react";
 
 export default function App({ children }) {
   const user = useSupabaseUser();
 
-  return (
-    <MilkieProvider email={user?.email}>
-      {children}
-    </MilkieProvider>
-  );
+  return <MilkieProvider email={user?.email}>{children}</MilkieProvider>;
 }
 ```
 
 ### With Better Auth
 
 ```tsx
-import { useSession } from 'better-auth/react';
-import { MilkieProvider } from '@milkie/react';
+import { useSession } from "better-auth/react";
+import { MilkieProvider } from "@milkie/react";
 
 export default function App({ children }) {
   const { data: session } = useSession();
 
   return (
-    <MilkieProvider email={session?.user?.email}>
-      {children}
-    </MilkieProvider>
+    <MilkieProvider email={session?.user?.email}>{children}</MilkieProvider>
   );
 }
 ```
@@ -138,14 +128,15 @@ The `PaywallGate` component includes smart redirect handling:
 
 ```tsx
 <PaywallGate
-  signInUrl="/signin"  // Default: "/signin"
-  onSignIn={() => {}}  // Optional: custom handler
+  signInUrl="/signin" // Default: "/signin"
+  onSignIn={() => {}} // Optional: custom handler
 >
   <PremiumContent />
 </PaywallGate>
 ```
 
 When a non-authenticated user clicks "Sign in to subscribe":
+
 - They're redirected to your sign-in page with a `callbackUrl` parameter
 - After signing in, they return to the exact page they were trying to access
 - The paywall then shows the subscription button with their email
@@ -180,6 +171,7 @@ The `PaywallGate` component supports customization:
 3. Milkie linking subscriptions to verified emails
 
 This approach keeps security concerns separate:
+
 - **Your auth**: Handles identity and verification
 - **Milkie**: Handles subscription and payment gating
 
@@ -194,7 +186,7 @@ A: No. Milkie only handles subscription/payment gating. You need your own authen
 A: Currently Milkie requires an email to link to Stripe customers. Support for other identifiers may come later.
 
 **Q: Can I customize the paywall UI?**
-A: Yes! Use the `fallback` prop to provide your own upgrade prompt, or use the customization props like `title`, `subtitle`, etc.
+A: Yes! Use the `customUi` prop to provide your own upgrade prompt, or use the customization props like `title`, `subtitle`, etc.
 
 **Q: Does the email need to be verified?**
 A: Yes, for production use. Milkie doesn't verify emails - your auth solution should handle that. Milkie trusts that emails from your auth system are verified.

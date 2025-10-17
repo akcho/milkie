@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
 
@@ -13,9 +19,7 @@ export function AdvancedFeaturesUnlocked() {
           </CardTitle>
           <Badge>Premium</Badge>
         </div>
-        <CardDescription>
-          Production-ready examples
-        </CardDescription>
+        <CardDescription>Production-ready examples</CardDescription>
       </CardHeader>
       <CardContent className="prose prose-sm max-w-none">
         <h3>Advanced Techniques</h3>
@@ -24,19 +28,20 @@ export function AdvancedFeaturesUnlocked() {
         </p>
         <ul>
           <li>
-            <strong>Performance:</strong> Use React.memo on PaywallGate children to prevent
-            unnecessary re-renders
+            <strong>Performance:</strong> Use React.memo on PaywallGate children
+            to prevent unnecessary re-renders
           </li>
           <li>
-            <strong>SEO:</strong> Place free content at the top for better search engine
-            visibility
+            <strong>SEO:</strong> Place free content at the top for better
+            search engine visibility
           </li>
           <li>
-            <strong>Analytics:</strong> Track which gated sections users interact with to
-            optimize conversion
+            <strong>Analytics:</strong> Track which gated sections users
+            interact with to optimize conversion
           </li>
           <li>
-            <strong>UX:</strong> Make fallback content compelling to encourage subscriptions
+            <strong>UX:</strong> Make customUi content compelling to encourage
+            subscriptions
           </li>
         </ul>
       </CardContent>
