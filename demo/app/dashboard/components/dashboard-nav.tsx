@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Home, Settings, CreditCard, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },

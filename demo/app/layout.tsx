@@ -5,7 +5,7 @@ import { MilkieProvider } from "@milkie/react";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

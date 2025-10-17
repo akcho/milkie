@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Logo } from "./logo";
 import { GitHubLink } from "./github-link";
 import { AuthButton } from "./auth-button";
