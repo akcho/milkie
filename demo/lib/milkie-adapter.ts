@@ -5,25 +5,29 @@ import type {
   WebhookDatabaseAdapter,
   CreateUserData,
   SubscriptionData,
+  User,
 } from "@milkie/react/api";
 import { db } from "./db";
 import * as schema from "./db/schema";
 
+// Shared helper functions
+async function findUserByEmail(email: string) {
+  const user = await db.query.users.findFirst({
+    where: eq(schema.users.email, email),
+  });
+  return user || null;
+}
+
 // Drizzle adapter for checkout routes
 export const checkoutAdapter: CheckoutDatabaseAdapter = {
-  async findUserByEmail(email: string) {
-    const user = await db.query.users.findFirst({
-      where: eq(schema.users.email, email),
-    });
-    return user || null;
-  },
+  findUserByEmail,
 
   async createUser(data: CreateUserData) {
     const [user] = await db.insert(schema.users).values(data).returning();
     return user;
   },
 
-  async updateUser(userId: string, data) {
+  async updateUser(userId: string, data: Partial<User>) {
     await db
       .update(schema.users)
       .set(data)
@@ -33,14 +37,9 @@ export const checkoutAdapter: CheckoutDatabaseAdapter = {
 
 // Drizzle adapter for subscription status routes
 export const subscriptionAdapter: SubscriptionDatabaseAdapter = {
-  async findUserByEmail(email: string) {
-    const user = await db.query.users.findFirst({
-      where: eq(schema.users.email, email),
-    });
-    return user || null;
-  },
+  findUserByEmail,
 
-  async findActiveSubscription(userId: string) {
+  async findSubscription(userId: string) {
     const subscription = await db.query.subscriptions.findFirst({
       where: eq(schema.subscriptions.userId, userId),
     });

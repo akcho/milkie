@@ -9,7 +9,7 @@ export interface Subscription {
 
 export interface SubscriptionDatabaseAdapter {
   findUserByEmail(email: string): Promise<{ id: string } | null>;
-  findActiveSubscription(userId: string): Promise<Subscription | null>;
+  findSubscription(userId: string): Promise<Subscription | null>;
   findUserWithSubscription(email: string): Promise<{ id: string; subscription: Subscription | null } | null>;
 }
 
