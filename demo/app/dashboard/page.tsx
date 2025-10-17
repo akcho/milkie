@@ -1,99 +1,15 @@
 "use client";
 
 import { usePaywall, PaywallGate } from "@milkie/react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Mail, CreditCard, Shield } from "lucide-react";
+import { CheckCircle, Mail, CreditCard } from "lucide-react";
+import { PageHeader } from "@/components/page-header";
+import { StatCard } from "@/components/dashboard/stat-card";
+import { ProtectedContentCard } from "@/components/dashboard/protected-content-card";
+import { ImplementationTip } from "@/components/implementation-tip";
+import { CodeBlock } from "@/components/code-block";
 
-export default function DashboardPage() {
-  const { email, status } = usePaywall();
-
-  return (
-    <PaywallGate>
-      <div className="space-y-8 max-w-5xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome back! This page is protected with page-level gating.
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Status</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold capitalize">{status}</div>
-            <Badge variant="secondary" className="mt-2">
-              Active
-            </Badge>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Email</CardTitle>
-            <Mail className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-lg font-medium truncate">{email}</div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Account email
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Plan</CardTitle>
-            <CreditCard className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">Premium</div>
-            <p className="text-xs text-muted-foreground mt-2">
-              $10/month
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-primary" />
-            <CardTitle>Protected Content</CardTitle>
-          </div>
-          <CardDescription>
-            Page-level protection in action
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm">
-            This page is protected with{" "}
-            <code className="text-xs bg-muted px-1.5 py-0.5 rounded">PaywallGate</code>{" "}
-            while other pages like Settings and Billing remain accessible to all logged-in users.
-          </p>
-          <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-            <p className="text-sm font-medium">Benefits of Page-Level Gating:</p>
-            <ul className="text-sm text-muted-foreground space-y-1">
-              <li>• Granular control over which pages require subscription</li>
-              <li>• Settings and billing pages stay accessible</li>
-              <li>• Users can manage their subscription even when inactive</li>
-              <li>• Perfect for SaaS with free account features</li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Implementation</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="relative">
-            <pre className="text-xs overflow-x-auto p-4 bg-muted rounded-lg border max-w-full"><code className="language-tsx">{`// app/dashboard/page.tsx
+const IMPLEMENTATION_CODE = `// app/dashboard/page.tsx
 import { PaywallGate } from "@milkie/react";
 
 export default function DashboardPage() {
@@ -106,11 +22,46 @@ export default function DashboardPage() {
   );
 }
 
-// Only this page is protected - Settings and Billing remain accessible!`}</code></pre>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+// Only this page is protected - Settings and Billing remain accessible!`;
+
+export default function DashboardPage() {
+  const { email, status } = usePaywall();
+
+  return (
+    <PaywallGate>
+      <div className="space-y-8 max-w-5xl mx-auto">
+        <PageHeader
+          title="Dashboard"
+          description="Welcome back! This page is protected with page-level gating."
+        />
+
+        <div className="grid md:grid-cols-3 gap-6">
+          <StatCard
+            title="Status"
+            value={<span className="capitalize">{status}</span>}
+            icon={CheckCircle}
+            subtitle={<Badge variant="secondary">Active</Badge>}
+          />
+          <StatCard
+            title="Email"
+            value={<div className="text-lg font-medium truncate">{email}</div>}
+            icon={Mail}
+            subtitle="Account email"
+          />
+          <StatCard
+            title="Plan"
+            value="Premium"
+            icon={CreditCard}
+            subtitle="$10/month"
+          />
+        </div>
+
+        <ProtectedContentCard />
+
+        <ImplementationTip title="Implementation">
+          <CodeBlock code={IMPLEMENTATION_CODE} />
+        </ImplementationTip>
+      </div>
     </PaywallGate>
   );
 }
