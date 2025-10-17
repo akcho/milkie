@@ -46,15 +46,13 @@ export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
               <PreviewContent />
 
               {/* Paywall gate positioned after preview */}
-              <div className="relative -mx-4 my-8">
+              <div className="my-8">
                 <PaywallGate
                   title="You've reached your free article limit"
                   subtitle="Subscribe for unlimited access to all premium content"
                   subscribeButtonText="Get unlimited access"
                 >
-                  <div className="px-4">
-                    <ArticleContent />
-                  </div>
+                  <ArticleContent />
                 </PaywallGate>
               </div>
             </div>
