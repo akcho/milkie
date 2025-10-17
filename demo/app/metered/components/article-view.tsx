@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { PaywallGate } from "@milkie/react";
 import { ArrowLeft, Clock, User } from "lucide-react";
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/header";
 import { ArticleViewProps } from "../types";
 import { ArticleContent, PreviewContent } from "./article-content";
 
