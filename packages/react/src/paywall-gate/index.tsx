@@ -2,14 +2,11 @@
 
 import { usePaywall } from "../provider";
 import { useState } from "react";
-import { LoadingState } from "./components/loading-state";
-import { BlurredContent } from "./components/blurred-content";
+import { LoadingState } from "../components/loading-state";
+import { BlurredContent } from "../components/blurred-content";
 import { PaywallCard } from "./components/paywall-card";
-import {
-  handleSignInRedirect,
-  handleCheckoutProcess,
-  redirectToCheckout,
-} from "./utils";
+import { handleSignInRedirect } from "../utils";
+import { handleCheckoutProcess, redirectToCheckout } from "./utils";
 
 interface PaywallGateProps {
   children: React.ReactNode;

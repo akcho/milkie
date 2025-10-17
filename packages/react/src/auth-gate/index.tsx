@@ -1,10 +1,10 @@
 "use client";
 
 import { usePaywall } from "../provider";
-import { LoadingState } from "./components/loading-state";
+import { LoadingState } from "../components/loading-state";
 import { AuthOverlay } from "./components/auth-overlay";
-import { BlurredContent } from "./components/blurred-content";
-import { handleSignInRedirect } from "./utils";
+import { BlurredContent } from "../components/blurred-content";
+import { handleSignInRedirect } from "../utils";
 
 interface AuthGateProps {
   children: React.ReactNode;
