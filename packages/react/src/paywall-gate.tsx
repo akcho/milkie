@@ -26,6 +26,7 @@ interface PaywallGateProps {
   onCheckout?: (email: string) => Promise<{ url: string }>;
   onToast?: (message: string, type: 'success' | 'error') => void;
   showBranding?: boolean;
+  disableBlur?: boolean;
 }
 
 export function PaywallGate({
@@ -41,6 +42,7 @@ export function PaywallGate({
   onCheckout,
   onToast,
   showBranding = true,
+  disableBlur = false,
 }: PaywallGateProps) {
   const { hasAccess, loading, email } = usePaywall();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -127,103 +129,117 @@ export function PaywallGate({
     }
   };
 
+  const paywallCard = (
+    <Card className="max-w-md w-full shadow-none">
+      <CardHeader className="text-center space-y-4">
+        <div className="flex justify-center">
+          {icon || <MilkieIcon className="h-12 w-12" />}
+        </div>
+        <div className="space-y-2">
+          <CardTitle className="text-2xl">{title}</CardTitle>
+          <CardDescription>{subtitle}</CardDescription>
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-6">
+        {!email ? (
+          <Button
+            onClick={handleSignIn}
+            className="w-full"
+            size="lg"
+          >
+            {signInButtonText}
+          </Button>
+        ) : (
+          <>
+            {/* Signed in - show subscribe button */}
+            <div className="bg-muted rounded-lg p-4 space-y-1">
+              <p className="text-xs text-muted-foreground">
+                Logged in as
+              </p>
+              <p className="text-sm font-medium">
+                {email}
+              </p>
+            </div>
+
+            {checkoutError && (
+              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 flex items-start gap-2">
+                <AlertCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-destructive">
+                  <p className="font-medium">Checkout failed</p>
+                  <p className="text-xs mt-1 opacity-90">
+                    {checkoutError.includes("status")
+                      ? "Unable to connect to checkout service. Please try again."
+                      : checkoutError}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <Button
+              onClick={handleCheckout}
+              disabled={isCheckingOut}
+              className="w-full"
+              size="lg"
+            >
+              {isCheckingOut ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Loading...
+                </>
+              ) : checkoutError ? (
+                "Try again"
+              ) : (
+                subscribeButtonText
+              )}
+            </Button>
+
+            <p className="text-xs text-center text-muted-foreground">
+              You&apos;ll be redirected to Stripe to complete your payment
+            </p>
+          </>
+        )}
+
+        {showBranding && (
+          <p className="text-center text-muted-foreground/50 mt-6" style={{ fontSize: '10px' }}>
+            Powered by{" "}
+            <a
+              href="https://github.com/akcho/milkie"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium hover:text-muted-foreground transition-colors"
+            >
+              milkie
+            </a>
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+
+  // When blur is disabled, just show the paywall card inline
+  if (disableBlur) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        {paywallCard}
+      </div>
+    );
+  }
+
+  // Default: show with blur effect
   return (
-    <div className="relative min-h-[400px]">
-      {/* Blurred content in background */}
+    <div className="relative w-full">
+      {/* Blurred content in background - renders at natural height */}
       <div
-        className="blur-sm pointer-events-none select-none pt-4"
+        className="blur-sm pointer-events-none select-none w-full opacity-50"
         aria-hidden="true"
       >
         {children}
       </div>
 
-      {/* Paywall overlay */}
-      <div className="absolute inset-0 flex items-center justify-center p-8 bg-background/80 backdrop-blur-sm">
-        <Card className="max-w-md w-full shadow-none">
-          <CardHeader className="text-center space-y-4">
-            <div className="flex justify-center">
-              {icon || <MilkieIcon className="h-12 w-12" />}
-            </div>
-            <div className="space-y-2">
-              <CardTitle className="text-2xl">{title}</CardTitle>
-              <CardDescription>{subtitle}</CardDescription>
-            </div>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
-            {!email ? (
-              <Button
-                onClick={handleSignIn}
-                className="w-full"
-                size="lg"
-              >
-                {signInButtonText}
-              </Button>
-            ) : (
-              <>
-                {/* Signed in - show subscribe button */}
-                <div className="bg-muted rounded-lg p-4 space-y-1">
-                  <p className="text-xs text-muted-foreground">
-                    Logged in as
-                  </p>
-                  <p className="text-sm font-medium">
-                    {email}
-                  </p>
-                </div>
-
-                {checkoutError && (
-                  <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 flex items-start gap-2">
-                    <AlertCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
-                    <div className="text-sm text-destructive">
-                      <p className="font-medium">Checkout failed</p>
-                      <p className="text-xs mt-1 opacity-90">
-                        {checkoutError.includes("status")
-                          ? "Unable to connect to checkout service. Please try again."
-                          : checkoutError}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                <Button
-                  onClick={handleCheckout}
-                  disabled={isCheckingOut}
-                  className="w-full"
-                  size="lg"
-                >
-                  {isCheckingOut ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Loading...
-                    </>
-                  ) : checkoutError ? (
-                    "Try again"
-                  ) : (
-                    subscribeButtonText
-                  )}
-                </Button>
-
-                <p className="text-xs text-center text-muted-foreground">
-                  You&apos;ll be redirected to Stripe to complete your payment
-                </p>
-              </>
-            )}
-
-            {showBranding && (
-              <p className="text-center text-muted-foreground/50 mt-6" style={{ fontSize: '10px' }}>
-                Powered by{" "}
-                <a
-                  href="https://github.com/akcho/milkie"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium hover:text-muted-foreground transition-colors"
-                >
-                  milkie
-                </a>
-              </p>
-            )}
-          </CardContent>
-        </Card>
+      {/* Paywall overlay - positioned absolutely over the blurred content */}
+      <div className="absolute inset-0 flex items-center justify-center p-8">
+        {paywallCard}
       </div>
     </div>
   );

@@ -52,17 +52,17 @@ export function AuthGate({
   };
 
   return (
-    <div className="relative min-h-[400px]">
+    <div className="relative w-full">
       {/* Blurred content in background */}
       <div
-        className="blur-sm pointer-events-none select-none pt-4"
+        className="blur-sm pointer-events-none select-none w-full opacity-50"
         aria-hidden="true"
       >
         {children}
       </div>
 
       {/* Auth overlay */}
-      <div className="absolute inset-0 flex items-center justify-center p-8 bg-background/80 backdrop-blur-sm">
+      <div className="absolute inset-0 flex items-center justify-center p-8">
         <Card className="max-w-md w-full shadow-none">
           <CardHeader className="text-center space-y-4">
             <div className="flex justify-center">
