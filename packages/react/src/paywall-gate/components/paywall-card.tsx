@@ -95,7 +95,7 @@ export function PaywallCard({
               href="https://github.com/akcho/milkie"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium hover:text-muted-foreground transition-colors"
+              className="font-medium text-muted-foreground/70 hover:text-muted-foreground transition-colors"
             >
               milkie
             </a>
