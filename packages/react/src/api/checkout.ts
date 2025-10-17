@@ -83,7 +83,7 @@ export function createCheckoutRoute(config: CheckoutRouteConfig) {
       // Use callbackUrl if provided, otherwise default to homepage
       const successUrl = callbackUrl
         ? `${appUrl}${callbackUrl}?session_id={CHECKOUT_SESSION_ID}`
-        : `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`;
+        : `${appUrl}/?session_id={CHECKOUT_SESSION_ID}`;
 
       const cancelUrl = callbackUrl ? `${appUrl}${callbackUrl}` : `${appUrl}/`;
 
