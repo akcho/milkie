@@ -243,7 +243,31 @@ import { subscriptionAdapter } from "@/lib/milkie-adapter";
 
 export const GET = createSubscriptionStatusRoute({
   db: subscriptionAdapter,
+  // Optional: customize which subscription statuses grant access
+  // allowedStatuses: ["active", "trialing"], // default
 });
+```
+
+**Configuration Options:**
+
+- `db` (required): Database adapter implementing `SubscriptionDatabaseAdapter`
+- `allowedStatuses` (optional): Array of subscription statuses that grant access. Default: `["active", "trialing"]`
+
+**Response Types:**
+
+```ts
+// Success response
+{
+  hasAccess: boolean;
+  status: string;
+  currentPeriodEnd?: Date | null;
+}
+
+// Error response
+{
+  error: string;
+  code: "EMAIL_REQUIRED" | "INVALID_EMAIL" | "NO_SUBSCRIPTION" | "DATABASE_ERROR";
+}
 ```
 
 **3. Webhook Route** (`app/api/webhooks/stripe/route.ts`)
@@ -266,7 +290,10 @@ Implement simple adapters for your database (Drizzle, Prisma, etc.):
 
 ```ts
 // lib/milkie-adapter.ts
-import type { CheckoutDatabaseAdapter } from "@milkie/react/api";
+import type {
+  CheckoutDatabaseAdapter,
+  SubscriptionDatabaseAdapter,
+} from "@milkie/react/api";
 
 export const checkoutAdapter: CheckoutDatabaseAdapter = {
   async findUserByEmail(email: string) {
@@ -280,7 +307,25 @@ export const checkoutAdapter: CheckoutDatabaseAdapter = {
   },
 };
 
-// Implement subscriptionAdapter and webhookAdapter similarly
+export const subscriptionAdapter: SubscriptionDatabaseAdapter = {
+  async findUserByEmail(email: string) {
+    // Return user with id, or null if not found
+    return await db.user.findUnique({ where: { email } });
+  },
+  async findSubscription(userId: string) {
+    // Return subscription or null
+    return await db.subscription.findUnique({ where: { userId } });
+  },
+  async findUserWithSubscription(email: string) {
+    // Optimized: fetch user + subscription in one query
+    return await db.user.findUnique({
+      where: { email },
+      include: { subscription: true },
+    });
+  },
+};
+
+// Implement webhookAdapter similarly
 ```
 
 **📚 Complete Guide:** [Backend Setup Documentation](https://github.com/akcho/milkie/blob/main/docs/BACKEND_SETUP.md)
