@@ -55,7 +55,7 @@ export default function SettingsPage() {
                 Receive email notifications
               </Label>
             </div>
-            <Button>Save Changes</Button>
+            <Button>Save changes</Button>
 
             <div className="pt-4 border-t">
               <Button
@@ -63,7 +63,7 @@ export default function SettingsPage() {
                 onClick={() => signOut({ callbackUrl: pathname })}
               >
                 <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
+                Sign out
               </Button>
             </div>
           </CardContent>

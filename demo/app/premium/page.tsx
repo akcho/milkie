@@ -15,7 +15,7 @@ export default function PremiumPage() {
           <Button variant="ghost" asChild>
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
+              Back to home
             </Link>
           </Button>
         </div>

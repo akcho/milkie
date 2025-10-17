@@ -35,7 +35,7 @@ export default function SuccessPage() {
               href="/"
               className="px-6 py-3 bg-gray-200 text-gray-900 rounded-lg font-medium hover:bg-gray-300 transition-colors"
             >
-              Back to Home
+              Back to home
             </Link>
           </div>
         </div>

@@ -44,7 +44,7 @@ export default function Home() {
             <CardContent>
               <Button asChild className="w-full">
                 <Link href="/metered">
-                  View Example <ArrowRight className="ml-2 h-4 w-4" />
+                  View example <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </CardContent>
@@ -63,7 +63,7 @@ export default function Home() {
             <CardContent>
               <Button asChild className="w-full">
                 <Link href="/mixed">
-                  View Example <ArrowRight className="ml-2 h-4 w-4" />
+                  View example <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </CardContent>
@@ -82,7 +82,7 @@ export default function Home() {
             <CardContent>
               <Button asChild className="w-full">
                 <Link href="/dashboard">
-                  View Example <ArrowRight className="ml-2 h-4 w-4" />
+                  View example <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </CardContent>
@@ -151,7 +151,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button asChild size="lg">
                 <Link href="https://github.com/akcho/milkie#readme" target="_blank" rel="noopener noreferrer">
-                  Get Started
+                  Get started
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline">

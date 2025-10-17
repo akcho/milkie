@@ -14,7 +14,7 @@ export default function FreePage() {
           <Button variant="ghost" asChild>
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
+              Back to home
             </Link>
           </Button>
         </div>
@@ -99,13 +99,13 @@ export default function FreePage() {
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button asChild className="flex-1">
                   <Link href="/mixed">
-                    Component Gating
+                    Component gating
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" className="flex-1">
                   <Link href="/dashboard">
-                    Layout Gating
+                    Layout gating
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>

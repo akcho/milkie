@@ -129,7 +129,7 @@ export default function BillingPage() {
                     Canceling...
                   </>
                 ) : (
-                  "Cancel Subscription"
+                  "Cancel subscription"
                 )}
               </Button>
             </div>
@@ -201,7 +201,7 @@ export default function BillingPage() {
                     Loading...
                   </>
                 ) : (
-                  "Subscribe Now"
+                  "Subscribe now"
                 )}
               </Button>
             </div>

@@ -59,7 +59,7 @@ export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
       <div className="container mx-auto px-4 py-8 max-w-3xl">
         <Button variant="ghost" onClick={onBack} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Articles
+          Back to articles
         </Button>
 
         <article>
