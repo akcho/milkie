@@ -9,6 +9,7 @@ import { ProtectedContentCard } from "@/components/dashboard/protected-content-c
 import { ImplementationTip } from "@/components/implementation-tip";
 import { CodeBlock } from "@/components/code-block";
 
+// Code example displayed in the implementation tip section
 const IMPLEMENTATION_CODE = `// app/dashboard/page.tsx
 import { PaywallGate } from "@milkie/react";
 
