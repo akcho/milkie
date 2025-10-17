@@ -104,7 +104,7 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  Use <code className="text-xs bg-muted px-1 py-0.5 rounded">PaywallGate</code> to protect pages, sections, or individual components
+                  Use <code className="!text-foreground">PaywallGate</code> to protect pages, sections, or individual components
                 </p>
               </CardContent>
             </Card>

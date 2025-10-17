@@ -121,4 +121,7 @@
   body {
     @apply bg-background text-foreground;
   }
+  code:not(pre code) {
+    @apply text-xs bg-primary/10 text-green-600 dark:text-green-400 px-1 py-0.5 rounded font-mono;
+  }
 }

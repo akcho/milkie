@@ -192,7 +192,7 @@ export default function BillingPage() {
               <Button
                 onClick={handleSubscribe}
                 disabled={isCheckingOut}
-                className="w-full bg-zinc-800 hover:bg-zinc-900"
+                className="w-full"
                 size="lg"
               >
                 {isCheckingOut ? (
@@ -219,7 +219,7 @@ export default function BillingPage() {
         <CardContent className="space-y-2">
           <p className="text-sm text-muted-foreground">
             This page uses{" "}
-            <code className="text-xs bg-background px-1.5 py-0.5 rounded">AuthGate</code>{" "}
+            <code>AuthGate</code>{" "}
             to require sign-in but not an active subscription. This is critical for billing pages -
             users must be able to manage their subscriptions even when they&apos;re not active.
           </p>
