@@ -34,16 +34,16 @@ export default function Home() {
           <Card className="hover:shadow-lg transition-shadow flex flex-col">
             <CardHeader className="flex-grow">
               <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
-                <Newspaper className="h-5 w-5 text-primary" />
+                <Layers className="h-5 w-5 text-primary" />
               </div>
-              <CardTitle>Metered Paywall</CardTitle>
+              <CardTitle>Layout Gating</CardTitle>
               <CardDescription>
-                Give users a taste with limited free access per month
+                Protect entire sections at the layout level
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild className="w-full">
-                <Link href="/metered">
+                <Link href="/dashboard">
                   View example <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -72,16 +72,16 @@ export default function Home() {
           <Card className="hover:shadow-lg transition-shadow flex flex-col">
             <CardHeader className="flex-grow">
               <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
-                <Layers className="h-5 w-5 text-primary" />
+                <Newspaper className="h-5 w-5 text-primary" />
               </div>
-              <CardTitle>Layout Gating</CardTitle>
+              <CardTitle>Metered Paywall</CardTitle>
               <CardDescription>
-                Protect entire sections at the layout level
+                Give users a taste with limited free access per month
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild className="w-full">
-                <Link href="/dashboard">
+                <Link href="/metered">
                   View example <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

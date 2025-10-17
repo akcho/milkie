@@ -53,8 +53,8 @@ export function Header() {
               </Tooltip>
             </TooltipProvider>
           ) : (
-            <Button asChild size="sm">
-              <Link href={`/signin?callbackUrl=${encodeURIComponent(pathname)}`}>Sign In</Link>
+            <Button asChild size="xs">
+              <Link href={`/signin?callbackUrl=${encodeURIComponent(pathname)}`}>Sign in</Link>
             </Button>
           )}
         </div>
