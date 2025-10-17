@@ -50,7 +50,7 @@ export default function BillingPage() {
         <ImplementationTip>
           <p>
             This page uses <code>AuthGate</code> to require sign-in but not an active subscription.
-            This is critical for billing pages - users must be able to manage their subscriptions
+            This is critical for billing pages because users must be able to manage their subscriptions
             even when they&apos;re not active.
           </p>
         </ImplementationTip>
