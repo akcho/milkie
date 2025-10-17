@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Logo } from "./logo";
 import { GitHubLink } from "./github-link";
-import { AuthActions } from "./auth-actions";
+import { AuthButton } from "./auth-button";
 
 export function Header() {
   const { data: session, status } = useSession();
@@ -19,7 +19,7 @@ export function Header() {
         <nav className="flex items-center gap-3">
           <ThemeToggle />
           <GitHubLink />
-          <AuthActions
+          <AuthButton
             status={session ? "authenticated" : status}
             callbackUrl={pathname}
           />
