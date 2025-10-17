@@ -18,17 +18,17 @@ export function PremiumTutorialLocked() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="bg-muted/50 rounded-lg p-6 text-center space-y-4">
+        <div className="bg-muted/50 rounded-lg p-8 space-y-6">
           <p className="text-muted-foreground">
             This premium content includes:
           </p>
-          <ul className="text-sm text-muted-foreground space-y-2 text-left max-w-md mx-auto">
+          <ul className="text-sm text-muted-foreground space-y-3 pl-6">
             <li>• Step-by-step implementation guide</li>
             <li>• Code examples and best practices</li>
             <li>• Common pitfalls and how to avoid them</li>
             <li>• Performance optimization tips</li>
           </ul>
-          <p className="text-sm text-muted-foreground pt-2">
+          <p className="text-sm text-muted-foreground">
             Subscribe to unlock this content and more.
           </p>
         </div>
