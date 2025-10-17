@@ -12,7 +12,7 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="border-b">
+    <header className="sticky top-0 z-50 bg-background border-b">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Logo />
 

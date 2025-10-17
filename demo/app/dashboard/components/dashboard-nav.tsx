@@ -16,7 +16,7 @@ export function DashboardNav() {
   const currentPage = navItems.find((item) => item.href === pathname)?.label || "Dashboard";
 
   return (
-    <header className="border-b">
+    <header className="sticky top-0 z-50 bg-background border-b">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4 gap-4">
           <div className="flex items-center gap-3 md:gap-6 min-w-0">
