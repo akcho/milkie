@@ -5,7 +5,7 @@ Milkie is **auth-agnostic** - it works with any authentication solution that pro
 ## Quick Start
 
 ```tsx
-import { MilkieProvider } from '@/lib/milkie'
+import { MilkieProvider } from '@milkie/react'
 
 export default function App() {
   const email = // ... get from your auth solution
@@ -28,7 +28,7 @@ The `email` prop is optional. If not provided, the paywall will prompt users to 
 
 ```tsx
 import { useSession } from 'next-auth/react';
-import { MilkieProvider } from '@/lib/milkie';
+import { MilkieProvider } from '@milkie/react';
 
 export default function App({ Component, pageProps }) {
   const { data: session } = useSession();
@@ -45,7 +45,7 @@ export default function App({ Component, pageProps }) {
 
 ```tsx
 import { useUser } from '@clerk/nextjs';
-import { MilkieProvider } from '@/lib/milkie';
+import { MilkieProvider } from '@milkie/react';
 
 export default function App({ children }) {
   const { user } = useUser();
@@ -62,7 +62,7 @@ export default function App({ children }) {
 
 ```tsx
 import { useAuth } from '@/lib/auth';
-import { MilkieProvider } from '@/lib/milkie';
+import { MilkieProvider } from '@milkie/react';
 
 export default function App({ children }) {
   const { user } = useAuth();
@@ -79,7 +79,7 @@ export default function App({ children }) {
 
 ```tsx
 import { useSupabaseUser } from '@/lib/supabase';
-import { MilkieProvider } from '@/lib/milkie';
+import { MilkieProvider } from '@milkie/react';
 
 export default function App({ children }) {
   const user = useSupabaseUser();
@@ -96,7 +96,7 @@ export default function App({ children }) {
 
 ```tsx
 import { useSession } from 'better-auth/react';
-import { MilkieProvider } from '@/lib/milkie';
+import { MilkieProvider } from '@milkie/react';
 
 export default function App({ children }) {
   const { data: session } = useSession();

@@ -13,7 +13,7 @@ Mix free and premium content on the same page by wrapping specific components:
 
 ```tsx
 // app/mixed/page.tsx
-import { PaywallGate } from '@/lib/milkie'
+import { PaywallGate } from '@milkie/react'
 
 export default function ArticlePage() {
   return (
@@ -57,7 +57,7 @@ Protect entire route sections by wrapping a layout component:
 
 ```tsx
 // app/dashboard/layout.tsx
-import { PaywallGate } from '@/lib/milkie'
+import { PaywallGate } from '@milkie/react'
 
 export default function DashboardLayout({ children }) {
   return (
@@ -98,7 +98,7 @@ Combine public and protected sections in one app:
 
 ```tsx
 // app/layout.tsx (root layout)
-import { MilkieProvider } from '@/lib/milkie'
+import { MilkieProvider } from '@milkie/react'
 import { SessionProvider } from 'next-auth/react'
 
 export default function RootLayout({ children }) {
@@ -131,7 +131,7 @@ export default function FreePage() {
 }
 
 // app/dashboard/layout.tsx - Protected app section
-import { PaywallGate } from '@/lib/milkie'
+import { PaywallGate } from '@milkie/react'
 
 export default function DashboardLayout({ children }) {
   return (
@@ -162,7 +162,7 @@ Use the `usePaywall` hook for fine-grained control:
 ```tsx
 'use client'
 
-import { usePaywall } from '@/lib/milkie'
+import { usePaywall } from '@milkie/react'
 
 export default function FeaturePage() {
   const { hasAccess, loading, email, status } = usePaywall()

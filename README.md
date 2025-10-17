@@ -1,5 +1,9 @@
 # Milkie
 
+[![npm version](https://img.shields.io/npm/v/@milkie/react.svg)](https://www.npmjs.com/package/@milkie/react)
+[![npm downloads](https://img.shields.io/npm/dm/@milkie/react.svg)](https://www.npmjs.com/package/@milkie/react)
+[![license](https://img.shields.io/npm/l/@milkie/react.svg)](https://github.com/akcho/milkie/blob/main/LICENSE)
+
 > Drop-in paywall infrastructure for Next.js apps
 
 Add Stripe subscriptions to your app in minutes. Works with NextAuth, Clerk, Lucia, Supabase - any auth solution that provides an email.
@@ -45,19 +49,18 @@ Fully functional:
 
 On the roadmap:
 
-- 📦 Published npm package
 - 🏢 Multi-tenancy support
 - 📊 Developer dashboard
 - 🔄 Webhook relay service for local development
 - 🎚️ Multiple subscription tiers
 
-## 📚 Documentation
+## 📦 Installation
 
-- **[QUICKSTART.md](QUICKSTART.md)** - Get running locally in 15 minutes
-- **[docs/PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md)** - Implementation patterns and examples
-- **[docs/AUTH_INTEGRATION.md](docs/AUTH_INTEGRATION.md)** - Works with any auth solution
+```bash
+npm install @milkie/react
+```
 
-## 💻 Quick Local Setup
+Or explore the demo locally:
 
 ```bash
 cd demo
@@ -67,31 +70,37 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Full instructions in [QUICKSTART.md](QUICKSTART.md).
+## 📚 Documentation
+
+- **[@milkie/react README](packages/react/README.md)** - Full package documentation
+- **[Backend Setup Guide](docs/BACKEND_SETUP.md)** - API routes and database setup
+- **[Auth Integration](docs/AUTH_INTEGRATION.md)** - Works with any auth solution
+- **[Paywall Patterns](docs/PAYWALL_PATTERNS.md)** - Implementation patterns and examples
+- **[QUICKSTART.md](QUICKSTART.md)** - Run the demo locally
 
 ---
 
 ## How It Works
 
-### The SDK (Current)
+### The SDK
 
 ```tsx
 // 1. Wrap your app with MilkieProvider
-import { MilkieProvider } from "@/lib/milkie";
+import { MilkieProvider } from "@milkie/react";
 
 <MilkieProvider email={session.user.email}>
   <YourApp />
 </MilkieProvider>;
 
 // 2. Protect content with PaywallGate
-import { PaywallGate } from "@/lib/milkie";
+import { PaywallGate } from "@milkie/react";
 
 <PaywallGate>
   <PremiumContent />
 </PaywallGate>;
 
 // 3. Or use the hook for custom logic
-import { usePaywall } from "@/lib/milkie";
+import { usePaywall } from "@milkie/react";
 
 const { hasAccess, loading } = usePaywall();
 ```
@@ -134,11 +143,13 @@ Adding subscriptions shouldn't take 2 days. Here's what Milkie handles for you:
 - Tailwind CSS + shadcn/ui
 - Sonner (toast notifications)
 
-**SDK:** (`demo/lib/milkie/`)
+**Package:** (`@milkie/react`)
 
+- Published on npm
 - React Context for state management
+- Factory functions for API routes
+- Database-agnostic adapters
 - TypeScript for type safety
-- ~200 lines of code total
 
 ---
 
@@ -149,47 +160,43 @@ milkie/
 ├── LICENSE                     # MIT License
 ├── README.md                   # You are here
 ├── QUICKSTART.md               # Get running in 15 min
+├── packages/
+│   └── react/                  # @milkie/react npm package
+│       ├── src/                # Source code
+│       │   ├── components/    # MilkieProvider, PaywallGate, etc.
+│       │   └── api/           # Factory functions for routes
+│       └── README.md          # Package documentation
 ├── docs/
+│   ├── BACKEND_SETUP.md       # Complete backend guide
 │   ├── AUTH_INTEGRATION.md    # Works with any auth
 │   └── PAYWALL_PATTERNS.md    # Implementation patterns
-└── demo/                       # Working prototype
+└── demo/                       # Working demo app
     ├── .env.example           # Environment variables template
     ├── app/                    # Next.js app directory
     │   ├── page.tsx           # Public homepage
-    │   ├── free/              # Public content example
     │   ├── mixed/             # Component-level gating example
     │   ├── premium/           # Full-page gating example
     │   ├── dashboard/         # Layout-level gating example
-    │   ├── signin/            # Sign-in page
-    │   ├── success/           # Post-checkout success page
-    │   └── api/               # API routes
-    │       ├── auth/          # NextAuth endpoints
+    │   └── api/               # API routes (using @milkie/react factories)
     │       ├── checkout/      # Stripe checkout session
     │       ├── subscription/  # Subscription status check
     │       └── webhooks/      # Stripe webhook handler
-    ├── components/            # UI components
-    │   ├── ui/               # shadcn/ui components
-    │   └── milkie-icon.tsx   # Milkie mascot icon
     ├── lib/
-    │   ├── milkie/           # 🚀 THE SDK
-    │   │   ├── provider.tsx       # MilkieProvider + usePaywall
-    │   │   ├── paywall-gate.tsx   # PaywallGate component
-    │   │   └── index.ts           # Public exports
+    │   ├── milkie-adapter.ts # Database adapters for @milkie/react
     │   ├── db/               # Database schema & client
     │   └── stripe.ts         # Stripe configuration
-    ├── drizzle/              # Database migrations
-    ├── auth.ts               # NextAuth configuration
-    └── package.json          # Dependencies
+    └── auth.ts               # NextAuth configuration
 ```
 
 ---
 
 ## Get Started
 
-1. **[Try the demo](https://milkie-demo.vercel.app)**
-2. **[Run locally](QUICKSTART.md)** - 15 minutes
-3. **[Learn the patterns](docs/PAYWALL_PATTERNS.md)** - Component vs layout gating
-4. **[Integrate with your auth](docs/AUTH_INTEGRATION.md)** - Works with any provider
+1. **[Try the demo](https://milkie-demo.vercel.app)** - See it in action
+2. **[Install the package](packages/react/README.md)** - `npm install @milkie/react`
+3. **[Set up backend](docs/BACKEND_SETUP.md)** - 3 API routes
+4. **[Learn the patterns](docs/PAYWALL_PATTERNS.md)** - Component vs layout gating
+5. **[Integrate with your auth](docs/AUTH_INTEGRATION.md)** - Works with any provider
 
 ---
 

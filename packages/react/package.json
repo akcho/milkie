@@ -40,6 +40,10 @@
     "type": "git",
     "url": "git+https://github.com/akcho/milkie.git"
   },
+  "homepage": "https://milkie-demo.vercel.app",
+  "bugs": {
+    "url": "https://github.com/akcho/milkie/issues"
+  },
   "peerDependencies": {
     "next": "^14.0.0 || ^15.0.0",
     "react": "^18.0.0 || ^19.0.0",

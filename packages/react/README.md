@@ -1,5 +1,9 @@
 # @milkie/react
 
+[![npm version](https://img.shields.io/npm/v/@milkie/react.svg)](https://www.npmjs.com/package/@milkie/react)
+[![npm downloads](https://img.shields.io/npm/dm/@milkie/react.svg)](https://www.npmjs.com/package/@milkie/react)
+[![license](https://img.shields.io/npm/l/@milkie/react.svg)](https://github.com/akcho/milkie/blob/main/LICENSE)
+
 > Stripe-powered paywall SDK for Next.js apps
 
 Add Stripe subscriptions to your app in minutes. Works with NextAuth, Clerk, Lucia, Supabase - any auth solution that provides an email.
@@ -212,13 +216,81 @@ export function PremiumFeature() {
 
 ## Backend Setup
 
-Milkie is frontend-only. You'll need to set up:
+Milkie provides **factory functions** to generate your API routes. You just need to provide database adapters.
 
-1. **Stripe checkout API endpoint** (`/api/checkout`)
-2. **Subscription status API endpoint** (`/api/subscription/status`)
-3. **Stripe webhook handler** (`/api/webhooks/stripe`)
+### Quick Setup (3 routes)
 
-See the [full implementation example](https://github.com/akcho/milkie/tree/main/demo) in our demo app.
+**1. Checkout Route** (`app/api/checkout/route.ts`)
+
+```ts
+import { createCheckoutRoute } from "@milkie/react/api";
+import { stripe } from "@/lib/stripe";
+import { checkoutAdapter } from "@/lib/milkie-adapter";
+
+export const POST = createCheckoutRoute({
+  stripe,
+  db: checkoutAdapter,
+  priceId: process.env.STRIPE_PRICE_ID!,
+  appUrl: process.env.NEXT_PUBLIC_APP_URL!,
+});
+```
+
+**2. Subscription Status Route** (`app/api/subscription/status/route.ts`)
+
+```ts
+import { createSubscriptionStatusRoute } from "@milkie/react/api";
+import { subscriptionAdapter } from "@/lib/milkie-adapter";
+
+export const GET = createSubscriptionStatusRoute({
+  db: subscriptionAdapter,
+});
+```
+
+**3. Webhook Route** (`app/api/webhooks/stripe/route.ts`)
+
+```ts
+import { createWebhookRoute } from "@milkie/react/api";
+import { stripe } from "@/lib/stripe";
+import { webhookAdapter } from "@/lib/milkie-adapter";
+
+export const POST = createWebhookRoute({
+  stripe,
+  db: webhookAdapter,
+  webhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+});
+```
+
+### Database Adapters
+
+Implement simple adapters for your database (Drizzle, Prisma, etc.):
+
+```ts
+// lib/milkie-adapter.ts
+import type { CheckoutDatabaseAdapter } from "@milkie/react/api";
+
+export const checkoutAdapter: CheckoutDatabaseAdapter = {
+  async findUserByEmail(email: string) {
+    // Your DB query
+  },
+  async createUser(data) {
+    // Your DB insert
+  },
+  async updateUser(userId: string, data) {
+    // Your DB update
+  },
+};
+
+// Implement subscriptionAdapter and webhookAdapter similarly
+```
+
+**📚 Complete Guide:** [Backend Setup Documentation](https://github.com/akcho/milkie/blob/main/docs/BACKEND_SETUP.md)
+
+Includes:
+- Database schema (SQL + Drizzle example)
+- Complete adapter implementations
+- Stripe webhook configuration
+- Environment variables setup
+- Testing guide
 
 ---
 
@@ -384,7 +456,8 @@ The components use CSS variables for theming (compatible with shadcn/ui):
 
 - **[GitHub Repository](https://github.com/akcho/milkie)** - Full source code
 - **[Live Demo](https://milkie-demo.vercel.app)** - Interactive examples
-- **[Quickstart Guide](https://github.com/akcho/milkie/blob/main/QUICKSTART.md)** - Complete setup
+- **[Backend Setup](https://github.com/akcho/milkie/blob/main/docs/BACKEND_SETUP.md)** - Database & API routes
+- **[Auth Integration](https://github.com/akcho/milkie/blob/main/docs/AUTH_INTEGRATION.md)** - Works with any auth
 - **[Implementation Patterns](https://github.com/akcho/milkie/blob/main/docs/PAYWALL_PATTERNS.md)** - Advanced usage
 
 ---
