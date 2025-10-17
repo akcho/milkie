@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/tooltip";
 import { MilkieIcon } from "@milkie/react";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Github, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
+import { GitHubIcon } from "@/components/icons/github-icon";
 
 export function Header() {
   const { data: session, status } = useSession();
@@ -33,7 +34,7 @@ export function Header() {
 
           <Button asChild size="sm" variant="ghost">
             <Link href="https://github.com/akcho/milkie" target="_blank" rel="noopener noreferrer">
-              <Github className="h-4 w-4" />
+              <GitHubIcon className="h-4 w-4" />
             </Link>
           </Button>
 
