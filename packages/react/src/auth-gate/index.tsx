@@ -8,6 +8,7 @@ import { handleSignInRedirect } from "./utils";
 
 interface AuthGateProps {
   children: React.ReactNode;
+  fallback?: React.ReactNode;
   signInUrl?: string;
   onSignIn?: () => void;
   title?: string;
@@ -17,6 +18,7 @@ interface AuthGateProps {
 
 export function AuthGate({
   children,
+  fallback,
   signInUrl = "/signin",
   onSignIn,
   title = "Sign in required",
@@ -31,6 +33,10 @@ export function AuthGate({
 
   if (email) {
     return <>{children}</>;
+  }
+
+  if (fallback) {
+    return <>{fallback}</>;
   }
 
   const handleSignIn = () => {
