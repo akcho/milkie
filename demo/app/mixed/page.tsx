@@ -1,6 +1,6 @@
 "use client";
 
-import { Header } from "@/components/header/header";
+import { Header } from "@/components/site-header/header";
 import { MixedPageHeader } from "./components/mixed-page-header";
 import { FreePreviewCard } from "./components/free-preview-card";
 import { PremiumTutorialSection } from "./components/premium-tutorial-section";

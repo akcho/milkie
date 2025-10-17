@@ -2,7 +2,7 @@
 
 import { usePaywall } from "@milkie/react";
 import { FREE_ARTICLE_LIMIT } from "@/lib/metered-access";
-import { Header } from "@/components/header/header";
+import { Header } from "@/components/site-header/header";
 import { SAMPLE_ARTICLES } from "./constants";
 import { useArticleList } from "./hooks/use-article-list";
 import { useArticleView } from "./hooks/use-article-view";

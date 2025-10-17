@@ -1,6 +1,6 @@
 "use client";
 
-import { Header } from "@/components/header/header";
+import { Header } from "@/components/site-header/header";
 import { HeroSection } from "./components/hero-section";
 import { DemoExamplesGrid } from "./components/demo-examples-grid";
 import { HowItWorksSection } from "./components/how-it-works-section";
