@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { MilkieProvider } from "@milkie/react";
 import { auth } from "@/auth";
-import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { SessionProviders } from "@/components/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,11 +39,9 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <SessionProvider session={session}>
-            <MilkieProvider email={session?.user?.email}>
-              {children}
-            </MilkieProvider>
-          </SessionProvider>
+          <SessionProviders session={session}>
+            {children}
+          </SessionProviders>
           <Toaster />
         </ThemeProvider>
       </body>
