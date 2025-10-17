@@ -8,6 +8,59 @@ import { PaywallCard } from "./components/paywall-card";
 import { handleSignInRedirect } from "../utils";
 import { handleCheckoutProcess, redirectToCheckout } from "./utils";
 
+/**
+ * Props for the PaywallGate component.
+ *
+ * @property {React.ReactNode} children - The premium content to protect behind the paywall
+ * @property {React.ReactNode} [customUi] - Optional custom paywall UI component to replace the default card
+ * @property {string} [signInUrl="/signin"] - URL to redirect unauthenticated users for sign-in
+ * @property {() => void} [onSignIn] - Custom handler for sign-in action, overrides default redirect
+ * @property {string} [title="Unlock this content"] - Heading text displayed on the paywall card
+ * @property {string} [subtitle="We promise it's worth it."] - Subtitle text displayed on the paywall card
+ * @property {string} [signInButtonText="Sign in to subscribe"] - Label for the sign-in button (shown when user is not authenticated)
+ * @property {string} [subscribeButtonText="Subscribe now"] - Label for the subscribe button (shown when user is authenticated)
+ * @property {React.ReactNode} [icon] - Custom icon to display at the top of the paywall card
+ * @property {(email: string) => Promise<{ url: string }>} [onCheckout] - Custom checkout handler that returns a Stripe checkout URL
+ * @property {(message: string, type: "success" | "error") => void} [onToast] - Callback to display toast notifications for checkout errors
+ * @property {boolean} [showBranding=true] - Whether to show "Powered by milkie" footer in the paywall card
+ * @property {boolean} [disableBlur=false] - When true, shows paywall card without blurred content preview
+ *
+ * @example
+ * // Basic usage - protect premium content
+ * <PaywallGate>
+ *   <PremiumArticle />
+ * </PaywallGate>
+ *
+ * @example
+ * // Customized paywall messaging
+ * <PaywallGate
+ *   title="Unlock Premium Features"
+ *   subtitle="Get access to advanced analytics and unlimited exports"
+ *   subscribeButtonText="Upgrade to Pro"
+ * >
+ *   <AnalyticsDashboard />
+ * </PaywallGate>
+ *
+ * @example
+ * // Without blur effect
+ * <PaywallGate disableBlur>
+ *   <PremiumContent />
+ * </PaywallGate>
+ *
+ * @example
+ * // With custom checkout handler and toast notifications
+ * <PaywallGate
+ *   onCheckout={async (email) => {
+ *     const response = await createCustomCheckout(email);
+ *     return { url: response.checkoutUrl };
+ *   }}
+ *   onToast={(message, type) => {
+ *     toast[type](message);
+ *   }}
+ * >
+ *   <PremiumContent />
+ * </PaywallGate>
+ */
 interface PaywallGateProps {
   children: React.ReactNode;
   customUi?: React.ReactNode;
@@ -24,6 +77,63 @@ interface PaywallGateProps {
   disableBlur?: boolean;
 }
 
+/**
+ * PaywallGate - A component that protects premium content behind a subscription paywall.
+ *
+ * This component acts as a gatekeeper for premium content, handling three states:
+ * 1. Loading: Shows a loading indicator while checking subscription status
+ * 2. Has Access: Renders the protected children content for subscribed users
+ * 3. No Access: Shows a paywall card with sign-in/subscribe options
+ *
+ * The component integrates with the MilkieProvider context to check subscription status
+ * and provides a built-in checkout flow using Stripe. It can display content with a
+ * blur effect preview or show the paywall card inline.
+ *
+ * Features:
+ * - Automatic subscription status checking via usePaywall hook
+ * - Built-in Stripe checkout integration
+ * - Blurred content preview (can be disabled)
+ * - Customizable messaging and styling
+ * - Error handling with retry capability
+ * - Support for custom checkout handlers
+ * - Toast notification integration
+ *
+ * @param {PaywallGateProps} props - Configuration options for the paywall
+ * @returns {JSX.Element} The paywall gate component
+ *
+ * @example
+ * // Basic usage - protect an entire page
+ * export default function PremiumPage() {
+ *   return (
+ *     <PaywallGate>
+ *       <h1>Premium Content</h1>
+ *       <AdvancedDashboard />
+ *     </PaywallGate>
+ *   );
+ * }
+ *
+ * @example
+ * // Mix free and premium content on the same page
+ * export default function MixedContentPage() {
+ *   return (
+ *     <div>
+ *       <PublicArticlePreview />
+ *       <PaywallGate
+ *         title="Read the full article"
+ *         subtitle="Subscribe for unlimited access to all articles"
+ *       >
+ *         <FullArticleContent />
+ *       </PaywallGate>
+ *     </div>
+ *   );
+ * }
+ *
+ * @example
+ * // Completely custom paywall UI
+ * <PaywallGate customUi={<MyCustomPaywallCard />}>
+ *   <PremiumFeatures />
+ * </PaywallGate>
+ */
 export function PaywallGate({
   children,
   customUi,
