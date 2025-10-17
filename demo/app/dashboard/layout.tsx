@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardNav } from "@/components/dashboard/dashboard-nav";
+import { DashboardNav } from "./components/dashboard-nav";
 
 export default function DashboardLayout({
   children,

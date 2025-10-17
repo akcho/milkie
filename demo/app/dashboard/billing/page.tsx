@@ -1,8 +1,8 @@
 "use client";
 
 import { usePaywall, AuthGate } from "@milkie/react";
-import { ActiveSubscriptionCard } from "@/components/billing/active-subscription-card";
-import { NoSubscriptionCard } from "@/components/billing/no-subscription-card";
+import { ActiveSubscriptionCard } from "./components/active-subscription-card";
+import { NoSubscriptionCard } from "./components/no-subscription-card";
 import { ImplementationTip } from "@/components/implementation-tip";
 import { PageHeader } from "@/components/page-header";
 import { useCheckout } from "@/hooks/use-checkout";

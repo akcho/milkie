@@ -4,8 +4,8 @@ import { usePaywall, PaywallGate } from "@milkie/react";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Mail, CreditCard } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
-import { StatCard } from "@/components/dashboard/stat-card";
-import { ProtectedContentCard } from "@/components/dashboard/protected-content-card";
+import { StatCard } from "./components/stat-card";
+import { ProtectedContentCard } from "./components/protected-content-card";
 import { ImplementationTip } from "@/components/implementation-tip";
 import { CodeBlock } from "@/components/code-block";
 

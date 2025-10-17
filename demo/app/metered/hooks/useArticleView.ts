@@ -12,14 +12,12 @@ export function useArticleView() {
     const alreadyViewed = hasViewedArticle(articleId);
     const reachedLimit = hasReachedLimit();
 
-    // Allow clicking locked articles to show preview + CTA
-    // They won't be able to read full content, but can see what they're missing
-
     // Record the view (only increments if new and not at limit)
     if (!alreadyViewed && !reachedLimit) {
       recordArticleView(articleId);
     }
 
+    // Always allow opening articles, even if locked - shows preview + CTA
     setSelectedArticle(articleId);
   };
 

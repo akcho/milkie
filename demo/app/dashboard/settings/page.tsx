@@ -3,7 +3,7 @@
 import { AuthGate } from "@milkie/react";
 import { ImplementationTip } from "@/components/implementation-tip";
 import { PageHeader } from "@/components/page-header";
-import { AccountSettingsCard } from "@/components/settings/account-settings-card";
+import { AccountSettingsCard } from "./components/account-settings-card";
 import { useSettings } from "@/hooks/use-settings";
 
 export default function SettingsPage() {
