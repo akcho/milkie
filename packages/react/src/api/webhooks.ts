@@ -181,6 +181,12 @@ async function handleSubscriptionUpdate(
 
   const firstItem = subscription.items.data[0];
 
+  if (!firstItem) {
+    throw new Error(
+      `No subscription items found for subscription ${subscription.id}`
+    );
+  }
+
   const subscriptionData: SubscriptionData = {
     id: subscription.id,
     userId: user.id,
