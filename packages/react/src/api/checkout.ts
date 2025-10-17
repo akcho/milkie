@@ -99,7 +99,7 @@ export function isValidEmail(email: string): boolean {
   // Checks for: proper structure, no consecutive dots, valid length
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const hasValidStructure = emailRegex.test(email);
-  const hasNoConsecutiveDots = !email.includes('..');
+  const hasNoConsecutiveDots = !email.includes("..");
   const isValidLength = email.length >= 5 && email.length <= 254; // RFC 5321 max length
 
   return hasValidStructure && hasNoConsecutiveDots && isValidLength;
@@ -149,7 +149,9 @@ async function ensureStripeCustomer(
         return existingUser.stripeCustomerId;
       }
       // If still no customer ID after retry, fail explicitly
-      throw new Error('Failed to create or retrieve Stripe customer after race condition retry');
+      throw new Error(
+        "Failed to create or retrieve Stripe customer after race condition retry"
+      );
     }
     // Re-throw if not a race condition error
     throw error;
@@ -163,27 +165,43 @@ function buildCheckoutUrls(
 ): { successUrl: string; cancelUrl: string } {
   // Validate callbackUrl to prevent open redirect vulnerability
   if (callbackUrl) {
+    // Validate maximum length to prevent DoS
+    if (callbackUrl.length > 2048) {
+      throw new Error("Callback URL too long");
+    }
+
     // Decode URL to prevent encoded attack sequences (e.g., %2e%2e = ..)
     let decodedUrl = callbackUrl;
     try {
       decodedUrl = decodeURIComponent(callbackUrl);
     } catch (error) {
-      throw new Error('Invalid URL encoding in callback URL');
+      throw new Error("Invalid URL encoding in callback URL");
     }
 
     // Check if it's an absolute URL (potential open redirect)
-    if (decodedUrl.startsWith('http://') || decodedUrl.startsWith('https://') || decodedUrl.startsWith('//')) {
-      throw new Error('Callback URL must be a relative path');
+    if (
+      decodedUrl.startsWith("http://") ||
+      decodedUrl.startsWith("https://") ||
+      decodedUrl.startsWith("//")
+    ) {
+      throw new Error("Callback URL must be a relative path");
+    }
+
+    // Prevent dangerous URL schemes
+    const dangerousSchemes = ["javascript:", "data:", "file:", "vbscript:"];
+    const lowerUrl = decodedUrl.toLowerCase();
+    if (dangerousSchemes.some((scheme) => lowerUrl.startsWith(scheme))) {
+      throw new Error("Invalid URL scheme in callback URL");
     }
 
     // Prevent path traversal attacks (check both encoded and decoded)
-    if (decodedUrl.includes('..')) {
-      throw new Error('Callback URL cannot contain path traversal sequences');
+    if (decodedUrl.includes("..")) {
+      throw new Error("Callback URL cannot contain path traversal sequences");
     }
 
     // Ensure it starts with /
-    if (!decodedUrl.startsWith('/')) {
-      decodedUrl = '/' + decodedUrl;
+    if (!decodedUrl.startsWith("/")) {
+      decodedUrl = "/" + decodedUrl;
     }
 
     // Use the decoded version for further processing
@@ -353,7 +371,11 @@ export function createCheckoutRoute(config: CheckoutRouteConfig) {
       }
 
       // Ensure user has a Stripe customer
-      const customerId = await ensureStripeCustomer(normalizedEmail, db, stripe);
+      const customerId = await ensureStripeCustomer(
+        normalizedEmail,
+        db,
+        stripe
+      );
 
       // Build checkout URLs
       const { successUrl, cancelUrl } = buildCheckoutUrls(appUrl, callbackUrl);
@@ -361,41 +383,46 @@ export function createCheckoutRoute(config: CheckoutRouteConfig) {
       // Create checkout session with idempotency key to prevent duplicates
       const idempotencyKey = `checkout_${customerId}_${priceId}_${Date.now()}`;
 
-      const session = await stripe.checkout.sessions.create({
-        customer: customerId,
-        line_items: [
-          {
-            price: priceId,
-            quantity: 1,
+      const session = await stripe.checkout.sessions.create(
+        {
+          customer: customerId,
+          line_items: [
+            {
+              price: priceId,
+              quantity: 1,
+            },
+          ],
+          mode: "subscription",
+          success_url: successUrl,
+          cancel_url: cancelUrl,
+          metadata: {
+            email: normalizedEmail,
           },
-        ],
-        mode: "subscription",
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-        metadata: {
-          email: normalizedEmail,
-        },
-        // Show test card info in test mode
-        ...(isTestMode
-          ? {
-              custom_text: {
-                submit: {
-                  message:
-                    "Demo: Use card 4242 4242 4242 4242. All other details (expiry, CVC, ZIP, phone, etc.) can be fake.",
+          // Show test card info in test mode
+          ...(isTestMode
+            ? {
+                custom_text: {
+                  submit: {
+                    message:
+                      "Demo: Use card 4242 4242 4242 4242. All other details (expiry, CVC, ZIP, phone, etc.) can be fake.",
+                  },
                 },
-              },
-            }
-          : {}),
-      }, {
-        idempotencyKey,
-      });
+              }
+            : {}),
+        },
+        {
+          idempotencyKey,
+        }
+      );
 
       return NextResponse.json({ url: session.url });
     } catch (error) {
       // Enhanced error logging with sanitized PII
       const sanitizedEmail = normalizedEmail
-        ? `${normalizedEmail.substring(0, 3)}***@${normalizedEmail.split('@')[1] || 'unknown'}`
-        : 'unknown';
+        ? `${normalizedEmail.substring(0, 3)}***@${
+            normalizedEmail.split("@")[1] || "unknown"
+          }`
+        : "unknown";
 
       console.error("Checkout error:", {
         error: error instanceof Error ? error.message : String(error),
