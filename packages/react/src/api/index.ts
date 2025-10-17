@@ -1,7 +1,7 @@
 export { createCheckoutRoute } from "./checkout";
 export type {
   CheckoutRouteConfig,
-  DatabaseAdapter as CheckoutDatabaseAdapter,
+  CheckoutDatabaseAdapter,
   User,
   CreateUserData,
 } from "./checkout";
