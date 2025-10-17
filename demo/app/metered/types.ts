@@ -20,6 +20,7 @@ export interface ArticleListHeaderProps {
   remaining: number;
   freeArticleLimit: number;
   loading?: boolean;
+  mounted?: boolean;
 }
 
 export interface ArticleViewProps {

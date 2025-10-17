@@ -2,7 +2,10 @@ import { Badge } from "@/components/ui/badge";
 import { Gift } from "lucide-react";
 import { ArticleListHeaderProps } from "../types";
 
-export function ArticleListHeader({ isPremium, remaining, freeArticleLimit, loading }: ArticleListHeaderProps) {
+export function ArticleListHeader({ isPremium, remaining, freeArticleLimit, loading, mounted }: ArticleListHeaderProps) {
+  // Wait for both loading (subscription) and mounted (localStorage) to complete
+  const isReady = mounted && !loading;
+
   return (
     <div className="mb-8">
       <div className="flex items-start justify-between mb-4">
@@ -15,7 +18,7 @@ export function ArticleListHeader({ isPremium, remaining, freeArticleLimit, load
       </div>
 
       {/* Metered access counter */}
-      {loading ? (
+      {!isReady ? (
         // Placeholder badge during loading to prevent layout shift
         <Badge variant="secondary" className="text-sm py-2 px-4 hover:bg-secondary cursor-default opacity-50">
           <Gift className="h-4 w-4 mr-2" />
