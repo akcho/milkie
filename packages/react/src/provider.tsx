@@ -20,11 +20,10 @@ interface MilkieProviderProps {
 export function MilkieProvider({ children, email }: MilkieProviderProps) {
   const [hasAccess, setHasAccess] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const checkSubscription = useCallback(async () => {
     if (!email) {
-      setLoading(false);
       return;
     }
 
@@ -47,11 +46,7 @@ export function MilkieProvider({ children, email }: MilkieProviderProps) {
 
   // Check subscription when email changes
   useEffect(() => {
-    if (email) {
-      checkSubscription();
-    } else {
-      setLoading(false);
-    }
+    checkSubscription();
   }, [email, checkSubscription]);
 
   return (

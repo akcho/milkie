@@ -1,19 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
-interface ArticleCardProps {
-  article: {
-    id: string;
-    title: string;
-    excerpt: string;
-    author: string;
-    readTime: string;
-  };
-  viewed: boolean;
-  locked: boolean;
-  isPremium: boolean;
-  onClick: () => void;
-}
+import { ArticleCardProps } from "../types";
 
 export function ArticleCard({ article, viewed, locked, isPremium, onClick }: ArticleCardProps) {
   return (
