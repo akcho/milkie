@@ -113,7 +113,8 @@ export function PaywallCard({
   onCheckout,
 }: PaywallCardProps) {
   return (
-    <Card className="max-w-md w-full shadow-none">
+    <div className="flex items-center justify-center">
+      <Card className="max-w-md w-full shadow-none">
       <CardHeader className="text-center space-y-4">
         <div className="flex justify-center">
           {icon || <MilkieIcon className="h-12 w-12" />}
@@ -177,5 +178,6 @@ export function PaywallCard({
         )}
       </CardContent>
     </Card>
+    </div>
   );
 }

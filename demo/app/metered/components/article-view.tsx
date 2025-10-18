@@ -44,17 +44,14 @@ export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
                 {article.excerpt}
               </p>
               <PreviewContent />
-
-              {/* Paywall gate positioned after preview */}
-              <div className="my-8">
-                <PaywallGate
-                  title="You've reached your free article limit"
-                  subtitle="Subscribe for unlimited access to all premium content"
-                  subscribeButtonText="Get unlimited access"
-                >
-                  <ArticleContent />
-                </PaywallGate>
-              </div>
+              <PaywallGate
+                title="You've reached your free article limit"
+                subtitle="Subscribe for unlimited access to all premium content"
+                subscribeButtonText="Get unlimited access"
+                overlayClassName="pt-8"
+              >
+                <ArticleContent />
+              </PaywallGate>
             </div>
           )}
         </article>

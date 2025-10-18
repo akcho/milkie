@@ -47,7 +47,7 @@ export function AuthOverlay({
   onSignIn,
 }: AuthOverlayProps) {
   return (
-    <div className="absolute inset-0 flex items-center justify-center p-8">
+    <div className="flex items-center justify-center">
       <Card className="max-w-md w-full shadow-none">
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">

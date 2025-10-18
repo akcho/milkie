@@ -4,6 +4,7 @@ import { usePaywall } from "../provider";
 import { useState } from "react";
 import { LoadingState } from "../components/loading-state";
 import { BlurredContent } from "../components/blurred-content";
+import { OverlayGrid } from "../components/overlay-grid";
 import { PaywallCard } from "./components/paywall-card";
 import { handleSignInRedirect } from "../utils";
 import { handleCheckoutProcess, redirectToCheckout } from "./utils";
@@ -24,6 +25,7 @@ import { handleCheckoutProcess, redirectToCheckout } from "./utils";
  * @property {(message: string, type: "success" | "error") => void} [onToast] - Callback to display toast notifications for checkout errors
  * @property {boolean} [showBranding=true] - Whether to show "Powered by milkie" footer in the paywall card
  * @property {boolean} [disableBlur=false] - When true, shows paywall card without blurred content preview
+ * @property {string} [overlayClassName] - Optional className to apply to the overlay element (e.g., "pt-8" to add top padding)
  *
  * @example
  * // Basic usage - protect premium content
@@ -75,6 +77,7 @@ interface PaywallGateProps {
   onToast?: (message: string, type: "success" | "error") => void;
   showBranding?: boolean;
   disableBlur?: boolean;
+  overlayClassName?: string;
 }
 
 /**
@@ -148,6 +151,7 @@ export function PaywallGate({
   onToast,
   showBranding = true,
   disableBlur = false,
+  overlayClassName,
 }: PaywallGateProps) {
   const { hasAccess, loading, email } = usePaywall();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -226,11 +230,8 @@ export function PaywallGate({
 
   // Default: show with blur effect
   return (
-    <div className="relative w-full">
+    <OverlayGrid overlay={paywallCard} overlayClassName={overlayClassName}>
       <BlurredContent>{children}</BlurredContent>
-      <div className="absolute inset-0 flex items-center justify-center px-8">
-        {paywallCard}
-      </div>
-    </div>
+    </OverlayGrid>
   );
 }

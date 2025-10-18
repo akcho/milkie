@@ -4,6 +4,7 @@ import { usePaywall } from "../provider";
 import { LoadingState } from "../components/loading-state";
 import { AuthOverlay } from "./components/auth-overlay";
 import { BlurredContent } from "../components/blurred-content";
+import { OverlayGrid } from "../components/overlay-grid";
 import { handleSignInRedirect } from "../utils";
 
 /**
@@ -139,14 +140,17 @@ export function AuthGate({
   };
 
   return (
-    <div className="relative w-full">
+    <OverlayGrid
+      overlay={
+        <AuthOverlay
+          title={title}
+          subtitle={subtitle}
+          signInButtonText={signInButtonText}
+          onSignIn={handleSignIn}
+        />
+      }
+    >
       <BlurredContent>{children}</BlurredContent>
-      <AuthOverlay
-        title={title}
-        subtitle={subtitle}
-        signInButtonText={signInButtonText}
-        onSignIn={handleSignIn}
-      />
-    </div>
+    </OverlayGrid>
   );
 }
