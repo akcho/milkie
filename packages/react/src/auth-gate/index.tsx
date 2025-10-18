@@ -2,7 +2,7 @@
 
 import { usePaywall } from "../provider";
 import { LoadingState } from "../components/loading-state";
-import { AuthOverlay } from "./components/auth-overlay";
+import { AuthCard } from "./components/auth-card";
 import { BlurredContent } from "../components/blurred-content";
 import { OverlayGrid } from "../components/overlay-grid";
 import { handleSignInRedirect } from "../utils";
@@ -17,6 +17,7 @@ import { handleSignInRedirect } from "../utils";
  * @property {string} [title="Sign in required"] - Heading text displayed on the authentication overlay
  * @property {string} [subtitle="Please sign in to access this content."] - Subtitle text displayed on the authentication overlay
  * @property {string} [signInButtonText="Sign in"] - Label for the sign-in button
+ * @property {string} [overlayClassName] - Optional className to apply to the overlay element (e.g., "pt-8" to add top padding)
  *
  * @example
  * // Basic usage - protect content
@@ -51,6 +52,7 @@ interface AuthGateProps {
   title?: string;
   subtitle?: string;
   signInButtonText?: string;
+  overlayClassName?: string;
 }
 
 /**
@@ -116,6 +118,7 @@ export function AuthGate({
   title = "Sign in required",
   subtitle = "Please sign in to access this content.",
   signInButtonText = "Sign in",
+  overlayClassName,
 }: AuthGateProps) {
   const { loading, email } = usePaywall();
 
@@ -142,13 +145,14 @@ export function AuthGate({
   return (
     <OverlayGrid
       overlay={
-        <AuthOverlay
+        <AuthCard
           title={title}
           subtitle={subtitle}
           signInButtonText={signInButtonText}
           onSignIn={handleSignIn}
         />
       }
+      overlayClassName={overlayClassName}
     >
       <BlurredContent>{children}</BlurredContent>
     </OverlayGrid>

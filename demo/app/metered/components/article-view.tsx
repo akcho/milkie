@@ -48,7 +48,7 @@ export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
                 title="You've reached your free article limit"
                 subtitle="Subscribe for unlimited access to all premium content"
                 subscribeButtonText="Get unlimited access"
-                overlayClassName="pt-8"
+                overlayClassName="py-8"
               >
                 <ArticleContent />
               </PaywallGate>

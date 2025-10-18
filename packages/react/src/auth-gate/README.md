@@ -39,7 +39,7 @@ export default function ProtectedPage() {
 auth-gate/
 ├── index.tsx                 # Main AuthGate component
 ├── components/
-│   └── auth-overlay.tsx      # Sign-in overlay UI
+│   └── auth-card.tsx         # Sign-in card UI
 └── README.md                 # This file
 ```
 
