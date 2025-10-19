@@ -4,5 +4,11 @@
   "workspaces": [
     "packages/*",
     "demo"
-  ]
+  ],
+  "scripts": {
+    "dev": "npm run build:pkg && npm run dev:demo",
+    "build:pkg": "npm run build --workspace=packages/react",
+    "dev:demo": "npm run dev --workspace=demo",
+    "build:demo": "npm run build --workspace=demo"
+  }
 }

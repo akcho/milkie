@@ -111,6 +111,8 @@ export default function PremiumPage() {
 
 Want to explore the code and see how it works under the hood?
 
+**Note:** The demo uses the **published `@milkie/react` package from npm**, not the local workspace version. This ensures the demo always reflects what users will actually install.
+
 ### Prerequisites
 
 - Node.js 18+
@@ -303,6 +305,26 @@ If you made it this far, you've proven:
 - ✅ The SDK is simple to use
 - ✅ Auth-agnostic approach works
 - ✅ The developer experience is smooth
+
+---
+
+## 🔧 Local Development (Package Contributors)
+
+If you're contributing to the `@milkie/react` package and want to test changes before publishing:
+
+```bash
+# 1. Build the package
+cd packages/react
+npm run build
+
+# 2. Run the demo from the root (builds package, then starts demo)
+cd ../..
+npm run dev
+```
+
+This uses the monorepo workspace to link the local package build.
+
+**For production testing:** The demo at [milkie.dev](https://milkie.dev) always uses the latest published version from npm.
 
 ---
 
