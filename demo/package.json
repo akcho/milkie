@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@milkie/react": "*",
+    "@milkie/react": "^0.1.0",
     "@neondatabase/serverless": "^1.0.2",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.8",

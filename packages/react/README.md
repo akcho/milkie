@@ -510,6 +510,7 @@ The components use CSS variables for theming (compatible with shadcn/ui):
 ## Documentation
 
 - **[GitHub Repository](https://github.com/akcho/milkie)** - Full source code
+- **[CHANGELOG](https://github.com/akcho/milkie/blob/main/packages/react/CHANGELOG.md)** - Version history
 - **[Live Demo](https://milkie.dev)** - Interactive examples
 - **[Backend Setup](https://github.com/akcho/milkie/blob/main/docs/BACKEND_SETUP.md)** - Database & API routes
 - **[Auth Integration](https://github.com/akcho/milkie/blob/main/docs/AUTH_INTEGRATION.md)** - Works with any auth
