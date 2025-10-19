@@ -24,7 +24,7 @@ import { handleCheckoutProcess, redirectToCheckout } from "./utils";
  * @property {(email: string) => Promise<{ url: string }>} [onCheckout] - Custom checkout handler that returns a Stripe checkout URL
  * @property {(message: string, type: "success" | "error") => void} [onToast] - Callback to display toast notifications for checkout errors
  * @property {boolean} [showBranding=true] - Whether to show "Powered by milkie" footer in the paywall card
- * @property {boolean} [applyBlur=true] - When true, shows blurred content preview behind paywall card
+ * @property {boolean} [showBlurredChildren=true] - When true, shows blurred content preview behind paywall card
  * @property {string} [overlayClassName] - Optional className to apply to the overlay element (e.g., "pt-8" to add top padding)
  * @property {"center" | "top"} [position="center"] - Vertical position of the paywall card: "center" for middle, "top" for top alignment
  *
@@ -46,7 +46,7 @@ import { handleCheckoutProcess, redirectToCheckout } from "./utils";
  *
  * @example
  * // Without blur effect
- * <PaywallGate applyBlur={false}>
+ * <PaywallGate showBlurredChildren={false}>
  *   <PremiumContent />
  * </PaywallGate>
  *
@@ -77,7 +77,7 @@ interface PaywallGateProps {
   onCheckout?: (email: string) => Promise<{ url: string }>;
   onToast?: (message: string, type: "success" | "error") => void;
   showBranding?: boolean;
-  applyBlur?: boolean;
+  showBlurredChildren?: boolean;
   overlayClassName?: string;
   position?: "center" | "top";
 }
@@ -152,7 +152,7 @@ export function PaywallGate({
   onCheckout,
   onToast,
   showBranding = true,
-  applyBlur = true,
+  showBlurredChildren = true,
   overlayClassName,
   position = "center",
 }: PaywallGateProps) {
@@ -225,7 +225,7 @@ export function PaywallGate({
   );
 
   // When blur is disabled, just show the paywall card inline
-  if (!applyBlur) {
+  if (!showBlurredChildren) {
     return <div className="py-8">{paywallCard}</div>;
   }
 

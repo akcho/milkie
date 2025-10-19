@@ -56,7 +56,7 @@ export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
                 subtitle="Subscribe for unlimited access to all premium content"
                 subscribeButtonText="Get unlimited access"
                 overlayClassName="py-8"
-                applyBlur={!isMobile}
+                showBlurredChildren={!isMobile}
                 position="top"
               >
                 <ArticleContent />

@@ -22,7 +22,7 @@ All available props for customizing the paywall experience:
   onToast={(message, type) => toast[type](message)}
   // Visual customization
   showBranding={false}
-  applyBlur={false}
+  showBlurredChildren={false}
   overlayClassName="pt-8"
   position="top"
 >
@@ -52,12 +52,12 @@ All available props for customizing the paywall experience:
 
 ### Visual Props
 
-| Prop               | Type                  | Default    | Description                             |
-| ------------------ | --------------------- | ---------- | --------------------------------------- |
-| `showBranding`     | `boolean`             | true       | Show "Powered by milkie" footer         |
-| `applyBlur`        | `boolean`             | true       | Show blurred content preview            |
-| `overlayClassName` | `string`              | ""         | Custom className for overlay element    |
-| `position`         | `"center" \| "top"`   | `"center"` | Vertical position of paywall card       |
+| Prop                   | Type                  | Default    | Description                             |
+| ---------------------- | --------------------- | ---------- | --------------------------------------- |
+| `showBranding`         | `boolean`             | true       | Show "Powered by milkie" footer         |
+| `showBlurredChildren`  | `boolean`             | true       | Show blurred content preview            |
+| `overlayClassName`     | `string`              | ""         | Custom className for overlay element    |
+| `position`             | `"center" \| "top"`   | `"center"` | Vertical position of paywall card       |
 
 ## Visual Design Features
 
@@ -81,7 +81,7 @@ PaywallGate renders protected content behind the overlay with a blur effect:
 **Disable blur:**
 
 ```tsx
-<PaywallGate applyBlur={false}>
+<PaywallGate showBlurredChildren={false}>
   <PremiumContent /> {/* Paywall card shown inline without blur */}
 </PaywallGate>
 ```
@@ -304,7 +304,7 @@ export default function ArticlePage() {
   return (
     <PaywallGate
       position="top"
-      applyBlur={!isMobile}
+      showBlurredChildren={!isMobile}
     >
       <LongNewsArticle />
     </PaywallGate>

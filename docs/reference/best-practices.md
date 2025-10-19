@@ -298,7 +298,7 @@ export default function ArticlePage() {
   return (
     <PaywallGate
       position="top"
-      applyBlur={!isMobile}
+      showBlurredChildren={!isMobile}
     >
       <LongNewsArticle />
     </PaywallGate>

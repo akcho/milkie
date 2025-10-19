@@ -31,7 +31,7 @@ export default function DashboardPage() {
   const isMobile = useIsMobile();
 
   return (
-    <PaywallGate applyBlur={!isMobile}>
+    <PaywallGate showBlurredChildren={!isMobile}>
       <div className="space-y-8 max-w-5xl mx-auto">
         <PageHeader
           title="Dashboard"

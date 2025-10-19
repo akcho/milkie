@@ -17,6 +17,7 @@ import { handleSignInRedirect } from "../utils";
  * @property {string} [title="Sign in required"] - Heading text displayed on the authentication overlay
  * @property {string} [subtitle="Please sign in to access this content."] - Subtitle text displayed on the authentication overlay
  * @property {string} [signInButtonText="Sign in"] - Label for the sign-in button
+ * @property {boolean} [showBlurredChildren=true] - When true, shows blurred content preview behind auth card; when false, shows auth card inline
  * @property {string} [overlayClassName] - Optional className to apply to the overlay element (e.g., "pt-8" to add top padding)
  * @property {"center" | "top"} [position="center"] - Vertical position of the auth card: "center" for middle, "top" for top alignment
  *
@@ -53,6 +54,7 @@ interface AuthGateProps {
   title?: string;
   subtitle?: string;
   signInButtonText?: string;
+  showBlurredChildren?: boolean;
   overlayClassName?: string;
   position?: "center" | "top";
 }
@@ -120,6 +122,7 @@ export function AuthGate({
   title = "Sign in required",
   subtitle = "Please sign in to access this content.",
   signInButtonText = "Sign in",
+  showBlurredChildren = true,
   overlayClassName,
   position = "center",
 }: AuthGateProps) {
@@ -145,16 +148,24 @@ export function AuthGate({
     }
   };
 
+  const authCard = (
+    <AuthCard
+      title={title}
+      subtitle={subtitle}
+      signInButtonText={signInButtonText}
+      onSignIn={handleSignIn}
+    />
+  );
+
+  // When blur is disabled, just show the auth card inline
+  if (!showBlurredChildren) {
+    return <div className="py-8">{authCard}</div>;
+  }
+
+  // Default: show with blur effect
   return (
     <OverlayGrid
-      overlay={
-        <AuthCard
-          title={title}
-          subtitle={subtitle}
-          signInButtonText={signInButtonText}
-          onSignIn={handleSignIn}
-        />
-      }
+      overlay={authCard}
       overlayClassName={overlayClassName}
       position={position}
     >

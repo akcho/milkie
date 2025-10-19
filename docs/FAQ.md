@@ -67,10 +67,10 @@ PaywallGate renders your protected content in the background with a `blur-sm` ef
 
 ### Q: Can I disable the blur effect?
 
-Yes! Use `applyBlur={false}`:
+Yes! Use `showBlurredChildren={false}`:
 
 ```tsx
-<PaywallGate applyBlur={false}>
+<PaywallGate showBlurredChildren={false}>
   <PremiumContent /> {/* Paywall card shown inline without blur */}
 </PaywallGate>
 ```

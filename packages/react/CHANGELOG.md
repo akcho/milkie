@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-10-19
+
+### Changed
+
+- Enhanced `AuthGate` documentation in package README with complete props list including `showBlurredChildren`, `onSignIn`, and `signInButtonText`
+- Added inline card example to AuthGate component README
+
+---
+
+## [0.2.0] - 2025-10-19
+
+### Breaking Changes
+
+- **BREAKING:** Renamed `applyBlur` prop to `showBlurredChildren` in both `PaywallGate` and `AuthGate` components for better semantic clarity
+  - Migration: Replace all instances of `applyBlur={value}` with `showBlurredChildren={value}` in your code
+  - The prop controls whether blurred content is shown behind the gate overlay (default: true)
+  - This change affects both `PaywallGate` and `AuthGate` components
+
+### Changed
+
+- Updated all documentation and examples to use `showBlurredChildren` prop
+- Updated TypeScript definitions to reflect the new prop name
+
+---
+
 ## [0.1.0] - 2025-10-19
 
 Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
@@ -20,7 +45,7 @@ Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
 - Error handling with retry capability
 - Loading states with skeleton loaders
 - Optional toast notification integration
-- `applyBlur` prop to control blur effect (enabled by default)
+- `showBlurredChildren` prop to control blur effect (enabled by default)
 - `position` prop for vertical card positioning ("center" or "top")
 - Full TypeScript support with comprehensive JSDoc documentation
 

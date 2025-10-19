@@ -48,6 +48,7 @@ All props are optional except `children`. Key props:
 - `signInUrl` - URL to redirect for sign-in (default: `/signin`)
 - `onSignIn` - Custom sign-in handler
 - `signInButtonText` - Customize button label
+- `showBlurredChildren` - Show blurred content preview (default: true)
 - `overlayClassName` - Custom Tailwind classes for card positioning
 - `position` - Vertical card position: `"center"` (default) or `"top"`
 
@@ -140,6 +141,16 @@ import { signIn } from "next-auth/react";
 >
   <ProtectedContent />
 </AuthGate>;
+```
+
+### 6. Inline Card (No Blur)
+
+Show the auth card inline without blurred content:
+
+```tsx
+<AuthGate showBlurredChildren={false}>
+  <ProtectedContent /> {/* Auth card shown inline without blur */}
+</AuthGate>
 ```
 
 ### 7. Layout-Level Gating

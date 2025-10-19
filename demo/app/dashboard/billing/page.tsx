@@ -7,11 +7,13 @@ import { ImplementationTip } from "@/components/implementation-tip";
 import { PageHeader } from "@/components/page-header";
 import { useCheckout } from "@/hooks/use-checkout";
 import { useCancelSubscription } from "@/hooks/use-cancel-subscription";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 
 export default function BillingPage() {
   const { status, email, hasAccess, checkSubscription } = usePaywall();
   const { startCheckout, isCheckingOut } = useCheckout();
   const { cancelSubscription, isCanceling } = useCancelSubscription();
+  const isMobile = useIsMobile();
 
   const handleSubscribe = () => {
     if (!email) return;
@@ -24,7 +26,7 @@ export default function BillingPage() {
   };
 
   return (
-    <AuthGate>
+    <AuthGate showBlurredChildren={!isMobile}>
       <div className="space-y-8 max-w-3xl mx-auto">
         <PageHeader
           title="Billing"

@@ -1,7 +1,6 @@
 # @milkie/react
 
 [![npm version](https://img.shields.io/npm/v/@milkie/react.svg)](https://www.npmjs.com/package/@milkie/react)
-[![npm downloads](https://img.shields.io/npm/dm/@milkie/react.svg)](https://www.npmjs.com/package/@milkie/react)
 [![license](https://img.shields.io/npm/l/@milkie/react.svg)](https://github.com/akcho/milkie/blob/main/LICENSE)
 
 > Stripe-powered paywall SDK for Next.js apps
@@ -137,7 +136,7 @@ Gate content behind a subscription paywall with built-in checkout flow.
 - `subscribeButtonText?: string` - Subscribe button text
 - `showBranding?: boolean` - Show "Powered by milkie" (default: true)
 - `onSignIn?: () => void` - Custom sign-in handler
-- `applyBlur?: boolean` - Show blurred content preview (default: true)
+- `showBlurredChildren?: boolean` - Show blurred content preview (default: true)
 - `position?: "center" | "top"` - Vertical card position (default: "center")
 
 **Basic usage:**
@@ -178,8 +177,11 @@ Gate content that requires sign-in but NOT an active subscription.
 
 - `children: ReactNode` - Content requiring authentication
 - `signInUrl?: string` - Where to redirect for sign-in (default: `/signin`)
+- `onSignIn?: () => void` - Custom sign-in handler
 - `title?: string` - Sign-in card title
 - `subtitle?: string` - Sign-in card subtitle
+- `signInButtonText?: string` - Sign-in button text
+- `showBlurredChildren?: boolean` - Show blurred content preview (default: true)
 - `position?: "center" | "top"` - Vertical card position (default: "center")
 
 **Usage:**
