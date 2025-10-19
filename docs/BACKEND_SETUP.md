@@ -6,11 +6,20 @@ This guide walks you through setting up the required backend infrastructure for 
 
 Milkie requires three API endpoints:
 
-1. **`/api/checkout`** - Creates Stripe checkout sessions
-2. **`/api/subscription/status`** - Checks user subscription status
-3. **`/api/webhooks/stripe`** - Handles Stripe webhook events
+1. **`POST /api/checkout`** - Creates Stripe checkout sessions
+2. **`GET /api/subscription/status`** - Checks user subscription status
+3. **`POST /api/webhooks/stripe`** - Handles Stripe webhook events
 
 Milkie provides **factory functions** that generate these routes for you. You just need to provide database adapters and configuration.
+
+### Key Features
+
+- **Database Agnostic** - Works with PostgreSQL, MySQL, SQLite, or any other database
+- **ORM Flexible** - Compatible with Drizzle, Prisma, or raw SQL
+- **Type-Safe** - Full TypeScript support with comprehensive interfaces
+- **Security Built-In** - Email validation, callback URL sanitization, webhook signature verification
+- **Race Condition Handling** - Gracefully handles concurrent requests
+- **Production Ready** - Used in production with comprehensive error handling
 
 ---
 
@@ -19,6 +28,7 @@ Milkie provides **factory functions** that generate these routes for you. You ju
 - Stripe account with API keys
 - Database (PostgreSQL, MySQL, SQLite, etc.)
 - ORM of your choice (Drizzle, Prisma, etc.)
+- Next.js 13+ (App Router) or your preferred framework
 
 ---
 
@@ -138,20 +148,6 @@ export const checkoutAdapter: CheckoutDatabaseAdapter = {
 import type { SubscriptionDatabaseAdapter } from "@milkie/react/api";
 
 export const subscriptionAdapter: SubscriptionDatabaseAdapter = {
-  async findUserByEmail(email: string) {
-    const user = await db.query.users.findFirst({
-      where: eq(schema.users.email, email),
-    });
-    return user || null;
-  },
-
-  async findActiveSubscription(userId: string) {
-    const subscription = await db.query.subscriptions.findFirst({
-      where: eq(schema.subscriptions.userId, userId),
-    });
-    return subscription || null;
-  },
-
   async findUserWithSubscription(email: string) {
     const user = await db.query.users.findFirst({
       where: eq(schema.users.email, email),
@@ -186,22 +182,20 @@ export const webhookAdapter: WebhookDatabaseAdapter = {
     return user || null;
   },
 
-  async findSubscription(subscriptionId: string) {
-    const subscription = await db.query.subscriptions.findFirst({
-      where: eq(schema.subscriptions.id, subscriptionId),
-    });
-    return subscription || null;
-  },
-
   async upsertSubscription(data: SubscriptionData) {
-    const existing = await this.findSubscription(data.id);
+    // Check if subscription exists
+    const existing = await db.query.subscriptions.findFirst({
+      where: eq(schema.subscriptions.id, data.id),
+    });
 
     if (existing) {
+      // Update existing subscription
       await db
         .update(schema.subscriptions)
         .set(data)
         .where(eq(schema.subscriptions.id, data.id));
     } else {
+      // Create new subscription
       await db.insert(schema.subscriptions).values(data);
     }
   },
@@ -222,6 +216,8 @@ export const webhookAdapter: WebhookDatabaseAdapter = {
 ### 1. Checkout Route
 
 **`app/api/checkout/route.ts`**
+
+#### Basic Setup (Email in Request Body)
 
 ```ts
 import { createCheckoutRoute } from "@milkie/react/api";
@@ -244,6 +240,60 @@ export const POST = createCheckoutRoute({
 });
 ```
 
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "callbackUrl": "/dashboard" // Optional: redirect after checkout
+}
+```
+
+#### Recommended: With Authentication
+
+For production apps, we **strongly recommend** requiring authentication before checkout:
+
+```ts
+import { auth } from "@/auth"; // NextAuth example
+
+export const POST = createCheckoutRoute({
+  stripe,
+  db: checkoutAdapter,
+  priceId: process.env.STRIPE_PRICE_ID,
+  appUrl: process.env.NEXT_PUBLIC_APP_URL,
+  // Recommended: Require authentication
+  authenticate: async (request) => {
+    const session = await auth();
+    if (!session?.user?.email) {
+      throw new Error("You must be logged in to subscribe");
+    }
+    return session.user.email; // Email from authenticated session
+  },
+});
+```
+
+With `authenticate`, the email is extracted from the authenticated session instead of the request body. This prevents users from subscribing with arbitrary email addresses.
+
+**Request Body (with authenticate):**
+```json
+{
+  "callbackUrl": "/dashboard" // Optional: redirect after checkout
+}
+```
+
+**Response:**
+```json
+{
+  "url": "https://checkout.stripe.com/..."
+}
+```
+
+**Security Features:**
+- ✅ Email validation (RFC 5321 compliant)
+- ✅ Callback URL sanitization (prevents open redirects, XSS, path traversal)
+- ✅ Race condition handling for concurrent requests
+- ✅ Idempotency keys prevent duplicate checkout sessions
+- ✅ PII sanitization in error logs
+
 ### 2. Subscription Status Route
 
 **`app/api/subscription/status/route.ts`**
@@ -254,6 +304,40 @@ import { subscriptionAdapter } from "@/lib/milkie-adapter";
 
 export const GET = createSubscriptionStatusRoute({
   db: subscriptionAdapter,
+});
+```
+
+**Query Parameters:**
+```
+GET /api/subscription/status?email=user@example.com
+```
+
+**Response:**
+```json
+{
+  "hasAccess": true,
+  "status": "active",
+  "currentPeriodEnd": "2025-11-18T00:00:00.000Z"
+}
+```
+
+**Subscription Statuses:**
+- `active` - Subscription is active (grants access)
+- `trialing` - In trial period (grants access by default)
+- `past_due` - Payment failed, grace period (no access by default)
+- `canceled` - Subscription canceled (no access)
+- `unpaid` - Payment failed, no grace period (no access)
+- `incomplete` - Initial payment failed (no access)
+- `incomplete_expired` - Payment never completed (no access)
+- `no_subscription` - User has no subscription (no access)
+
+By default, only `active` and `trialing` statuses grant access. You can customize this behavior:
+
+```ts
+export const GET = createSubscriptionStatusRoute({
+  db: subscriptionAdapter,
+  // Optional: Customize which statuses grant access
+  allowedStatuses: ['active', 'trialing', 'past_due'], // Allow grace period
 });
 ```
 
@@ -277,6 +361,39 @@ export const POST = createWebhookRoute({
 });
 ```
 
+**Handled Webhook Events:**
+
+The webhook route automatically handles these Stripe events:
+
+- `checkout.session.completed` - Triggered when a customer completes checkout
+  - Creates or updates subscription in your database
+  - Links subscription to user via Stripe customer ID
+
+- `customer.subscription.created` - Triggered when a subscription is created
+  - Stores subscription details (status, price, billing period)
+
+- `customer.subscription.updated` - Triggered when subscription changes
+  - Updates status, billing period, cancellation status
+  - Handles plan changes, renewals, and updates
+
+- `customer.subscription.deleted` - Triggered when subscription ends
+  - Updates status to "canceled"
+  - Revokes access
+
+**Security:**
+- ✅ Webhook signature verification using `STRIPE_WEBHOOK_SECRET`
+- ✅ Prevents replay attacks and unauthorized requests
+- ✅ Validates subscription data integrity
+
+**Response:**
+```json
+{
+  "received": true
+}
+```
+
+**Important:** Your webhook endpoint must be publicly accessible for Stripe to send events. See [Webhook Configuration](#webhook-configuration) below for setup instructions.
+
 ---
 
 ## Stripe Configuration
@@ -293,7 +410,8 @@ if (!process.env.STRIPE_SECRET_KEY) {
 }
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2024-11-20.acacia",
+  apiVersion: "2025-09-30.clover",
+  typescript: true,
 });
 ```
 
@@ -304,23 +422,32 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 Add these to your `.env.local`:
 
 ```bash
-# Stripe
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_PRICE_ID=price_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-
-# App
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-
 # Database
-DATABASE_URL=postgresql://...
+POSTGRES_URL=postgresql://user:pass@host:port/db?sslmode=require
+
+# Stripe Configuration (Required)
+STRIPE_SECRET_KEY=sk_test_... # or sk_live_... for production
+STRIPE_PRICE_ID=price_xxxxx
+STRIPE_WEBHOOK_SECRET=whsec_xxxxx
+
+# Application (Required)
+NEXT_PUBLIC_APP_URL=http://localhost:3000 # production: https://yourdomain.com
+
+# Authentication (Optional - only if using NextAuth)
+AUTH_SECRET=<generate with: openssl rand -base64 32>
+GOOGLE_CLIENT_ID=<from Google Cloud Console>
+GOOGLE_CLIENT_SECRET=<from Google Cloud Console>
 ```
 
 ### Getting Your Keys
 
 1. **STRIPE_SECRET_KEY**: [Stripe Dashboard → Developers → API Keys](https://dashboard.stripe.com/apikeys)
+   - Use `sk_test_...` for development
+   - Use `sk_live_...` for production
+   - ⚠️ Keep this secret - never expose in client-side code
 2. **STRIPE_PRICE_ID**: [Stripe Dashboard → Products](https://dashboard.stripe.com/products) → Create a product → Copy the price ID
 3. **STRIPE_WEBHOOK_SECRET**: [Stripe Dashboard → Developers → Webhooks](https://dashboard.stripe.com/webhooks) → Add endpoint → Copy the signing secret
+   - Different secrets for local development (from Stripe CLI) and production
 
 ---
 
@@ -398,25 +525,291 @@ These ensure your adapters implement the correct interface.
 
 ---
 
+## Error Handling
+
+Milkie's factory functions return proper HTTP status codes and error messages:
+
+### Common Errors
+
+**400 Bad Request:**
+- Missing required fields (email, etc.)
+- Invalid email format
+- Invalid callback URL
+- Email too long (max 254 characters)
+
+**404 Not Found:**
+- User not found for subscription check
+- Customer not found in database
+
+**500 Internal Server Error:**
+- Database errors
+- Stripe API errors
+- Unexpected errors
+
+**Error Response Format:**
+```json
+{
+  "error": "Description of what went wrong",
+  "code": "ERROR_CODE" // Optional
+}
+```
+
+### PII Protection
+
+Error messages automatically sanitize sensitive information:
+```ts
+// Email addresses are redacted in logs
+"user@example.com" → "use***@example.com"
+```
+
+---
+
 ## Troubleshooting
 
 ### Webhook signature verification fails
 
-- Ensure `STRIPE_WEBHOOK_SECRET` is set correctly
-- For local dev, use the secret from `stripe listen` output
-- For production, use the secret from Stripe dashboard
+**Symptoms:** Webhook endpoint returns 400 error, "No stripe-signature header" or "Invalid signature"
+
+**Solutions:**
+- Ensure `STRIPE_WEBHOOK_SECRET` is set correctly in your `.env.local`
+- For **local development**: Use the secret from `stripe listen` output (starts with `whsec_`)
+- For **production**: Use the secret from Stripe Dashboard → Webhooks
+- Verify you're using the correct secret for your environment (test vs live mode)
+- Check that your webhook route is accessible at the URL you configured in Stripe
 
 ### Subscription status not updating
 
-- Check webhook events are being received
-- Verify database adapter is correctly updating subscriptions
-- Check Stripe dashboard for webhook delivery attempts
+**Symptoms:** User completes checkout but `hasAccess` remains false
+
+**Solutions:**
+- Check webhook events are being received in Stripe Dashboard → Webhooks → Events
+- Verify your webhook adapter's `upsertSubscription` function is working correctly
+- Check database for subscription records: `SELECT * FROM subscriptions WHERE user_id = '...'`
+- Ensure webhook secret matches between your `.env.local` and Stripe CLI / Dashboard
+- Check Next.js server logs for webhook processing errors
 
 ### User not found errors
 
-- Ensure users are created during checkout
-- Verify `stripeCustomerId` is being saved correctly
-- Check database queries in your adapters
+**Symptoms:** 404 errors when checking subscription status or processing webhooks
+
+**Solutions:**
+- Ensure users are created during checkout (check `createUser` in checkout adapter)
+- Verify `stripeCustomerId` is being saved correctly in the database
+- Check that email addresses match exactly (including case sensitivity)
+- Verify database foreign key relationships are set up correctly
+- Use `findUserByEmail` to confirm user exists: `SELECT * FROM users WHERE email = '...'`
+
+### Race conditions during checkout
+
+**Symptoms:** "Unique constraint violation" or duplicate user errors
+
+**Solutions:**
+- Milkie handles this automatically - check your database adapter handles unique constraints
+- Ensure your `users` table has a UNIQUE constraint on the email column
+- The checkout adapter should catch duplicate key errors and retry the operation
+- Check server logs for "duplicate key" or "unique constraint" messages
+
+### Checkout session creation fails
+
+**Symptoms:** "Invalid price ID" or "Price not found" errors
+
+**Solutions:**
+- Verify `STRIPE_PRICE_ID` in your `.env.local` matches a price in your Stripe Dashboard
+- Ensure the price is for a recurring product (subscription), not a one-time payment
+- Check that you're using the correct Stripe account (test mode vs live mode)
+- Verify `STRIPE_SECRET_KEY` matches the mode of your price ID (`sk_test_` with test prices)
+
+### Database connection errors
+
+**Symptoms:** "Failed to connect to database" or timeout errors
+
+**Solutions:**
+- Verify `POSTGRES_URL` (or your database URL) is correct in `.env.local`
+- Check that your database server is running and accessible
+- Ensure your database has the correct schema (run migrations: `npx drizzle-kit push`)
+- Verify firewall rules allow connections from your app server
+- For Neon/Vercel Postgres: Ensure SSL mode is enabled (`?sslmode=require`)
+
+### "Email is required" with authenticate function
+
+**Symptoms:** Checkout fails even though user is logged in
+
+**Solutions:**
+- Verify your `authenticate` function is returning the user's email
+- Check that the session contains an email field: `session.user.email`
+- Ensure your auth provider is configured correctly (NextAuth, Clerk, etc.)
+- Test the session manually: `const session = await auth(); console.log(session);`
+
+### Callback URL not working
+
+**Symptoms:** After checkout, user is redirected to wrong page or default URL
+
+**Solutions:**
+- Verify `callbackUrl` in request body is a relative path (e.g., `/dashboard`)
+- Do NOT use absolute URLs (security restriction)
+- Check that `NEXT_PUBLIC_APP_URL` is set correctly
+- Milkie sanitizes callback URLs to prevent open redirects - check server logs for validation errors
+
+---
+
+## Advanced Configuration
+
+### Custom Test Mode Detection
+
+By default, Milkie auto-detects test mode from your Stripe secret key. You can override this:
+
+```ts
+export const POST = createCheckoutRoute({
+  stripe,
+  db: checkoutAdapter,
+  priceId: process.env.STRIPE_PRICE_ID,
+  appUrl: process.env.NEXT_PUBLIC_APP_URL,
+  isTestMode: true, // Force test mode
+});
+```
+
+This shows test card helper text in Stripe Checkout, even if using a live key (useful for staging environments).
+
+### Custom Allowed Subscription Statuses
+
+Control which subscription statuses grant access:
+
+```ts
+export const GET = createSubscriptionStatusRoute({
+  db: subscriptionAdapter,
+  // Default: ['active', 'trialing']
+  allowedStatuses: ['active', 'trialing', 'past_due'], // Include grace period
+});
+```
+
+### Using with Other Frameworks
+
+While our examples use Next.js, Milkie's factory functions work with any framework that supports Web APIs:
+
+#### Express.js Example
+
+```ts
+import express from 'express';
+import { createCheckoutRoute } from '@milkie/react/api';
+
+const app = express();
+
+const checkoutHandler = createCheckoutRoute({
+  stripe,
+  db: checkoutAdapter,
+  priceId: process.env.STRIPE_PRICE_ID,
+  appUrl: process.env.APP_URL,
+});
+
+app.post('/api/checkout', async (req, res) => {
+  const request = new Request('http://localhost/api/checkout', {
+    method: 'POST',
+    body: JSON.stringify(req.body),
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  const response = await checkoutHandler(request);
+  const data = await response.json();
+
+  res.status(response.status).json(data);
+});
+```
+
+---
+
+## Best Practices
+
+### 1. Environment Variables
+
+- ✅ **DO** use different Stripe keys for development and production
+- ✅ **DO** keep webhook secrets separate for each environment
+- ✅ **DO** use `.env.local` (gitignored) for local secrets
+- ✅ **DO** use platform environment variables (Vercel, Railway, etc.) for production
+- ❌ **DON'T** commit secrets to version control
+- ❌ **DON'T** share webhook secrets between environments
+
+### 2. Database
+
+- ✅ **DO** add indexes on frequently queried columns:
+  ```sql
+  CREATE INDEX idx_users_email ON users(email);
+  CREATE INDEX idx_users_stripe_customer_id ON users(stripe_customer_id);
+  CREATE INDEX idx_subscriptions_user_id ON subscriptions(user_id);
+  CREATE INDEX idx_subscriptions_status ON subscriptions(status);
+  ```
+- ✅ **DO** use database migrations for schema changes
+- ✅ **DO** back up your database regularly
+- ❌ **DON'T** delete subscription records (soft delete with status instead)
+
+### 3. Security
+
+- ✅ **DO** require authentication for checkout (use `authenticate` function)
+- ✅ **DO** validate webhook signatures
+- ✅ **DO** use HTTPS in production
+- ✅ **DO** rate-limit your API endpoints
+- ❌ **DON'T** expose database errors to clients
+- ❌ **DON'T** trust client-side subscription checks alone (always verify server-side)
+
+### 4. Testing
+
+- ✅ **DO** test the complete checkout flow locally with Stripe CLI
+- ✅ **DO** use Stripe test cards: `4242 4242 4242 4242`
+- ✅ **DO** test webhook event handling for all scenarios:
+  - Successful subscription creation
+  - Subscription updates
+  - Payment failures
+  - Subscription cancellations
+- ✅ **DO** verify database updates after each webhook event
+- ❌ **DON'T** use real credit cards in test mode
+
+### 5. Error Handling
+
+- ✅ **DO** log errors with context (but redact PII)
+- ✅ **DO** monitor webhook delivery in Stripe Dashboard
+- ✅ **DO** set up alerts for failed webhook events
+- ✅ **DO** handle race conditions gracefully
+- ❌ **DON'T** expose internal error details to users
+- ❌ **DON'T** log full email addresses or payment details
+
+### 6. Performance
+
+- ✅ **DO** use database connection pooling
+- ✅ **DO** optimize database queries (use joins instead of multiple queries)
+- ✅ **DO** cache subscription status when appropriate
+- ❌ **DON'T** make Stripe API calls on every page load (use webhooks to sync data)
+
+---
+
+## Production Deployment Checklist
+
+### Before Deploying
+
+- [ ] Test complete checkout flow locally with Stripe CLI
+- [ ] Verify all webhook events are handled correctly in local environment
+- [ ] Set up production Stripe account and get live API keys
+- [ ] Create production database and run migrations
+- [ ] Add all required environment variables to production platform
+- [ ] Document your setup for team members
+
+### During Deployment
+
+- [ ] Deploy application to production
+- [ ] Verify HTTPS is enabled on your domain
+- [ ] Configure production webhook endpoint in Stripe Dashboard
+- [ ] Set up database backups
+- [ ] Configure error monitoring (Sentry, LogRocket, etc.)
+- [ ] Add rate limiting to API routes
+
+### After Deployment
+
+- [ ] Test complete checkout flow in production with Stripe test mode
+- [ ] Verify webhook events are being received and processed (check Stripe Dashboard)
+- [ ] Test subscription status check endpoint
+- [ ] Verify database records are created correctly
+- [ ] Set up alerts for failed payments and webhook deliveries
+- [ ] Test subscription cancellation flow
+- [ ] Monitor error logs for the first few hours
+- [ ] Switch to Stripe live mode and process a real test transaction (then refund)
 
 ---
 
