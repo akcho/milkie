@@ -4,7 +4,7 @@ Get started with Milkie in minutes - either use the package in your project or r
 
 ---
 
-## ⚡ Quick Start - Using @milkie/react (5 minutes)
+## ⚡ Add to Your App
 
 Add subscriptions to your existing Next.js app.
 
@@ -107,7 +107,7 @@ export default function PremiumPage() {
 
 ---
 
-## 💻 Run the Demo Locally (15 min)
+## 💻 Run the Demo Locally
 
 Want to explore the code and see how it works under the hood?
 
@@ -118,7 +118,7 @@ Want to explore the code and see how it works under the hood?
 - Stripe account (free test mode)
 - Stripe CLI
 
-## Step 1: Set Up Google OAuth (3 min)
+## Step 1: Set Up Google OAuth
 
 1. Go to https://console.cloud.google.com/apis/credentials
 2. Create a new project or select existing
@@ -128,7 +128,7 @@ Want to explore the code and see how it works under the hood?
 6. Authorized redirect URIs: `http://localhost:3000/api/auth/callback/google`
 7. Click **"Create"** and copy the **Client ID** and **Client Secret**
 
-## Step 2: Set Up Stripe (5 min)
+## Step 2: Set Up Stripe
 
 ### Get API Keys
 
@@ -149,7 +149,7 @@ Want to explore the code and see how it works under the hood?
 4. Click **"Save product"**
 5. Copy the **Price ID** (starts with `price_`)
 
-## Step 3: Set Up the Project (3 min)
+## Step 3: Set Up the Project
 
 ```bash
 # Clone and navigate to demo
@@ -165,7 +165,7 @@ brew install stripe/stripe-cli/stripe
 stripe login
 ```
 
-## Step 4: Configure Environment (2 min)
+## Step 4: Configure Environment
 
 Edit `demo/.env.local` and paste your keys:
 
@@ -192,7 +192,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 openssl rand -base64 32
 ```
 
-## Step 5: Run It (2 min)
+## Step 5: Run It
 
 **Terminal 1 - Start the app:**
 
@@ -277,9 +277,10 @@ Once you have it running:
 
 2. **Check the code:**
 
-   - `demo/lib/milkie/` - The SDK (what becomes the npm package)
    - `demo/app/mixed/page.tsx` - Component gating example
    - `demo/app/dashboard/layout.tsx` - Layout gating example
+   - `demo/lib/milkie-adapter.ts` - Database adapter implementation
+   - `packages/react/` - The actual npm package source code
 
 3. **Verify persistence:**
 

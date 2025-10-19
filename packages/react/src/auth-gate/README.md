@@ -31,30 +31,16 @@ export default function ProtectedPage() {
 }
 ```
 
-## Component Architecture
+## Component Flow
 
-### File Structure
-
-```
-auth-gate/
-├── index.tsx                 # Main AuthGate component
-├── components/
-│   └── auth-card.tsx         # Sign-in card UI
-└── README.md                 # This file
-```
-
-### Component Flow
-
-1. **Loading State**: Shows `LoadingState` component while checking authentication
+1. **Loading State**: Shows loading component while checking authentication
 2. **Authenticated**: If user has email/session, renders children immediately
 3. **Not Authenticated**: Shows sign-in overlay with blurred content preview
 4. **Sign-In Action**: Handles redirect or custom sign-in logic
 
 ## Props
 
-All props are optional except `children`. See the TypeScript interface in [index.tsx](./index.tsx) for complete prop documentation with JSDoc comments.
-
-Key props:
+All props are optional except `children`. Key props:
 
 - `children` - Content to protect (required)
 - `title`, `subtitle` - Customize sign-in overlay messaging
@@ -62,7 +48,9 @@ Key props:
 - `signInUrl` - URL to redirect for sign-in (default: `/signin`)
 - `onSignIn` - Custom sign-in handler
 - `signInButtonText` - Customize button label
-- `overlayClassName` - Custom Tailwind classes for positioning the card (e.g., `"py-8"` for vertical padding)
+- `overlayClassName` - Custom Tailwind classes for card positioning
+
+See [index.tsx](./index.tsx) for complete TypeScript documentation.
 
 ## Usage Examples
 
@@ -119,19 +107,7 @@ export default function BlogPost() {
 }
 ```
 
-### 4. Custom Sign-In URL
-
-Redirect to a custom authentication page:
-
-```tsx
-<AuthGate signInUrl="/auth/login">
-  <ProtectedContent />
-</AuthGate>
-```
-
-### 5. Custom Sign-In Handler
-
-Override default redirect with custom logic:
+### 4. Custom Sign-In Handler
 
 ```tsx
 import { signIn } from "next-auth/react";
@@ -144,7 +120,7 @@ import { signIn } from "next-auth/react";
 </AuthGate>;
 ```
 
-### 6. Multiple Authentication Providers
+### 5. Multiple Authentication Providers
 
 Show different sign-in options:
 
@@ -167,41 +143,26 @@ import { signIn } from "next-auth/react";
 
 ### 7. Layout-Level Gating
 
-Protect entire sections of your app:
-
 ```tsx
 // app/dashboard/layout.tsx
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }) {
   return (
-    <AuthGate
-      title="Dashboard Access"
-      subtitle="Please sign in to access your dashboard"
-    >
+    <AuthGate title="Dashboard Access">
       <DashboardNav />
-      <div className="dashboard-content">{children}</div>
+      {children}
     </AuthGate>
   );
 }
 ```
 
-### 8. Free Content with Optional Sign-In
-
-Gate optional features while keeping main content public:
+### 8. Mixed Public/Gated Content
 
 ```tsx
 export default function ArticlePage() {
   return (
     <div>
       <Article />
-
-      <AuthGate
-        title="Sign in to join the discussion"
-        subtitle="Share your thoughts in the comments"
-      >
+      <AuthGate title="Sign in to join the discussion">
         <CommentSection />
       </AuthGate>
     </div>
@@ -209,109 +170,28 @@ export default function ArticlePage() {
 }
 ```
 
-### 9. User Profile Pages
-
-Protect user-specific content:
-
-```tsx
-export default function ProfilePage() {
-  return (
-    <AuthGate
-      title="View your profile"
-      subtitle="Sign in to manage your account settings"
-    >
-      <UserProfile />
-      <AccountSettings />
-    </AuthGate>
-  );
-}
-```
-
-### 10. Conditional Gating
-
-Combine with other conditions:
-
-```tsx
-"use client";
-import { usePaywall } from "@milkie/react";
-
-export default function ConditionalPage() {
-  const { email } = usePaywall();
-  const needsAuth = !email;
-
-  if (needsAuth) {
-    return (
-      <AuthGate>
-        <ProtectedContent />
-      </AuthGate>
-    );
-  }
-
-  return <ProtectedContent />;
-}
-```
-
 ## Styling
 
-The AuthGate uses Tailwind CSS with CSS variables for theming. It's compatible with shadcn/ui themes.
+AuthGate uses Tailwind CSS with CSS variables (compatible with shadcn/ui themes).
 
-### Required CSS Variables
+If not using shadcn/ui, either add the required CSS variables to `globals.css` or use the `customUi` prop for custom styling. See the [package README](../../README.md#styling) for details.
 
-```css
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --border: 214.3 31.8% 91.4%;
-    --radius: 0.5rem;
-  }
-}
-```
+## Features
 
-### Custom Styling
+**State Management:** Authentication state from `usePaywall()` hook (no checkout state - authentication only).
 
-If you're not using shadcn/ui, you can either:
+**Accessibility:** ARIA attributes, semantic HTML, and loading states for screen readers.
 
-1. Add the CSS variables above to your `globals.css`
-2. Use the `customUi` prop to provide fully custom styled components
-
-## State Management
-
-Internal state from `usePaywall()` hook:
-
-- `loading`: Boolean indicating authentication check in progress
-- `email`: User's email from MilkieProvider (null if not authenticated)
-
-Unlike `PaywallGate`, `AuthGate` doesn't manage checkout state - it only cares about authentication.
-
-## Accessibility
-
-The component includes basic accessibility features:
-
-- Blurred content is marked with `aria-hidden="true"` to hide from screen readers
-- Semantic HTML structure with proper button elements
-- Loading text for screen reader context during async operations
-- Keyboard navigation support
-
-## Performance Considerations
-
-- Authentication status cached in MilkieProvider context
-- No unnecessary re-renders when authenticated
-- Loading states prevent layout shift
-- Minimal client-side JavaScript
+**Performance:** Cached authentication status, minimal re-renders, layout shift prevention.
 
 ## Best Practices
 
-1. **Use with MilkieProvider**: Always wrap your app with `<MilkieProvider>` first
-2. **Consistent Messaging**: Use similar titles/subtitles across your app
-3. **Clear CTAs**: Make sign-in button text action-oriented
-4. **Strategic Placement**: Place AuthGate as close to protected content as possible
-5. **Content Preview**: Default blur effect shows users what they're missing
-6. **Combine with PaywallGate**: Use AuthGate for authentication, PaywallGate for subscriptions
+- Always wrap your app with `<MilkieProvider>` first
+- Use consistent messaging across your app
+- Make sign-in button text action-oriented
+- Place AuthGate as close to protected content as possible
+- Use blur effect (default) to show users what they're missing
+- Combine with PaywallGate: AuthGate for authentication, PaywallGate for subscriptions
 
 ## AuthGate vs PaywallGate
 
@@ -381,29 +261,9 @@ Or use them independently:
 </div>
 ```
 
-## Related Components
+## Related
 
 - [`MilkieProvider`](../provider.tsx) - Required context provider
 - [`PaywallGate`](../paywall-gate/index.tsx) - For subscription-based gating
-- [`usePaywall`](../provider.tsx) - Hook for custom authentication logic
-
-## TypeScript Support
-
-All components are fully typed with TypeScript. Import types from the package:
-
-```tsx
-import type { AuthGateProps } from "@milkie/react";
-```
-
-## Examples in Demo App
-
-See the [live demo](https://milkie.dev) for interactive examples:
-
-- Basic authentication gate
-- Custom sign-in handlers
-- Mixed content pages
-- Layout-level gating
-
-## License
-
-MIT - see [LICENSE](https://github.com/akcho/milkie/blob/main/LICENSE)
+- [`usePaywall`](../provider.tsx) - Hook for custom logic
+- [Live Demo](https://milkie.dev) - Interactive examples

@@ -35,33 +35,16 @@ export default function PremiumPage() {
 }
 ```
 
-## Component Architecture
+## Component Flow
 
-### File Structure
-
-```
-paywall-gate/
-├── index.tsx                 # Main PaywallGate component
-├── utils.ts                  # Checkout utilities
-├── components/
-│   ├── paywall-card.tsx      # Paywall UI card
-│   ├── user-info.tsx         # User email display
-│   └── checkout-error.tsx    # Error message display
-└── README.md                 # This file
-```
-
-### Component Flow
-
-1. **Loading State**: Shows `LoadingState` component while checking subscription
+1. **Loading State**: Shows loading component while checking subscription
 2. **Access Check**: If user has access, renders children immediately
 3. **No Access**: Shows paywall UI (custom or default)
 4. **Checkout Flow**: Handles Stripe checkout process on subscribe click
 
 ## Props
 
-All props are optional except `children`. See the TypeScript interface in [index.tsx](./index.tsx) for complete prop documentation with JSDoc comments.
-
-Key props:
+All props are optional except `children`. Key props:
 
 - `children` - Premium content to protect (required)
 - `title`, `subtitle` - Customize paywall messaging
@@ -70,7 +53,9 @@ Key props:
 - `onCheckout` - Custom checkout handler
 - `onToast` - Toast notification callback
 - `showBranding` - Toggle "Powered by milkie" footer
-- `overlayClassName` - Custom Tailwind classes for positioning the card (e.g., `"py-8"` for vertical padding)
+- `overlayClassName` - Custom Tailwind classes for card positioning
+
+See [index.tsx](./index.tsx) for complete TypeScript documentation.
 
 ## Usage Examples
 
@@ -125,120 +110,64 @@ export default function ArticlePage() {
 }
 ```
 
-### 4. No Blur Effect
-
-Show paywall card inline without content preview:
-
-```tsx
-<PaywallGate disableBlur>
-  <PremiumFeatures />
-</PaywallGate>
-```
-
-### 5. Custom Icon
-
-Use your own icon/logo:
+### 4. Custom Icon & Sign-In Handler
 
 ```tsx
 import { Crown } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 <PaywallGate
   icon={<Crown className="h-12 w-12 text-yellow-500" />}
   title="Premium Members Only"
+  onSignIn={() => signIn()}
+  disableBlur // No blur effect
 >
   <PremiumContent />
 </PaywallGate>;
 ```
 
-### 6. Custom Sign-In Handler
-
-Override default sign-in redirect:
-
-```tsx
-import { signIn } from "next-auth/react";
-
-<PaywallGate onSignIn={() => signIn()} signInButtonText="Sign in with GitHub">
-  <PremiumContent />
-</PaywallGate>;
-```
-
-### 7. Custom Checkout Handler
-
-Implement custom checkout logic:
-
-```tsx
-<PaywallGate
-  onCheckout={async (email) => {
-    // Your custom checkout logic
-    const session = await createCustomCheckoutSession(email, {
-      priceId: "price_custom_plan",
-      trialDays: 14,
-    });
-
-    return { url: session.url };
-  }}
->
-  <PremiumContent />
-</PaywallGate>
-```
-
-### 8. With Toast Notifications
-
-Integrate with your toast system:
+### 5. Custom Checkout & Toast Integration
 
 ```tsx
 import { toast } from "sonner";
 
 <PaywallGate
-  onToast={(message, type) => {
-    toast[type](message);
+  onCheckout={async (email) => {
+    const session = await createCustomCheckoutSession(email, {
+      priceId: "price_custom_plan",
+      trialDays: 14,
+    });
+    return { url: session.url };
   }}
+  onToast={(message, type) => toast[type](message)}
 >
   <PremiumContent />
 </PaywallGate>;
 ```
 
-### 9. Fully Custom UI
-
-Replace the entire paywall UI:
+### 6. Fully Custom UI
 
 ```tsx
-<PaywallGate
-  customUi={
-    <div className="custom-paywall">
-      <h2>Custom Paywall Design</h2>
-      <button onClick={handleCustomCheckout}>Subscribe Now</button>
-    </div>
-  }
->
+<PaywallGate customUi={<YourCustomPaywall />}>
   <PremiumContent />
 </PaywallGate>
 ```
 
-### 10. Layout-Level Gating
-
-Protect entire sections of your app:
+### 7. Layout-Level Gating
 
 ```tsx
 // app/dashboard/layout.tsx
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }) {
   return (
-    <PaywallGate
-      title="Premium Dashboard"
-      subtitle="Subscribe to access advanced features"
-    >
+    <PaywallGate title="Premium Dashboard">
       <DashboardNav />
-      <div className="dashboard-content">{children}</div>
+      {children}
     </PaywallGate>
   );
 }
 ```
 
-### 11. Metered Paywall (NYT/Medium Style)
+### 8. Metered Paywall (NYT/Medium Style)
 
 Implement article view limits:
 
@@ -269,34 +198,9 @@ export default function ArticlePage() {
 
 ## Styling
 
-The PaywallGate uses Tailwind CSS with CSS variables for theming. It's compatible with shadcn/ui themes.
+PaywallGate uses Tailwind CSS with CSS variables (compatible with shadcn/ui themes).
 
-### Required CSS Variables
-
-```css
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --border: 214.3 31.8% 91.4%;
-    --destructive: 0 84.2% 60.2%;
-    --radius: 0.5rem;
-  }
-}
-```
-
-### Custom Styling
-
-If you're not using shadcn/ui, you can either:
-
-1. Add the CSS variables above to your `globals.css`
-2. Use the `customUi` prop to provide fully custom styled components
+If not using shadcn/ui, either add the required CSS variables to `globals.css` or use the `customUi` prop for custom styling. See the [package README](../../README.md#styling) for details.
 
 ## API Integration
 
@@ -318,52 +222,24 @@ export const POST = createCheckoutRoute({
 
 For custom checkout endpoints, use the `onCheckout` prop.
 
-## Error Handling
+## Features
 
-The component handles several error scenarios:
+**Error Handling:** Network errors, checkout failures, and invalid states are handled with user-friendly messages and retry capability.
 
-1. **Network Errors**: When the checkout API is unreachable
-2. **Checkout Failures**: When Stripe checkout session creation fails
-3. **Invalid States**: When user email is missing
+**State Management:** Manages checkout state internally; subscription state comes from `usePaywall()` hook.
 
-All errors display a user-friendly message with retry capability. Use `onToast` to display errors in your app's toast system.
+**Accessibility:** ARIA attributes, semantic HTML, and loading states for screen readers.
 
-## State Management
-
-Internal state managed by PaywallGate:
-
-- `isCheckingOut`: Boolean indicating checkout process in progress
-- `checkoutError`: String containing error message (null if no error)
-
-External state from `usePaywall()` hook:
-
-- `hasAccess`: Boolean indicating subscription status
-- `loading`: Boolean indicating status check in progress
-- `email`: User's email from MilkieProvider
-
-## Accessibility
-
-The component includes basic accessibility features:
-
-- Blurred content is marked with `aria-hidden="true"` to hide from screen readers
-- Semantic HTML structure with proper button elements
-- Loading text for screen reader context during async operations
-
-## Performance Considerations
-
-- Checkout process uses client-side fetch for minimal latency
-- Loading states prevent layout shift
-- Subscription status cached in MilkieProvider context
-- No unnecessary re-renders when access is granted
+**Performance:** Client-side checkout, cached subscription status, minimal re-renders.
 
 ## Best Practices
 
-1. **Use with MilkieProvider**: Always wrap your app with `<MilkieProvider>` first
-2. **Consistent Messaging**: Use similar titles/subtitles across your app
-3. **Error Handling**: Implement `onToast` for better UX
-4. **Custom Checkout**: Use `onCheckout` for complex pricing models
-5. **Performance**: Place PaywallGate as close to protected content as possible
-6. **Content Preview**: Use blur effect (default) to show users what they're missing
+- Always wrap your app with `<MilkieProvider>` first
+- Use consistent messaging across your app
+- Implement `onToast` for better error UX
+- Use `onCheckout` for complex pricing models
+- Place PaywallGate as close to protected content as possible
+- Use blur effect (default) to show users what they're missing
 
 ## Troubleshooting
 
@@ -384,30 +260,9 @@ The component includes basic accessibility features:
 - Verify `customUi` prop contains valid React component
 - Check that component is client-compatible (no server-only code)
 
-## Related Components
+## Related
 
 - [`MilkieProvider`](../provider.tsx) - Required context provider
 - [`AuthGate`](../auth-gate/index.tsx) - For authentication-only gating
-- [`usePaywall`](../provider.tsx) - Hook for custom paywall logic
-
-## TypeScript Support
-
-All components are fully typed with TypeScript. Import types from the package:
-
-```tsx
-import type { PaywallGateProps } from "@milkie/react";
-```
-
-## Examples in Demo App
-
-See the [live demo](https://milkie.dev) for interactive examples:
-
-- Basic paywall
-- Metered paywall
-- Custom styling
-- Layout-level gating
-- Mixed content pages
-
-## License
-
-MIT - see [LICENSE](https://github.com/akcho/milkie/blob/main/LICENSE)
+- [`usePaywall`](../provider.tsx) - Hook for custom logic
+- [Live Demo](https://milkie.dev) - Interactive examples

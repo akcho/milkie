@@ -6,7 +6,7 @@
 
 > Drop-in paywall infrastructure for Next.js apps
 
-Add Stripe subscriptions to your app in minutes. Works with NextAuth, Clerk, Lucia, Supabase - any auth solution that provides an email.
+Add Stripe subscriptions in minutes. Works with any auth provider (NextAuth, Clerk, Lucia, Supabase, etc.).
 
 ```tsx
 <MilkieProvider email={session.user.email}>
@@ -74,91 +74,32 @@ On the roadmap:
 npm install @milkie/react
 ```
 
-## ⚡ Quick Start (5 minutes)
+## ⚡ Quick Start
 
-### 1. Set up your backend
+**3 steps to add paywalls:**
 
-Create 3 API routes using Milkie's factory functions:
+1. Create 3 API routes ([guide](docs/BACKEND_SETUP.md))
+2. Wrap your app: `<MilkieProvider email={session?.user?.email}>`
+3. Gate content: `<PaywallGate><PremiumContent /></PaywallGate>`
 
-```tsx
-// app/api/subscription/status/route.ts
-import { createSubscriptionStatusRoute } from "@milkie/react/api";
-import { dbAdapter } from "@/lib/milkie-adapter";
-
-export const GET = createSubscriptionStatusRoute({ adapter: dbAdapter });
-```
-
-```tsx
-// app/api/checkout/route.ts
-import { createCheckoutRoute } from "@milkie/react/api";
-import { dbAdapter } from "@/lib/milkie-adapter";
-import { stripe } from "@/lib/stripe";
-
-export const POST = createCheckoutRoute({
-  adapter: dbAdapter,
-  stripe,
-  priceId: process.env.STRIPE_PRICE_ID!,
-  successUrl: "/dashboard",
-});
-```
-
-```tsx
-// app/api/webhooks/stripe/route.ts
-import { createWebhookRoute } from "@milkie/react/api";
-import { dbAdapter } from "@/lib/milkie-adapter";
-import { stripe } from "@/lib/stripe";
-
-export const POST = createWebhookRoute({
-  adapter: dbAdapter,
-  stripe,
-  webhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
-});
-```
-
-See [BACKEND_SETUP.md](docs/BACKEND_SETUP.md) for database adapter implementation.
-
-### 2. Wrap your app with MilkieProvider
-
-```tsx
-import { MilkieProvider } from "@milkie/react";
-
-export default function RootLayout({ children }) {
-  const session = await auth(); // Your auth solution
-
-  return (
-    <MilkieProvider email={session?.user?.email}>{children}</MilkieProvider>
-  );
-}
-```
-
-### 3. Gate your content
-
-```tsx
-import { PaywallGate } from "@milkie/react";
-
-export default function PremiumPage() {
-  return (
-    <PaywallGate>
-      <PremiumContent />
-    </PaywallGate>
-  );
-}
-```
-
-**That's it!** Your content is now behind a paywall.
+**See:** [QUICKSTART.md](QUICKSTART.md) for detailed setup or [try the demo](https://milkie.dev)
 
 ---
 
 ## 📚 Documentation
 
-- **[QUICKSTART.md](QUICKSTART.md)** - 5-minute setup guide + run the demo locally
-- **[@milkie/react README](packages/react/README.md)** - Full package documentation
-- **[Backend Setup Guide](docs/BACKEND_SETUP.md)** - API routes and database setup
-- **[Auth Integration](docs/AUTH_INTEGRATION.md)** - Works with any auth solution
-- **[Implementation Guide](docs/IMPLEMENTATION_GUIDE.md)** - 7 proven paywall patterns with code examples
-- **[API Reference](docs/reference/api-reference.md)** - Component props and hook documentation
-- **[Customization Guide](docs/reference/customization.md)** - Styling and custom UI patterns
-- **[Best Practices](docs/reference/best-practices.md)** - Production deployment and optimization tips
+**Getting Started:**
+
+- [QUICKSTART.md](QUICKSTART.md) - Setup guide + run demo locally
+- [Backend Setup](docs/BACKEND_SETUP.md) - API routes and database adapters
+- [Auth Integration](docs/AUTH_INTEGRATION.md) - Works with any provider
+
+**Implementation:**
+
+- [7 Paywall Patterns](docs/IMPLEMENTATION_GUIDE.md) - Component gating, metered access, custom checkout
+- [API Reference](docs/reference/api-reference.md) - Components, props, hooks
+- [Customization](docs/reference/customization.md) - Styling and custom UI
+- [Best Practices](docs/reference/best-practices.md) - Production deployment
 
 ---
 

@@ -6,7 +6,7 @@
 
 > Stripe-powered paywall SDK for Next.js apps
 
-Add Stripe subscriptions to your app in minutes. Works with NextAuth, Clerk, Lucia, Supabase - any auth solution that provides an email.
+Add Stripe subscriptions to your app in minutes. Works with any auth provider (NextAuth, Clerk, Lucia, Supabase, etc.).
 
 ```tsx
 <MilkieProvider email={session.user.email}>
