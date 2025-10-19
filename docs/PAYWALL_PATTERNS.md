@@ -542,12 +542,12 @@ Pass `showBranding={false}` to PaywallGate. The branding is small and unobtrusiv
 
 ## Live Examples
 
-Try these patterns in the live demo at [milkie-demo.vercel.app](https://milkie-demo.vercel.app):
+Try these patterns in the live demo at [milkie.dev](https://milkie.dev):
 
-- **[Component Gating (/mixed)](https://milkie-demo.vercel.app/mixed)** - Mix free and premium content on same page with blurred previews
-- **[Layout Gating (/dashboard)](https://milkie-demo.vercel.app/dashboard)** - Page-level protection with AuthGate for billing/settings
-- **[Metered Paywall (/metered)](https://milkie-demo.vercel.app/metered)** - 3 free articles per month with preview + soft-sell CTA
-- **[Homepage](https://milkie-demo.vercel.app)** - Hybrid public/protected structure
+- **[Component Gating (/mixed)](https://milkie.dev/mixed)** - Mix free and premium content on same page with blurred previews
+- **[Layout Gating (/dashboard)](https://milkie.dev/dashboard)** - Page-level protection with AuthGate for billing/settings
+- **[Metered Paywall (/metered)](https://milkie.dev/metered)** - 3 free articles per month with preview + soft-sell CTA
+- **[Homepage](https://milkie.dev)** - Hybrid public/protected structure
 
 **Visual features in action:**
 

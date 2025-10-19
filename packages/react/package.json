@@ -19,7 +19,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsup",
@@ -40,7 +41,7 @@
     "type": "git",
     "url": "git+https://github.com/akcho/milkie.git"
   },
-  "homepage": "https://milkie-demo.vercel.app",
+  "homepage": "https://milkie.dev",
   "bugs": {
     "url": "https://github.com/akcho/milkie/issues"
   },

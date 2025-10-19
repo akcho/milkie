@@ -22,7 +22,7 @@ That's it. Your content is now behind a paywall.
 
 ## 🚀 Try the Live Demo
 
-**[milkie-demo.vercel.app](https://milkie-demo.vercel.app)**
+**[milkie.dev](https://milkie.dev)**
 
 1. Sign in with Google
 2. Try the gated examples (Component Gating or Layout Gating)
@@ -192,7 +192,7 @@ milkie/
 
 ## Get Started
 
-1. **[Try the demo](https://milkie-demo.vercel.app)** - See it in action
+1. **[Try the demo](https://milkie.dev)** - See it in action
 2. **[Install the package](packages/react/README.md)** - `npm install @milkie/react`
 3. **[Set up backend](docs/BACKEND_SETUP.md)** - 3 API routes
 4. **[Learn the patterns](docs/PAYWALL_PATTERNS.md)** - Component vs layout gating

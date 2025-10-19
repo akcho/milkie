@@ -402,7 +402,7 @@ import type { PaywallGateProps } from "@milkie/react";
 
 ## Examples in Demo App
 
-See the [live demo](https://milkie-demo.vercel.app) for interactive examples:
+See the [live demo](https://milkie.dev) for interactive examples:
 
 - Basic paywall
 - Metered paywall

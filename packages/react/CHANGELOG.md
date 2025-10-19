@@ -5,32 +5,88 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2025-10-17
+## [0.1.0] - 2025-10-18
 
-### Added
+Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
+
+### Components
+
+#### PaywallGate
+- Subscription-based content protection with Stripe checkout integration
+- Blurred content preview for non-subscribers
+- Customizable messaging (title, subtitle, button text)
+- Custom icon support
+- Error handling with retry capability
+- Loading states with skeleton loaders
+- Optional toast notification integration
+- `disableBlur` mode for inline card display
+- `overlayClassName` prop for custom card positioning
+- Full TypeScript support with comprehensive JSDoc documentation
+
+#### AuthGate
+- Authentication-based content gating (email/session verification)
+- Blurred content preview for unauthenticated users
+- Customizable sign-in messaging and button text
+- Flexible sign-in handling (URL redirect or custom handler)
+- Custom UI replacement via `customUi` prop
+- `overlayClassName` prop for custom card positioning
+- Loading states with skeleton loaders
+- Full TypeScript support with comprehensive JSDoc documentation
+
+#### MilkieProvider
+- Context provider for managing authentication and subscription state
+- Automatic subscription status checking via API integration
+- State management for `email`, `hasAccess`, and `loading`
+- Works with any auth solution (NextAuth, Clerk, Lucia, Supabase, etc.)
+- `usePaywall()` hook for accessing state in custom components
+
+### API Routes
 
 #### Subscription Status Route (`createSubscriptionStatusRoute`)
-- Comprehensive JSDoc documentation for all exported types and functions
 - Email validation with `validateEmail()` utility function
 - Configurable `allowedStatuses` option (defaults to `["active", "trialing"]`)
-- Structured error codes via `SubscriptionErrorCode` enum:
-  - `EMAIL_REQUIRED` - No email provided in query params
-  - `INVALID_EMAIL` - Email format validation failed
-  - `NO_SUBSCRIPTION` - User has no subscription
-  - `DATABASE_ERROR` - Database query failed
-- Type-safe response types:
-  - `SubscriptionStatusResponse` - Success response interface
-  - `SubscriptionErrorResponse` - Error response interface
-- Detailed usage examples in JSDoc comments
+- Structured error codes via `SubscriptionErrorCode` enum
+- Type-safe response types (`SubscriptionStatusResponse`, `SubscriptionErrorResponse`)
+- Database adapter interface for flexible database integration
 
-### Changed
-- Replaced hardcoded status checks with configurable `allowedStatuses` array
-- Enhanced error responses to include structured error codes
-- Improved inline documentation for `SubscriptionDatabaseAdapter` interface methods
+#### Checkout Route (`createCheckoutRoute`)
+- Stripe Checkout session creation
+- Email validation and verification
+- Configurable pricing and success/cancel URLs
+- Database adapter interface for customer management
+- Type-safe response handling
 
-### Fixed
-- Added email format validation before database queries
-- Improved error specificity for better debugging and error handling
+### UI Components
+
+- **BlurredContent** - Blur effect for protected content previews
+- **LoadingState** - Skeleton loader for loading states
+- **OverlayGrid** - CSS Grid-based layout for overlay positioning
+- **PaywallCard** - Card UI for paywall display with checkout flow
+- **AuthCard** - Card UI for authentication prompts
+- **CheckoutError** - Error display with retry functionality
+- **UserInfo** - User email display component
+
+### Styling & Theming
+
+- Tailwind CSS integration with CSS variable theming
+- shadcn/ui component compatibility
+- Customizable via `overlayClassName` prop
+- Support for custom UI replacement
+
+### TypeScript Support
+
+- Full type definitions for all components and API routes
+- Exported types for props interfaces
+- Database adapter interfaces for type-safe implementations
+- JSDoc documentation for all public APIs
+
+### Documentation
+
+- Comprehensive README with installation and setup guide
+- Component-specific READMEs with 10+ usage examples each
+- API route documentation with code examples
+- Troubleshooting guides
+- Live demo application at [milkie.dev](https://milkie.dev)
 
 ---
 

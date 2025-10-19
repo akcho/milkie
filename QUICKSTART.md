@@ -4,7 +4,7 @@ Get Milkie running in under 15 minutes - locally or on Vercel.
 
 ## 🚀 Try the Live Demo (30 seconds)
 
-**[milkie-demo.vercel.app](https://milkie-demo.vercel.app)** *(coming soon)*
+**[milkie.dev](https://milkie.dev)** *(coming soon)*
 
 1. Sign in with Google
 2. Try accessing premium content - see the paywall

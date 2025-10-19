@@ -22,7 +22,7 @@ That's it. Your content is now behind a paywall.
 
 ## 🚀 Live Demo
 
-**[milkie-demo.vercel.app](https://milkie-demo.vercel.app)**
+**[milkie.dev](https://milkie.dev)**
 
 See it in action with multiple gating patterns, metered paywalls, and more.
 
@@ -505,7 +505,7 @@ The components use CSS variables for theming (compatible with shadcn/ui):
 ## Documentation
 
 - **[GitHub Repository](https://github.com/akcho/milkie)** - Full source code
-- **[Live Demo](https://milkie-demo.vercel.app)** - Interactive examples
+- **[Live Demo](https://milkie.dev)** - Interactive examples
 - **[Backend Setup](https://github.com/akcho/milkie/blob/main/docs/BACKEND_SETUP.md)** - Database & API routes
 - **[Auth Integration](https://github.com/akcho/milkie/blob/main/docs/AUTH_INTEGRATION.md)** - Works with any auth
 - **[Implementation Patterns](https://github.com/akcho/milkie/blob/main/docs/PAYWALL_PATTERNS.md)** - Advanced usage

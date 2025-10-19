@@ -423,4 +423,4 @@ These ensure your adapters implement the correct interface.
 
 - **[Auth Integration Guide](./AUTH_INTEGRATION.md)** - Connect with NextAuth, Clerk, etc.
 - **[Paywall Patterns](./PAYWALL_PATTERNS.md)** - Implementation examples
-- **[Live Demo](https://milkie-demo.vercel.app)** - See it in action
+- **[Live Demo](https://milkie.dev)** - See it in action
