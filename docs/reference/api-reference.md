@@ -10,14 +10,15 @@ Milkie uses a simple two-table schema for users and subscriptions.
 
 ```typescript
 {
-  id: string            // Primary key (auto-generated UUID or user ID from auth)
-  email: string         // Unique, required
-  stripeCustomerId: string | null  // Stripe customer ID (set on first checkout)
-  createdAt: Date       // Auto-generated timestamp
+  id: string; // Primary key (auto-generated UUID or user ID from auth)
+  email: string; // Unique, required
+  stripeCustomerId: string | null; // Stripe customer ID (set on first checkout)
+  createdAt: Date; // Auto-generated timestamp
 }
 ```
 
 **Indexes:**
+
 ```sql
 CREATE UNIQUE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_stripe_customer_id ON users(stripe_customer_id);
@@ -27,19 +28,20 @@ CREATE INDEX idx_users_stripe_customer_id ON users(stripe_customer_id);
 
 ```typescript
 {
-  id: string                    // Primary key (Stripe subscription ID)
-  userId: string                // Foreign key → users.id
-  stripeCustomerId: string      // Stripe customer ID
-  status: string                // "active" | "canceled" | "past_due" | "trialing" | etc.
-  priceId: string              // Stripe price ID
-  currentPeriodEnd: Date | null // Subscription period end date
-  cancelAtPeriodEnd: boolean   // Whether subscription cancels at period end
-  createdAt: Date              // Auto-generated timestamp
-  updatedAt: Date              // Auto-updated timestamp
+  id: string; // Primary key (Stripe subscription ID)
+  userId: string; // Foreign key → users.id
+  stripeCustomerId: string; // Stripe customer ID
+  status: string; // "active" | "canceled" | "past_due" | "trialing" | etc.
+  priceId: string; // Stripe price ID
+  currentPeriodEnd: Date | null; // Subscription period end date
+  cancelAtPeriodEnd: boolean; // Whether subscription cancels at period end
+  createdAt: Date; // Auto-generated timestamp
+  updatedAt: Date; // Auto-updated timestamp
 }
 ```
 
 **Indexes:**
+
 ```sql
 CREATE INDEX idx_subscriptions_user_id ON subscriptions(user_id);
 CREATE INDEX idx_subscriptions_stripe_customer_id ON subscriptions(stripe_customer_id);
@@ -84,7 +86,10 @@ type UserWithSubscription = {
 interface WebhookDatabaseAdapter {
   findUserByCustomerId(customerId: string): Promise<User | null>;
   upsertSubscription(data: SubscriptionData): Promise<Subscription>;
-  updateSubscriptionStatus(subscriptionId: string, status: string): Promise<void>;
+  updateSubscriptionStatus(
+    subscriptionId: string,
+    status: string
+  ): Promise<void>;
 }
 
 type SubscriptionData = {
@@ -105,9 +110,11 @@ type SubscriptionData = {
 **Endpoint:** `GET /api/subscription/status?email={email}`
 
 **Query Parameters:**
+
 - `email` (required): User's email address
 
 **Response:**
+
 ```typescript
 {
   hasAccess: boolean;        // Whether user has active subscription
@@ -117,6 +124,7 @@ type SubscriptionData = {
 ```
 
 **Implementation:**
+
 ```typescript
 // app/api/subscription/status/route.ts
 import { createSubscriptionStatusRoute } from "@milkie/react/api";
@@ -133,6 +141,7 @@ export { handler as GET };
 ```
 
 **Error Responses:**
+
 - `400` - Missing email parameter
 - `500` - Server error
 
@@ -141,6 +150,7 @@ export { handler as GET };
 **Endpoint:** `POST /api/checkout`
 
 **Request Body:**
+
 ```typescript
 {
   email: string;
@@ -149,13 +159,15 @@ export { handler as GET };
 ```
 
 **Response:**
+
 ```typescript
 {
-  url: string;  // Stripe checkout session URL
+  url: string; // Stripe checkout session URL
 }
 ```
 
 **Implementation:**
+
 ```typescript
 // app/api/checkout/route.ts
 import { createCheckoutRoute } from "@milkie/react/api";
@@ -169,7 +181,9 @@ const handler = createCheckoutRoute({
   stripe: {
     secretKey: process.env.STRIPE_SECRET_KEY!,
     priceId: process.env.STRIPE_PRICE_ID!,
-    successUrl: process.env.NEXT_PUBLIC_APP_URL + "/dashboard?session_id={CHECKOUT_SESSION_ID}",
+    successUrl:
+      process.env.NEXT_PUBLIC_APP_URL +
+      "/dashboard?session_id={CHECKOUT_SESSION_ID}",
     cancelUrl: process.env.NEXT_PUBLIC_APP_URL + "/pricing",
   },
   auth: async () => {
@@ -182,6 +196,7 @@ export { handler as POST };
 ```
 
 **Error Responses:**
+
 - `400` - Invalid email or missing required fields
 - `500` - Server error
 
@@ -190,20 +205,24 @@ export { handler as POST };
 **Endpoint:** `POST /api/webhooks/stripe`
 
 **Headers Required:**
+
 ```
 stripe-signature: <webhook signature>
 ```
 
 **Implementation:**
+
 ```typescript
 // app/api/webhooks/stripe/route.ts
 import { createWebhookRoute } from "@milkie/react/api";
 import { db } from "@/lib/db";
 
 const handler = createWebhookRoute({
-  findUserByCustomerId: async (customerId) => await db.findUserByCustomerId(customerId),
+  findUserByCustomerId: async (customerId) =>
+    await db.findUserByCustomerId(customerId),
   upsertSubscription: async (data) => await db.upsertSubscription(data),
-  updateSubscriptionStatus: async (id, status) => await db.updateSubscriptionStatus(id, status),
+  updateSubscriptionStatus: async (id, status) =>
+    await db.updateSubscriptionStatus(id, status),
   stripe: {
     secretKey: process.env.STRIPE_SECRET_KEY!,
     webhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
@@ -215,14 +234,15 @@ export { handler as POST };
 
 **Webhook Events Handled:**
 
-| Event | Action |
-|-------|--------|
-| `checkout.session.completed` | Creates subscription when checkout succeeds |
-| `customer.subscription.created` | Creates subscription record |
-| `customer.subscription.updated` | Updates subscription status/metadata |
-| `customer.subscription.deleted` | Marks subscription as canceled |
+| Event                           | Action                                      |
+| ------------------------------- | ------------------------------------------- |
+| `checkout.session.completed`    | Creates subscription when checkout succeeds |
+| `customer.subscription.created` | Creates subscription record                 |
+| `customer.subscription.updated` | Updates subscription status/metadata        |
+| `customer.subscription.deleted` | Marks subscription as canceled              |
 
 **Error Responses:**
+
 - `400` - Invalid signature or missing required data
 - `500` - Server error
 
@@ -247,6 +267,7 @@ Callback URLs are validated to prevent open redirect vulnerabilities:
 - **Encoding**: Properly encodes callback URLs in query params
 
 **Validation logic:**
+
 ```typescript
 function isValidCallbackUrl(url: string, origin: string): boolean {
   // Block dangerous schemes
@@ -255,12 +276,12 @@ function isValidCallbackUrl(url: string, origin: string): boolean {
   }
 
   // Block path traversal
-  if (url.includes('../')) {
+  if (url.includes("../")) {
     return false;
   }
 
   // Allow relative paths
-  if (url.startsWith('/')) {
+  if (url.startsWith("/")) {
     return true;
   }
 
@@ -299,6 +320,7 @@ NEXT_PUBLIC_APP_URL=https://yourdomain.com
 ```
 
 **Security best practices:**
+
 1. Never commit secrets to version control
 2. Use `.env.local` for local development (gitignored)
 3. Use environment variables in production (Vercel, AWS, etc.)
@@ -337,10 +359,10 @@ export async function POST(request: Request) {
 
 PaywallGate automatically handles common errors:
 
-| Error | Display | Recovery |
-|-------|---------|----------|
-| Network failure | "Unable to connect to checkout service" | Retry button |
-| API error (4xx/5xx) | "Unable to start checkout. Please try again." | Retry button |
+| Error                | Display                                       | Recovery     |
+| -------------------- | --------------------------------------------- | ------------ |
+| Network failure      | "Unable to connect to checkout service"       | Retry button |
+| API error (4xx/5xx)  | "Unable to start checkout. Please try again." | Retry button |
 | Missing checkout URL | "Unable to start checkout. Please try again." | Retry button |
 
 ### Server-Side Errors
@@ -373,16 +395,14 @@ try {
   console.error("Webhook processing failed:", error);
 
   // Stripe will retry on 500 errors
-  return Response.json(
-    { error: "Webhook processing failed" },
-    { status: 500 }
-  );
+  return Response.json({ error: "Webhook processing failed" }, { status: 500 });
 }
 ```
 
 ## HTTPS Requirements
 
 **Production checklist:**
+
 - [ ] Use HTTPS for webhook endpoint (Stripe requires it)
 - [ ] Use HTTPS for app URLs (checkout redirect URLs)
 - [ ] Configure SSL certificate

@@ -43,13 +43,13 @@ The `usePaywall` hook provides complete access to subscription state:
 
 ```typescript
 const {
-  hasAccess,        // boolean - Whether user has an active subscription
-  loading,          // boolean - Whether subscription check is in progress
-  email,            // string | null - User's email from MilkieProvider
-  status,           // string | null - Subscription status
-  error,            // string | null - Error message if check failed
+  hasAccess, // boolean - Whether user has an active subscription
+  loading, // boolean - Whether subscription check is in progress
+  email, // string | null - User's email from MilkieProvider
+  status, // string | null - Subscription status
+  error, // string | null - Error message if check failed
   checkSubscription, // () => Promise<void> - Manual refresh function
-  clearError,       // () => void - Clear the current error state
+  clearError, // () => void - Clear the current error state
 } = usePaywall();
 ```
 

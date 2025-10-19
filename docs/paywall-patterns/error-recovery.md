@@ -68,6 +68,7 @@ Use the `onToast` callback for non-blocking error messages:
 ```
 
 Compatible with:
+
 - [Sonner](https://sonner.emilkowal.ski/)
 - [React Hot Toast](https://react-hot-toast.com/)
 - Any toast library with a similar API
@@ -83,12 +84,12 @@ Compatible with:
 
 PaywallGate automatically handles:
 
-| Error Type | User Message | Recovery |
-|------------|--------------|----------|
-| Network failure | "Unable to connect to checkout service" | Retry button |
-| API error (4xx/5xx) | "Unable to start checkout. Please try again." | Retry button |
+| Error Type           | User Message                                  | Recovery     |
+| -------------------- | --------------------------------------------- | ------------ |
+| Network failure      | "Unable to connect to checkout service"       | Retry button |
+| API error (4xx/5xx)  | "Unable to start checkout. Please try again." | Retry button |
 | Missing checkout URL | "Unable to start checkout. Please try again." | Retry button |
-| JavaScript errors | Generic error message | Retry button |
+| JavaScript errors    | Generic error message                         | Retry button |
 
 ## Custom Error Handling
 
@@ -150,10 +151,7 @@ Temporarily modify your checkout API to return errors:
 ```tsx
 // app/api/checkout/route.ts (for testing only)
 export async function POST() {
-  return Response.json(
-    { error: "Test error" },
-    { status: 500 }
-  );
+  return Response.json({ error: "Test error" }, { status: 500 });
 }
 ```
 
@@ -182,10 +180,7 @@ try {
 } catch (error) {
   console.error("Checkout failed:", error);
   // Log to error tracking service (Sentry, etc.)
-  return Response.json(
-    { error: "Checkout failed" },
-    { status: 500 }
-  );
+  return Response.json({ error: "Checkout failed" }, { status: 500 });
 }
 ```
 
@@ -195,11 +190,11 @@ Never expose technical errors to users:
 
 ```tsx
 // ✅ Good
-"Unable to start checkout. Please try again."
+"Unable to start checkout. Please try again.";
 
 // ❌ Bad
-"STRIPE_API_KEY is not defined"
-"Database connection failed: ECONNREFUSED"
+"STRIPE_API_KEY is not defined";
+"Database connection failed: ECONNREFUSED";
 ```
 
 ### 4. Provide Context in Errors

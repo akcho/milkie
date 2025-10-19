@@ -46,7 +46,7 @@ export default async function RootLayout({ children }) {
 }
 
 // components/providers.tsx
-"use client";
+("use client");
 
 import { SessionProvider } from "next-auth/react";
 import { MilkieProvider } from "@milkie/react";
@@ -172,7 +172,7 @@ import { PaywallGate } from "@milkie/react";
 
 <PaywallGate>
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 ### `AuthGate` - Authentication-based access control
@@ -184,7 +184,7 @@ import { AuthGate } from "@milkie/react";
 
 <AuthGate>
   <MembersOnlyContent />
-</AuthGate>
+</AuthGate>;
 ```
 
 ## Sign-In Redirect Flow

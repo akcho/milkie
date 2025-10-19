@@ -15,13 +15,11 @@ All available props for customizing the paywall experience:
   signInButtonText="Sign in to continue"
   icon={<CustomIcon />}
   customUi={<YourCustomComponent />}
-
   // Behavior customization
   signInUrl="/signin"
   onSignIn={() => router.push("/signin")}
   onCheckout={async (email) => ({ url: checkoutUrl })}
   onToast={(message, type) => toast[type](message)}
-
   // Visual customization
   showBranding={false}
   disableBlur={true}
@@ -33,31 +31,31 @@ All available props for customizing the paywall experience:
 
 ### Content Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | "Upgrade to access this feature" | Main heading in paywall card |
-| `subtitle` | `string` | "Sign in or subscribe to continue" | Supporting text below title |
-| `subscribeButtonText` | `string` | "Subscribe" | CTA button for authenticated users |
-| `signInButtonText` | `string` | "Sign in" | CTA button for unauthenticated users |
-| `icon` | `ReactNode` | Lock icon | Custom icon at top of card |
-| `customUi` | `ReactNode` | null | Complete custom UI replacement |
+| Prop                  | Type        | Default                            | Description                          |
+| --------------------- | ----------- | ---------------------------------- | ------------------------------------ |
+| `title`               | `string`    | "Upgrade to access this feature"   | Main heading in paywall card         |
+| `subtitle`            | `string`    | "Sign in or subscribe to continue" | Supporting text below title          |
+| `subscribeButtonText` | `string`    | "Subscribe"                        | CTA button for authenticated users   |
+| `signInButtonText`    | `string`    | "Sign in"                          | CTA button for unauthenticated users |
+| `icon`                | `ReactNode` | Lock icon                          | Custom icon at top of card           |
+| `customUi`            | `ReactNode` | null                               | Complete custom UI replacement       |
 
 ### Behavior Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `signInUrl` | `string` | "/signin" | URL to redirect for sign-in |
-| `onSignIn` | `() => void` | undefined | Custom sign-in handler (alternative to URL) |
-| `onCheckout` | `(email: string) => Promise<{url: string}>` | Default handler | Custom checkout handler |
-| `onToast` | `(message: string, type: "success" \| "error") => void` | undefined | Toast notification callback |
+| Prop         | Type                                                    | Default         | Description                                 |
+| ------------ | ------------------------------------------------------- | --------------- | ------------------------------------------- |
+| `signInUrl`  | `string`                                                | "/signin"       | URL to redirect for sign-in                 |
+| `onSignIn`   | `() => void`                                            | undefined       | Custom sign-in handler (alternative to URL) |
+| `onCheckout` | `(email: string) => Promise<{url: string}>`             | Default handler | Custom checkout handler                     |
+| `onToast`    | `(message: string, type: "success" \| "error") => void` | undefined       | Toast notification callback                 |
 
 ### Visual Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `showBranding` | `boolean` | true | Show "Powered by milkie" footer |
-| `disableBlur` | `boolean` | false | Disable blurred content preview |
-| `overlayClassName` | `string` | "" | Custom className for overlay element |
+| Prop               | Type      | Default | Description                          |
+| ------------------ | --------- | ------- | ------------------------------------ |
+| `showBranding`     | `boolean` | true    | Show "Powered by milkie" footer      |
+| `disableBlur`      | `boolean` | false   | Disable blurred content preview      |
+| `overlayClassName` | `string`  | ""      | Custom className for overlay element |
 
 ## Visual Design Features
 
@@ -72,6 +70,7 @@ PaywallGate renders protected content behind the overlay with a blur effect:
 ```
 
 **How it works:**
+
 - Content preview builds desire and provides context
 - Uses Tailwind `blur-sm` class with `opacity-50` for darkened effect
 - Content visible enough to understand what's locked
@@ -90,6 +89,7 @@ PaywallGate renders protected content behind the overlay with a blur effect:
 The paywall uses a CSS Grid-based overlay system:
 
 **Technical details:**
+
 - **CSS Grid Stacking**: Both overlay and content use `col-start-1 row-start-1` to occupy same grid cell
 - **Z-Index Layering**: Overlay has `z-10` to appear above blurred content
 - **Flexbox Centering**: Overlay uses `flex items-center justify-center` for perfect centering
@@ -127,7 +127,7 @@ Automatic loading states during subscription checks:
 // Shown automatically while checking subscription
 <PaywallGate>
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 
 // Or use the hook for custom loading UI
 const { loading } = usePaywall();
@@ -174,7 +174,7 @@ function CustomPaywall() {
 
 <PaywallGate customUi={<CustomPaywall />}>
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 ### Custom Icon
@@ -184,7 +184,7 @@ import { Sparkles } from "lucide-react";
 
 <PaywallGate icon={<Sparkles className="w-12 h-12 text-yellow-500" />}>
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 ### Custom Sign-In Handler
@@ -197,7 +197,7 @@ const handleSignIn = () => {
 
 <PaywallGate onSignIn={handleSignIn}>
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 ## Styling with Tailwind
@@ -257,6 +257,7 @@ Callback URL handling preserves user context:
 ```
 
 **How it works:**
+
 - PaywallGate automatically includes `callbackUrl` in sign-in redirect
 - Works with AuthGate too
 - Users return to original page after authentication
@@ -346,7 +347,9 @@ Always test your customizations in light and dark modes:
 // Make sure your custom UI works in both themes
 function CustomPaywall() {
   return (
-    <div className="bg-background text-foreground"> {/* Theme-aware */}
+    <div className="bg-background text-foreground">
+      {" "}
+      {/* Theme-aware */}
       {/* Content */}
     </div>
   );

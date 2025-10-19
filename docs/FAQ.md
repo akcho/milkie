@@ -24,9 +24,9 @@ Absolutely! See [Component-Level Gating](paywall-patterns/component-gating.md) f
 
 ```tsx
 <div>
-  <FreeContent />  {/* Everyone sees this */}
+  <FreeContent /> {/* Everyone sees this */}
   <PaywallGate>
-    <PremiumContent />  {/* Only subscribers */}
+    <PremiumContent /> {/* Only subscribers */}
   </PaywallGate>
 </div>
 ```
@@ -38,10 +38,10 @@ Absolutely! See [Component-Level Gating](paywall-patterns/component-gating.md) f
 
 Use `AuthGate` for billing/settings pages where users need access regardless of subscription status.
 
-| Component | Requires Sign-In | Requires Subscription | Use Case |
-|-----------|------------------|----------------------|----------|
-| `PaywallGate` | Yes ✓ | Yes ✓ | Premium features, paid content |
-| `AuthGate` | Yes ✓ | No ✗ | Billing, settings, user preferences |
+| Component     | Requires Sign-In | Requires Subscription | Use Case                            |
+| ------------- | ---------------- | --------------------- | ----------------------------------- |
+| `PaywallGate` | Yes ✓            | Yes ✓                 | Premium features, paid content      |
+| `AuthGate`    | Yes ✓            | No ✗                  | Billing, settings, user preferences |
 
 ### Q: Does the paywall work on mobile?
 
@@ -61,7 +61,7 @@ PaywallGate renders your protected content in the background with a `blur-sm` ef
 
 ```tsx
 <PaywallGate>
-  <PremiumContent />  {/* Shown blurred in background */}
+  <PremiumContent /> {/* Shown blurred in background */}
 </PaywallGate>
 ```
 
@@ -71,7 +71,7 @@ Yes! Use `disableBlur={true}`:
 
 ```tsx
 <PaywallGate disableBlur={true}>
-  <PremiumContent />  {/* Paywall card shown inline without blur */}
+  <PremiumContent /> {/* Paywall card shown inline without blur */}
 </PaywallGate>
 ```
 
@@ -104,7 +104,7 @@ import { Sparkles } from "lucide-react";
 
 <PaywallGate icon={<Sparkles className="w-12 h-12 text-yellow-500" />}>
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 ## Authentication & Redirects
@@ -180,7 +180,7 @@ import { toast } from "sonner";
 
 <PaywallGate onToast={(message, type) => toast[type](message)}>
   <Content />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 See [Error Recovery](paywall-patterns/error-recovery.md) for more details.
@@ -209,6 +209,7 @@ useEffect(() => {
 ### Q: Do I need a Stripe account?
 
 Yes, Milkie uses Stripe for payment processing. You'll need:
+
 - Stripe account
 - Stripe API keys (secret key and webhook secret)
 - Stripe product/price created
@@ -226,6 +227,7 @@ If you need tiers now, you can experiment with custom checkout handlers to pass 
 Stripe webhooks notify your app when subscription events occur (created, updated, canceled, etc.). Milkie's webhook route handles these automatically.
 
 **Setup:**
+
 1. Add webhook endpoint in Stripe Dashboard: `https://yourdomain.com/api/webhooks/stripe`
 2. Get webhook secret from Stripe
 3. Add to environment variables: `STRIPE_WEBHOOK_SECRET=whsec_...`
@@ -235,6 +237,7 @@ See [API Reference](reference/api-reference.md#webhook-route) for implementation
 ### Q: What subscription statuses are considered "active"?
 
 By default, Milkie considers these statuses as having access:
+
 - `"active"` - Subscription is active and paid
 - `"trialing"` - User is in trial period
 
@@ -242,7 +245,9 @@ You can customize this in the subscription status route:
 
 ```typescript
 createSubscriptionStatusRoute({
-  findUserWithSubscription: async (email) => { /* ... */ },
+  findUserWithSubscription: async (email) => {
+    /* ... */
+  },
   allowedStatuses: ["active", "trialing"], // Customize here
 });
 ```
@@ -286,7 +291,9 @@ See [Best Practices](reference/best-practices.md) for more details.
 
 ```tsx
 // app/billing/page.tsx
-<AuthGate>  {/* Requires sign-in only, not subscription */}
+<AuthGate>
+  {" "}
+  {/* Requires sign-in only, not subscription */}
   <BillingPage />
 </AuthGate>
 ```
@@ -294,11 +301,13 @@ See [Best Practices](reference/best-practices.md) for more details.
 ### Q: Webhook events not being received
 
 **Common issues:**
+
 - Wrong webhook secret in environment variables
 - Endpoint not accessible (check production URL)
 - HTTPS required for production webhooks
 
 **Debug steps:**
+
 1. Check Stripe Dashboard → Webhooks → View events
 2. Verify webhook endpoint URL is correct
 3. Check server logs for webhook processing errors
@@ -307,6 +316,7 @@ See [Best Practices](reference/best-practices.md) for more details.
 ### Q: "No subscription found" but user just subscribed
 
 **Possible causes:**
+
 1. Webhook hasn't fired yet (wait a few seconds)
 2. Webhook failed to process (check server logs)
 3. Database not updated (check webhook route implementation)

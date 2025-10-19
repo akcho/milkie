@@ -241,6 +241,7 @@ export const POST = createCheckoutRoute({
 ```
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -274,6 +275,7 @@ export const POST = createCheckoutRoute({
 With `authenticate`, the email is extracted from the authenticated session instead of the request body. This prevents users from subscribing with arbitrary email addresses.
 
 **Request Body (with authenticate):**
+
 ```json
 {
   "callbackUrl": "/dashboard" // Optional: redirect after checkout
@@ -281,6 +283,7 @@ With `authenticate`, the email is extracted from the authenticated session inste
 ```
 
 **Response:**
+
 ```json
 {
   "url": "https://checkout.stripe.com/..."
@@ -288,6 +291,7 @@ With `authenticate`, the email is extracted from the authenticated session inste
 ```
 
 **Security Features:**
+
 - ✅ Email validation (RFC 5321 compliant)
 - ✅ Callback URL sanitization (prevents open redirects, XSS, path traversal)
 - ✅ Race condition handling for concurrent requests
@@ -308,11 +312,13 @@ export const GET = createSubscriptionStatusRoute({
 ```
 
 **Query Parameters:**
+
 ```
 GET /api/subscription/status?email=user@example.com
 ```
 
 **Response:**
+
 ```json
 {
   "hasAccess": true,
@@ -322,6 +328,7 @@ GET /api/subscription/status?email=user@example.com
 ```
 
 **Subscription Statuses:**
+
 - `active` - Subscription is active (grants access)
 - `trialing` - In trial period (grants access by default)
 - `past_due` - Payment failed, grace period (no access by default)
@@ -337,7 +344,7 @@ By default, only `active` and `trialing` statuses grant access. You can customiz
 export const GET = createSubscriptionStatusRoute({
   db: subscriptionAdapter,
   // Optional: Customize which statuses grant access
-  allowedStatuses: ['active', 'trialing', 'past_due'], // Allow grace period
+  allowedStatuses: ["active", "trialing", "past_due"], // Allow grace period
 });
 ```
 
@@ -366,13 +373,16 @@ export const POST = createWebhookRoute({
 The webhook route automatically handles these Stripe events:
 
 - `checkout.session.completed` - Triggered when a customer completes checkout
+
   - Creates or updates subscription in your database
   - Links subscription to user via Stripe customer ID
 
 - `customer.subscription.created` - Triggered when a subscription is created
+
   - Stores subscription details (status, price, billing period)
 
 - `customer.subscription.updated` - Triggered when subscription changes
+
   - Updates status, billing period, cancellation status
   - Handles plan changes, renewals, and updates
 
@@ -381,11 +391,13 @@ The webhook route automatically handles these Stripe events:
   - Revokes access
 
 **Security:**
+
 - ✅ Webhook signature verification using `STRIPE_WEBHOOK_SECRET`
 - ✅ Prevents replay attacks and unauthorized requests
 - ✅ Validates subscription data integrity
 
 **Response:**
+
 ```json
 {
   "received": true
@@ -532,21 +544,25 @@ Milkie's factory functions return proper HTTP status codes and error messages:
 ### Common Errors
 
 **400 Bad Request:**
+
 - Missing required fields (email, etc.)
 - Invalid email format
 - Invalid callback URL
 - Email too long (max 254 characters)
 
 **404 Not Found:**
+
 - User not found for subscription check
 - Customer not found in database
 
 **500 Internal Server Error:**
+
 - Database errors
 - Stripe API errors
 - Unexpected errors
 
 **Error Response Format:**
+
 ```json
 {
   "error": "Description of what went wrong",
@@ -557,6 +573,7 @@ Milkie's factory functions return proper HTTP status codes and error messages:
 ### PII Protection
 
 Error messages automatically sanitize sensitive information:
+
 ```ts
 // Email addresses are redacted in logs
 "user@example.com" → "use***@example.com"
@@ -571,6 +588,7 @@ Error messages automatically sanitize sensitive information:
 **Symptoms:** Webhook endpoint returns 400 error, "No stripe-signature header" or "Invalid signature"
 
 **Solutions:**
+
 - Ensure `STRIPE_WEBHOOK_SECRET` is set correctly in your `.env.local`
 - For **local development**: Use the secret from `stripe listen` output (starts with `whsec_`)
 - For **production**: Use the secret from Stripe Dashboard → Webhooks
@@ -582,6 +600,7 @@ Error messages automatically sanitize sensitive information:
 **Symptoms:** User completes checkout but `hasAccess` remains false
 
 **Solutions:**
+
 - Check webhook events are being received in Stripe Dashboard → Webhooks → Events
 - Verify your webhook adapter's `upsertSubscription` function is working correctly
 - Check database for subscription records: `SELECT * FROM subscriptions WHERE user_id = '...'`
@@ -593,6 +612,7 @@ Error messages automatically sanitize sensitive information:
 **Symptoms:** 404 errors when checking subscription status or processing webhooks
 
 **Solutions:**
+
 - Ensure users are created during checkout (check `createUser` in checkout adapter)
 - Verify `stripeCustomerId` is being saved correctly in the database
 - Check that email addresses match exactly (including case sensitivity)
@@ -604,6 +624,7 @@ Error messages automatically sanitize sensitive information:
 **Symptoms:** "Unique constraint violation" or duplicate user errors
 
 **Solutions:**
+
 - Milkie handles this automatically - check your database adapter handles unique constraints
 - Ensure your `users` table has a UNIQUE constraint on the email column
 - The checkout adapter should catch duplicate key errors and retry the operation
@@ -614,6 +635,7 @@ Error messages automatically sanitize sensitive information:
 **Symptoms:** "Invalid price ID" or "Price not found" errors
 
 **Solutions:**
+
 - Verify `STRIPE_PRICE_ID` in your `.env.local` matches a price in your Stripe Dashboard
 - Ensure the price is for a recurring product (subscription), not a one-time payment
 - Check that you're using the correct Stripe account (test mode vs live mode)
@@ -624,6 +646,7 @@ Error messages automatically sanitize sensitive information:
 **Symptoms:** "Failed to connect to database" or timeout errors
 
 **Solutions:**
+
 - Verify `POSTGRES_URL` (or your database URL) is correct in `.env.local`
 - Check that your database server is running and accessible
 - Ensure your database has the correct schema (run migrations: `npx drizzle-kit push`)
@@ -635,6 +658,7 @@ Error messages automatically sanitize sensitive information:
 **Symptoms:** Checkout fails even though user is logged in
 
 **Solutions:**
+
 - Verify your `authenticate` function is returning the user's email
 - Check that the session contains an email field: `session.user.email`
 - Ensure your auth provider is configured correctly (NextAuth, Clerk, etc.)
@@ -645,6 +669,7 @@ Error messages automatically sanitize sensitive information:
 **Symptoms:** After checkout, user is redirected to wrong page or default URL
 
 **Solutions:**
+
 - Verify `callbackUrl` in request body is a relative path (e.g., `/dashboard`)
 - Do NOT use absolute URLs (security restriction)
 - Check that `NEXT_PUBLIC_APP_URL` is set correctly
@@ -678,7 +703,7 @@ Control which subscription statuses grant access:
 export const GET = createSubscriptionStatusRoute({
   db: subscriptionAdapter,
   // Default: ['active', 'trialing']
-  allowedStatuses: ['active', 'trialing', 'past_due'], // Include grace period
+  allowedStatuses: ["active", "trialing", "past_due"], // Include grace period
 });
 ```
 
@@ -689,8 +714,8 @@ While our examples use Next.js, Milkie's factory functions work with any framewo
 #### Express.js Example
 
 ```ts
-import express from 'express';
-import { createCheckoutRoute } from '@milkie/react/api';
+import express from "express";
+import { createCheckoutRoute } from "@milkie/react/api";
 
 const app = express();
 
@@ -701,11 +726,11 @@ const checkoutHandler = createCheckoutRoute({
   appUrl: process.env.APP_URL,
 });
 
-app.post('/api/checkout', async (req, res) => {
-  const request = new Request('http://localhost/api/checkout', {
-    method: 'POST',
+app.post("/api/checkout", async (req, res) => {
+  const request = new Request("http://localhost/api/checkout", {
+    method: "POST",
     body: JSON.stringify(req.body),
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
   });
 
   const response = await checkoutHandler(request);

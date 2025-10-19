@@ -89,11 +89,14 @@ export async function trackArticleView(articleId: string) {
 
   try {
     // Insert view (ON CONFLICT DO NOTHING prevents duplicate views)
-    await db.query(`
+    await db.query(
+      `
       INSERT INTO article_views (user_id, article_id, view_month)
       VALUES ($1, $2, $3)
       ON CONFLICT (user_id, article_id, view_month) DO NOTHING
-    `, [session.user.email, articleId, viewMonth]);
+    `,
+      [session.user.email, articleId, viewMonth]
+    );
 
     return { success: true };
   } catch (error) {
@@ -108,11 +111,14 @@ export async function getUserViewCount() {
 
   const viewMonth = new Date().toISOString().slice(0, 7);
 
-  const result = await db.query(`
+  const result = await db.query(
+    `
     SELECT COUNT(DISTINCT article_id) as view_count
     FROM article_views
     WHERE user_id = $1 AND view_month = $2
-  `, [session.user.email, viewMonth]);
+  `,
+    [session.user.email, viewMonth]
+  );
 
   return result.rows[0]?.view_count || 0;
 }
@@ -153,6 +159,7 @@ export function ArticleWithTracking({ article, viewCount }) {
 ### Less Restrictive Than Hard Blocks
 
 Users experience value before hitting the paywall, which:
+
 - Builds desire and engagement
 - Feels like an invitation, not a barrier
 - Provides context for subscription decision
@@ -161,6 +168,7 @@ Users experience value before hitting the paywall, which:
 ### Visual Preview Creates Context
 
 The blurred content preview:
+
 - Shows what they're missing
 - Maintains reading context
 - Creates urgency without frustration

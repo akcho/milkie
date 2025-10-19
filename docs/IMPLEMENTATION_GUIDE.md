@@ -116,9 +116,7 @@ if (!hasAccess) {
 Handle checkout errors without disrupting UX. Inline error display with retry button, toast notifications.
 
 ```tsx
-<PaywallGate
-  onToast={(message, type) => toast[type](message)}
->
+<PaywallGate onToast={(message, type) => toast[type](message)}>
   <PremiumContent />
 </PaywallGate>
 ```

@@ -52,9 +52,7 @@ Create a compelling upgrade prompt that shows value:
 function UpgradePrompt() {
   return (
     <div className="text-center p-8 bg-gradient-to-b from-background to-muted rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">
-        Unlock the full article
-      </h2>
+      <h2 className="text-2xl font-bold mb-4">Unlock the full article</h2>
       <ul className="text-left max-w-md mx-auto mb-6">
         <li>✓ Complete tutorial with code examples</li>
         <li>✓ Downloadable source files</li>
@@ -66,7 +64,7 @@ function UpgradePrompt() {
 
 <PaywallGate customUi={<UpgradePrompt />}>
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 ## Live Demo

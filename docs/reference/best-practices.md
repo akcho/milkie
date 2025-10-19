@@ -37,7 +37,9 @@ export default function DashboardPage() {
 // app/dashboard/settings/page.tsx
 export default function SettingsPage() {
   return (
-    <AuthGate>  {/* Sign-in only, no subscription */}
+    <AuthGate>
+      {" "}
+      {/* Sign-in only, no subscription */}
       <SettingsContent />
     </AuthGate>
   );
@@ -46,11 +48,12 @@ export default function SettingsPage() {
 // ❌ Avoid - Layout-level gating prevents accessing billing when subscription inactive
 // app/dashboard/layout.tsx
 export default function DashboardLayout({ children }) {
-  return <PaywallGate>{children}</PaywallGate>;  // Blocks billing page!
+  return <PaywallGate>{children}</PaywallGate>; // Blocks billing page!
 }
 ```
 
 **Why page-level is better:**
+
 - Users need access to billing/settings even without active subscription
 - Navigation and header remain visible (better UX)
 - Paywall overlay centered in content area instead of covering entire viewport
@@ -58,13 +61,13 @@ export default function DashboardLayout({ children }) {
 
 ### 3. When to Use AuthGate vs PaywallGate
 
-| Use Case | Component | Reason |
-|----------|-----------|--------|
-| Premium features | `PaywallGate` | Requires active subscription |
-| Billing page | `AuthGate` | User needs access even without subscription |
-| Settings page | `AuthGate` | User needs access even without subscription |
-| Dashboard home | `PaywallGate` | Core premium feature |
-| Profile page | `AuthGate` | Personal data, not premium feature |
+| Use Case         | Component     | Reason                                      |
+| ---------------- | ------------- | ------------------------------------------- |
+| Premium features | `PaywallGate` | Requires active subscription                |
+| Billing page     | `AuthGate`    | User needs access even without subscription |
+| Settings page    | `AuthGate`    | User needs access even without subscription |
+| Dashboard home   | `PaywallGate` | Core premium feature                        |
+| Profile page     | `AuthGate`    | Personal data, not premium feature          |
 
 ## Component Usage
 
@@ -183,10 +186,12 @@ if (error) {
   return (
     <div>
       <p>Error: {error}</p>
-      <button onClick={() => {
-        clearError();
-        checkSubscription();
-      }}>
+      <button
+        onClick={() => {
+          clearError();
+          checkSubscription();
+        }}
+      >
         Try Again
       </button>
     </div>
@@ -200,11 +205,11 @@ Never expose technical errors to users:
 
 ```tsx
 // ✅ Good
-"Unable to start checkout. Please try again."
+"Unable to start checkout. Please try again.";
 
 // ❌ Bad
-"STRIPE_API_KEY is not defined"
-"Database connection failed: ECONNREFUSED"
+"STRIPE_API_KEY is not defined";
+"Database connection failed: ECONNREFUSED";
 ```
 
 ## Server-Side Rendering (SSR)
@@ -224,9 +229,7 @@ export default async function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <MilkieProvider email={session?.user?.email}>
-          {children}
-        </MilkieProvider>
+        <MilkieProvider email={session?.user?.email}>{children}</MilkieProvider>
       </body>
     </html>
   );
@@ -370,6 +373,7 @@ If paywall covers your navigation:
 ### 4. Webhook Events Not Processing
 
 Common issues:
+
 - Wrong webhook secret
 - Endpoint not accessible (local development)
 - Missing database user for Stripe customer ID

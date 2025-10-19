@@ -88,6 +88,7 @@ export default function DashboardLayout({ children }) {
 ```
 
 **Why it's better:**
+
 - Users can manage billing when subscription is inactive
 - Navigation/header remain visible
 - Flexible mixing of access requirements
@@ -95,10 +96,10 @@ export default function DashboardLayout({ children }) {
 
 ## PaywallGate vs AuthGate
 
-| Component | Requires Sign-In | Requires Subscription | Use Case |
-|-----------|------------------|----------------------|----------|
-| `PaywallGate` | Yes ✓ | Yes ✓ | Premium features, paid content |
-| `AuthGate` | Yes ✓ | No ✗ | Billing, settings, user preferences |
+| Component     | Requires Sign-In | Requires Subscription | Use Case                            |
+| ------------- | ---------------- | --------------------- | ----------------------------------- |
+| `PaywallGate` | Yes ✓            | Yes ✓                 | Premium features, paid content      |
+| `AuthGate`    | Yes ✓            | No ✗                  | Billing, settings, user preferences |
 
 ## Live Demo
 

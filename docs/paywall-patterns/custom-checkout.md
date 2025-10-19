@@ -26,7 +26,9 @@ export default function CustomCheckoutPage() {
         email,
         // Add any custom data you need
         source: "landing_page",
-        utmCampaign: new URLSearchParams(window.location.search).get("utm_campaign"),
+        utmCampaign: new URLSearchParams(window.location.search).get(
+          "utm_campaign"
+        ),
       }),
     });
 
@@ -230,7 +232,7 @@ const handleCheckout = async (email: string) => {
   onToast={(message, type) => toast[type](message)}
 >
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 ## Best Practices
