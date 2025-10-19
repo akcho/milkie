@@ -24,7 +24,7 @@ export function CtaSection() {
               Get started
             </Link>
           </Button>
-          <Button asChild size="lg" variant="outline">
+          <Button asChild size="lg" variant="secondary">
             <Link
               href="https://github.com/akcho/milkie"
               target="_blank"
