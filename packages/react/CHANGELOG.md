@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2025-10-18
+## [0.1.0] - 2025-10-19
 
 Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
 
@@ -20,8 +20,8 @@ Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
 - Error handling with retry capability
 - Loading states with skeleton loaders
 - Optional toast notification integration
-- `disableBlur` mode for inline card display
-- `overlayClassName` prop for custom card positioning
+- `applyBlur` prop to control blur effect (enabled by default)
+- `position` prop for vertical card positioning ("center" or "top")
 - Full TypeScript support with comprehensive JSDoc documentation
 
 #### AuthGate
@@ -31,7 +31,7 @@ Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
 - Customizable sign-in messaging and button text
 - Flexible sign-in handling (URL redirect or custom handler)
 - Custom UI replacement via `customUi` prop
-- `overlayClassName` prop for custom card positioning
+- `position` prop for vertical card positioning ("center" or "top")
 - Loading states with skeleton loaders
 - Full TypeScript support with comprehensive JSDoc documentation
 
