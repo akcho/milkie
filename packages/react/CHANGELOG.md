@@ -12,6 +12,7 @@ Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
 ### Components
 
 #### PaywallGate
+
 - Subscription-based content protection with Stripe checkout integration
 - Blurred content preview for non-subscribers
 - Customizable messaging (title, subtitle, button text)
@@ -24,6 +25,7 @@ Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
 - Full TypeScript support with comprehensive JSDoc documentation
 
 #### AuthGate
+
 - Authentication-based content gating (email/session verification)
 - Blurred content preview for unauthenticated users
 - Customizable sign-in messaging and button text
@@ -34,6 +36,7 @@ Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
 - Full TypeScript support with comprehensive JSDoc documentation
 
 #### MilkieProvider
+
 - Context provider for managing authentication and subscription state
 - Automatic subscription status checking via API integration
 - State management for `email`, `hasAccess`, and `loading`
@@ -43,6 +46,7 @@ Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
 ### API Routes
 
 #### Subscription Status Route (`createSubscriptionStatusRoute`)
+
 - Email validation with `validateEmail()` utility function
 - Configurable `allowedStatuses` option (defaults to `["active", "trialing"]`)
 - Structured error codes via `SubscriptionErrorCode` enum
@@ -50,6 +54,7 @@ Initial release of Milkie - Stripe-powered paywall SDK for Next.js apps.
 - Database adapter interface for flexible database integration
 
 #### Checkout Route (`createCheckoutRoute`)
+
 - Stripe Checkout session creation
 - Email validation and verification
 - Configurable pricing and success/cancel URLs

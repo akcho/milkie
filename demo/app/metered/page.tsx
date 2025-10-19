@@ -13,8 +13,16 @@ import { useMemo } from "react";
 
 export default function MeteredPage() {
   const { hasAccess: isPremium, loading } = usePaywall();
-  const { selectedArticle, setSelectedArticle, handleArticleClick, canViewArticle } = useArticleView();
-  const { remaining, mounted, getArticleState } = useArticleList(isPremium, selectedArticle);
+  const {
+    selectedArticle,
+    setSelectedArticle,
+    handleArticleClick,
+    canViewArticle,
+  } = useArticleView();
+  const { remaining, mounted, getArticleState } = useArticleList(
+    isPremium,
+    selectedArticle
+  );
 
   // Wait for both mount (localStorage) and loading (subscription) to complete
   // This prevents jarring state changes - everything appears at once
@@ -22,13 +30,13 @@ export default function MeteredPage() {
 
   // Memoize article states to avoid recalculating on every render
   const articleStates = useMemo(() => {
-    return SAMPLE_ARTICLES.map(article => ({
+    return SAMPLE_ARTICLES.map((article) => ({
       id: article.id,
-      ...getArticleState(article.id)
+      ...getArticleState(article.id),
     }));
   }, [getArticleState]);
 
-  const article = SAMPLE_ARTICLES.find(a => a.id === selectedArticle);
+  const article = SAMPLE_ARTICLES.find((a) => a.id === selectedArticle);
 
   // Show article view
   if (selectedArticle) {
@@ -38,7 +46,9 @@ export default function MeteredPage() {
         <div className="min-h-screen bg-background">
           <Header />
           <div className="container mx-auto px-4 py-8 max-w-3xl">
-            <p className="text-center text-muted-foreground">Article not found</p>
+            <p className="text-center text-muted-foreground">
+              Article not found
+            </p>
           </div>
         </div>
       );
@@ -71,7 +81,7 @@ export default function MeteredPage() {
         {/* Article Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {SAMPLE_ARTICLES.map((article) => {
-            const state = articleStates.find(s => s.id === article.id);
+            const state = articleStates.find((s) => s.id === article.id);
             const { viewed = false, locked = false } = state || {};
 
             return (

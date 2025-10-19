@@ -3,10 +3,13 @@ import {
   getRemainingArticles,
   hasReachedLimit,
   hasViewedArticle,
-  FREE_ARTICLE_LIMIT
+  FREE_ARTICLE_LIMIT,
 } from "@/lib/metered-access";
 
-export function useArticleList(isPremium: boolean, selectedArticle: string | null) {
+export function useArticleList(
+  isPremium: boolean,
+  selectedArticle: string | null
+) {
   const [remaining, setRemaining] = useState(FREE_ARTICLE_LIMIT);
   const [mounted, setMounted] = useState(false);
 
@@ -31,6 +34,6 @@ export function useArticleList(isPremium: boolean, selectedArticle: string | nul
   return {
     remaining,
     mounted,
-    getArticleState
+    getArticleState,
   };
 }

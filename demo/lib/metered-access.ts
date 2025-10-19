@@ -19,19 +19,19 @@ function getCurrentMonth(): string {
 }
 
 function getMeteredData(): MeteredData {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return { article_view_month: getCurrentMonth(), viewed_article_ids: [] };
   }
 
-  const month = localStorage.getItem('article_view_month');
-  const viewedIds = localStorage.getItem('viewed_article_ids');
+  const month = localStorage.getItem("article_view_month");
+  const viewedIds = localStorage.getItem("viewed_article_ids");
   const currentMonth = getCurrentMonth();
 
   // Reset if new month
   if (month !== currentMonth) {
     const newData: MeteredData = {
       article_view_month: currentMonth,
-      viewed_article_ids: []
+      viewed_article_ids: [],
     };
     saveMeteredData(newData);
     return newData;
@@ -39,15 +39,18 @@ function getMeteredData(): MeteredData {
 
   return {
     article_view_month: month || currentMonth,
-    viewed_article_ids: viewedIds ? JSON.parse(viewedIds) : []
+    viewed_article_ids: viewedIds ? JSON.parse(viewedIds) : [],
   };
 }
 
 function saveMeteredData(data: MeteredData): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
-  localStorage.setItem('article_view_month', data.article_view_month);
-  localStorage.setItem('viewed_article_ids', JSON.stringify(data.viewed_article_ids));
+  localStorage.setItem("article_view_month", data.article_view_month);
+  localStorage.setItem(
+    "viewed_article_ids",
+    JSON.stringify(data.viewed_article_ids)
+  );
 }
 
 /**
@@ -102,8 +105,8 @@ export function recordArticleView(articleId: string): boolean {
  * Reset the counter (useful for testing)
  */
 export function resetMeteredAccess(): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
-  localStorage.removeItem('article_view_month');
-  localStorage.removeItem('viewed_article_ids');
+  localStorage.removeItem("article_view_month");
+  localStorage.removeItem("viewed_article_ids");
 }

@@ -126,9 +126,7 @@ export default function RootLayout({ children }) {
   const session = await auth(); // Your auth solution
 
   return (
-    <MilkieProvider email={session?.user?.email}>
-      {children}
-    </MilkieProvider>
+    <MilkieProvider email={session?.user?.email}>{children}</MilkieProvider>
   );
 }
 ```
@@ -149,17 +147,15 @@ export default function PremiumPage() {
 
 **That's it!** Your content is now behind a paywall.
 
-For the complete setup guide: **[QUICKSTART.md](QUICKSTART.md)**
-
 ---
 
 ## 📚 Documentation
 
+- **[QUICKSTART.md](QUICKSTART.md)** - 5-minute setup guide + run the demo locally
 - **[@milkie/react README](packages/react/README.md)** - Full package documentation
 - **[Backend Setup Guide](docs/BACKEND_SETUP.md)** - API routes and database setup
 - **[Auth Integration](docs/AUTH_INTEGRATION.md)** - Works with any auth solution
 - **[Paywall Patterns](docs/PAYWALL_PATTERNS.md)** - Implementation patterns and examples
-- **[QUICKSTART.md](QUICKSTART.md)** - Run the demo locally
 
 ---
 
@@ -174,10 +170,11 @@ import { PaywallGate } from "@milkie/react";
 
 <PaywallGate>
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 **What happens:**
+
 - Unauthenticated users see a sign-in prompt
 - Authenticated users without subscription see the paywall with checkout
 - Subscribers see the content
@@ -203,10 +200,11 @@ import { AuthGate } from "@milkie/react";
 
 <AuthGate>
   <AuthenticatedContent />
-</AuthGate>
+</AuthGate>;
 ```
 
 **What happens:**
+
 - Unauthenticated users see a sign-in prompt
 - Authenticated users see the content (no subscription required)
 
@@ -239,6 +237,7 @@ function CustomComponent() {
 ```
 
 **Available from the hook:**
+
 - `hasAccess` - boolean indicating subscription status
 - `loading` - boolean for loading state
 - `status` - Stripe subscription status string
@@ -295,7 +294,7 @@ function YourCustomPaywall() {
   // Your custom logic and UI
 }
 
-<PaywallGate customUi={<YourCustomPaywall />} />
+<PaywallGate customUi={<YourCustomPaywall />} />;
 ```
 
 With `customUi`, you have complete control over the paywall appearance and behavior.

@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export function FreePreviewCard() {
@@ -9,13 +15,12 @@ export function FreePreviewCard() {
           <CardTitle>Free Preview Content</CardTitle>
           <Badge variant="outline">Free</Badge>
         </div>
-        <CardDescription>
-          Everyone can see this section
-        </CardDescription>
+        <CardDescription>Everyone can see this section</CardDescription>
       </CardHeader>
       <CardContent className="prose prose-sm max-w-none">
         <p>
-          This is a free preview section that everyone can access. You might use this to:
+          This is a free preview section that everyone can access. You might use
+          this to:
         </p>
         <ul>
           <li>Show a teaser of your content</li>
@@ -24,7 +29,8 @@ export function FreePreviewCard() {
           <li>Show thumbnails or previews of premium features</li>
         </ul>
         <p>
-          Below, you&apos;ll see premium content sections that are only visible to subscribers.
+          Below, you&apos;ll see premium content sections that are only visible
+          to subscribers.
         </p>
       </CardContent>
     </Card>

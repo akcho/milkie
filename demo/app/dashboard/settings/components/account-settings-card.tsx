@@ -44,10 +44,7 @@ export function AccountSettingsCard({
             id="email-notif"
             className="h-4 w-4 rounded border-input"
           />
-          <Label
-            htmlFor="email-notif"
-            className="font-normal cursor-pointer"
-          >
+          <Label htmlFor="email-notif" className="font-normal cursor-pointer">
             Receive email notifications
           </Label>
         </div>

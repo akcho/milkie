@@ -2,7 +2,13 @@ import { Badge } from "@/components/ui/badge";
 import { Gift } from "lucide-react";
 import { ArticleListHeaderProps } from "../types";
 
-export function ArticleListHeader({ isPremium, remaining, freeArticleLimit, loading, mounted }: ArticleListHeaderProps) {
+export function ArticleListHeader({
+  isPremium,
+  remaining,
+  freeArticleLimit,
+  loading,
+  mounted,
+}: ArticleListHeaderProps) {
   // Wait for both loading (subscription) and mounted (localStorage) to complete
   const isReady = mounted && !loading;
 
@@ -20,19 +26,24 @@ export function ArticleListHeader({ isPremium, remaining, freeArticleLimit, load
       {/* Metered access counter */}
       {!isReady ? (
         // Placeholder badge during loading to prevent layout shift
-        <Badge variant="secondary" className="text-sm py-2 px-4 hover:bg-secondary cursor-default opacity-50">
+        <Badge
+          variant="secondary"
+          className="text-sm py-2 px-4 hover:bg-secondary cursor-default opacity-50"
+        >
           <Gift className="h-4 w-4 mr-2" />
           Loading...
         </Badge>
       ) : (
         <>
           {!isPremium && (
-            <Badge variant="secondary" className="text-sm py-2 px-4 hover:bg-secondary cursor-default">
+            <Badge
+              variant="secondary"
+              className="text-sm py-2 px-4 hover:bg-secondary cursor-default"
+            >
               <Gift className="h-4 w-4 mr-2" />
               {remaining > 0
                 ? `${remaining} of ${freeArticleLimit} free articles remaining this month`
-                : `You've used all ${freeArticleLimit} free articles this month`
-              }
+                : `You've used all ${freeArticleLimit} free articles this month`}
             </Badge>
           )}
 

@@ -28,24 +28,12 @@ export const checkoutAdapter: CheckoutDatabaseAdapter = {
   },
 
   async updateUser(userId: string, data: Partial<User>) {
-    await db
-      .update(schema.users)
-      .set(data)
-      .where(eq(schema.users.id, userId));
+    await db.update(schema.users).set(data).where(eq(schema.users.id, userId));
   },
 };
 
 // Drizzle adapter for subscription status routes
 export const subscriptionAdapter: SubscriptionDatabaseAdapter = {
-  findUserByEmail,
-
-  async findSubscription(userId: string) {
-    const subscription = await db.query.subscriptions.findFirst({
-      where: eq(schema.subscriptions.userId, userId),
-    });
-    return subscription || null;
-  },
-
   async findUserWithSubscription(email: string) {
     const user = await db.query.users.findFirst({
       where: eq(schema.users.email, email),
@@ -78,15 +66,11 @@ export const webhookAdapter: WebhookDatabaseAdapter = {
     return user || null;
   },
 
-  async findSubscription(subscriptionId: string) {
-    const subscription = await db.query.subscriptions.findFirst({
-      where: eq(schema.subscriptions.id, subscriptionId),
-    });
-    return subscription || null;
-  },
-
   async upsertSubscription(data: SubscriptionData) {
-    const existing = await this.findSubscription(data.id);
+    // Check if subscription exists
+    const existing = await db.query.subscriptions.findFirst({
+      where: eq(schema.subscriptions.id, data.id),
+    });
 
     if (existing) {
       await db

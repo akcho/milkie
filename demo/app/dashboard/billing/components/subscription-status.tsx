@@ -5,7 +5,10 @@ interface SubscriptionStatusProps {
   isActive: boolean;
 }
 
-export function SubscriptionStatus({ status, isActive }: SubscriptionStatusProps) {
+export function SubscriptionStatus({
+  status,
+  isActive,
+}: SubscriptionStatusProps) {
   if (isActive) {
     return (
       <div className="flex items-center gap-2">

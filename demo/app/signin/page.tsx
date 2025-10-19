@@ -1,12 +1,12 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { SigninCardHeader } from "./components/signin-card-header"
-import { SigninForm } from "./components/signin-form"
-import { SigninDemoNotice } from "./components/signin-demo-notice"
+import { Card, CardContent } from "@/components/ui/card";
+import { SigninCardHeader } from "./components/signin-card-header";
+import { SigninForm } from "./components/signin-form";
+import { SigninDemoNotice } from "./components/signin-demo-notice";
 
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ callbackUrl?: string }>
+  searchParams: Promise<{ callbackUrl?: string }>;
 }) {
   const params = await searchParams;
   const redirectTo = params.callbackUrl || "/";
@@ -21,5 +21,5 @@ export default async function SignInPage({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

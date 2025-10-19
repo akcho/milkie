@@ -15,5 +15,5 @@ export const POST = createCheckoutRoute({
   db: checkoutAdapter,
   priceId: process.env.STRIPE_PRICE_ID,
   appUrl: process.env.NEXT_PUBLIC_APP_URL,
-  isTestMode: process.env.STRIPE_SECRET_KEY?.startsWith('sk_test_'),
+  isTestMode: process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_"),
 });

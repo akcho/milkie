@@ -15,7 +15,10 @@ interface PremiumPlanCardProps {
   isLoading: boolean;
 }
 
-export function PremiumPlanCard({ onSubscribe, isLoading }: PremiumPlanCardProps) {
+export function PremiumPlanCard({
+  onSubscribe,
+  isLoading,
+}: PremiumPlanCardProps) {
   return (
     <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 space-y-4">
       <div className="flex items-center gap-3">

@@ -6,7 +6,13 @@ interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading: boolean;
   loadingText?: string;
   children: ReactNode;
-  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
   size?: "default" | "sm" | "lg" | "icon";
 }
 

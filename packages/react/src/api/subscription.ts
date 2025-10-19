@@ -29,7 +29,9 @@ export interface SubscriptionDatabaseAdapter {
    * @param email - User's email address
    * @returns User object with subscription, or null if user not found
    */
-  findUserWithSubscription(email: string): Promise<{ id: string; subscription: Subscription | null } | null>;
+  findUserWithSubscription(
+    email: string
+  ): Promise<{ id: string; subscription: Subscription | null } | null>;
 }
 
 /**
@@ -112,7 +114,7 @@ export function createSubscriptionStatusRoute(
       return NextResponse.json(
         {
           error: "Email is required",
-          code: SubscriptionErrorCode.EMAIL_REQUIRED
+          code: SubscriptionErrorCode.EMAIL_REQUIRED,
         } satisfies SubscriptionErrorResponse,
         { status: 400 }
       );
@@ -126,7 +128,7 @@ export function createSubscriptionStatusRoute(
       return NextResponse.json(
         {
           error: "Invalid email format",
-          code: SubscriptionErrorCode.INVALID_EMAIL
+          code: SubscriptionErrorCode.INVALID_EMAIL,
         } satisfies SubscriptionErrorResponse,
         { status: 400 }
       );
@@ -137,7 +139,7 @@ export function createSubscriptionStatusRoute(
       return NextResponse.json(
         {
           error: "Email address too long",
-          code: SubscriptionErrorCode.INVALID_EMAIL
+          code: SubscriptionErrorCode.INVALID_EMAIL,
         } satisfies SubscriptionErrorResponse,
         { status: 400 }
       );
@@ -166,7 +168,7 @@ export function createSubscriptionStatusRoute(
       return NextResponse.json(
         {
           error: "Failed to check subscription status",
-          code: SubscriptionErrorCode.DATABASE_ERROR
+          code: SubscriptionErrorCode.DATABASE_ERROR,
         } satisfies SubscriptionErrorResponse,
         { status: 500 }
       );

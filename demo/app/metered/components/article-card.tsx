@@ -1,12 +1,24 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArticleCardProps } from "../types";
 
-export function ArticleCard({ article, viewed, locked, isPremium, onClick }: ArticleCardProps) {
+export function ArticleCard({
+  article,
+  viewed,
+  locked,
+  isPremium,
+  onClick,
+}: ArticleCardProps) {
   return (
     <Card
       className={`transition-all hover:shadow-lg cursor-pointer ${
-        locked ? 'opacity-75' : ''
+        locked ? "opacity-75" : ""
       }`}
       onClick={onClick}
     >

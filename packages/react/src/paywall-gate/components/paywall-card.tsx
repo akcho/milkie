@@ -115,69 +115,69 @@ export function PaywallCard({
   return (
     <div className="flex items-center justify-center">
       <Card className="max-w-md w-full shadow-none">
-      <CardHeader className="text-center space-y-4">
-        <div className="flex justify-center">
-          {icon || <MilkieIcon className="h-12 w-12" />}
-        </div>
-        <div className="space-y-2">
-          <CardTitle className="text-2xl">{title}</CardTitle>
-          <CardDescription>{subtitle}</CardDescription>
-        </div>
-      </CardHeader>
+        <CardHeader className="text-center space-y-4">
+          <div className="flex justify-center">
+            {icon || <MilkieIcon className="h-12 w-12" />}
+          </div>
+          <div className="space-y-2">
+            <CardTitle className="text-2xl">{title}</CardTitle>
+            <CardDescription>{subtitle}</CardDescription>
+          </div>
+        </CardHeader>
 
-      <CardContent className="space-y-6">
-        {!email ? (
-          <Button onClick={onSignIn} className="w-full" size="lg">
-            {signInButtonText}
-          </Button>
-        ) : (
-          <>
-            <UserInfo email={email} />
-
-            {checkoutError && <CheckoutError error={checkoutError} />}
-
-            <Button
-              onClick={onCheckout}
-              disabled={isCheckingOut}
-              className="w-full"
-              size="lg"
-            >
-              {isCheckingOut ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Loading...
-                </>
-              ) : checkoutError ? (
-                "Try again"
-              ) : (
-                subscribeButtonText
-              )}
+        <CardContent className="space-y-6">
+          {!email ? (
+            <Button onClick={onSignIn} className="w-full" size="lg">
+              {signInButtonText}
             </Button>
+          ) : (
+            <>
+              <UserInfo email={email} />
 
-            <p className="text-xs text-center text-muted-foreground">
-              You&apos;ll be redirected to Stripe to complete your payment
-            </p>
-          </>
-        )}
+              {checkoutError && <CheckoutError error={checkoutError} />}
 
-        {showBranding && (
-          <p
-            className="text-center text-muted-foreground/50 mt-6"
-            style={{ fontSize: "10px" }}
-          >
-            Powered by{" "}
-            <a
-              href="https://github.com/akcho/milkie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-muted-foreground/70 hover:text-muted-foreground transition-colors"
+              <Button
+                onClick={onCheckout}
+                disabled={isCheckingOut}
+                className="w-full"
+                size="lg"
+              >
+                {isCheckingOut ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Loading...
+                  </>
+                ) : checkoutError ? (
+                  "Try again"
+                ) : (
+                  subscribeButtonText
+                )}
+              </Button>
+
+              <p className="text-xs text-center text-muted-foreground">
+                You&apos;ll be redirected to Stripe to complete your payment
+              </p>
+            </>
+          )}
+
+          {showBranding && (
+            <p
+              className="text-center text-muted-foreground/50 mt-6"
+              style={{ fontSize: "10px" }}
             >
-              milkie
-            </a>
-          </p>
-        )}
-      </CardContent>
-    </Card>
+              Powered by{" "}
+              <a
+                href="https://github.com/akcho/milkie"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-muted-foreground/70 hover:text-muted-foreground transition-colors"
+              >
+                milkie
+              </a>
+            </p>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

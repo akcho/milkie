@@ -29,6 +29,7 @@ You'll need two tables: `users` and `subscriptions`.
 ### Required Tables
 
 **Users Table:**
+
 ```sql
 CREATE TABLE users (
   id TEXT PRIMARY KEY,
@@ -39,6 +40,7 @@ CREATE TABLE users (
 ```
 
 **Subscriptions Table:**
+
 ```sql
 CREATE TABLE subscriptions (
   id TEXT PRIMARY KEY,              -- Stripe subscription ID
@@ -73,7 +75,9 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const subscriptions = pgTable("subscriptions", {
   id: text("id").primaryKey(),
-  userId: text("user_id").notNull().references(() => users.id),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
   stripeCustomerId: text("stripe_customer_id").notNull(),
   status: text("status").notNull(),
   priceId: text("price_id").notNull(),
@@ -123,10 +127,7 @@ export const checkoutAdapter: CheckoutDatabaseAdapter = {
   },
 
   async updateUser(userId: string, data) {
-    await db
-      .update(schema.users)
-      .set(data)
-      .where(eq(schema.users.id, userId));
+    await db.update(schema.users).set(data).where(eq(schema.users.id, userId));
   },
 };
 ```

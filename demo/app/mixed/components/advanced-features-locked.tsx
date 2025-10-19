@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lock } from "lucide-react";
 
@@ -20,8 +26,8 @@ export function AdvancedFeaturesLocked() {
       <CardContent>
         <div className="bg-muted/50 rounded-lg p-6 text-center">
           <p className="text-muted-foreground">
-            Subscribe to access advanced code examples, performance tips, and production
-            deployment strategies.
+            Subscribe to access advanced code examples, performance tips, and
+            production deployment strategies.
           </p>
         </div>
       </CardContent>

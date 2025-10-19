@@ -7,7 +7,11 @@ interface FeatureCardProps {
   description: string | React.ReactNode;
 }
 
-export function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
+export function FeatureCard({
+  icon: Icon,
+  title,
+  description,
+}: FeatureCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -17,7 +21,7 @@ export function FeatureCard({ icon: Icon, title, description }: FeatureCardProps
         <CardTitle className="text-lg">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        {typeof description === 'string' ? (
+        {typeof description === "string" ? (
           <p className="text-sm text-muted-foreground">{description}</p>
         ) : (
           description

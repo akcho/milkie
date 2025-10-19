@@ -11,8 +11,8 @@ export function HowItWorksSection() {
           title="Wrap Components"
           description={
             <p className="text-sm text-muted-foreground">
-              Use <code className="!text-foreground">PaywallGate</code> to protect pages, sections,
-              or individual components
+              Use <code className="!text-foreground">PaywallGate</code> to
+              protect pages, sections, or individual components
             </p>
           }
         />

@@ -13,7 +13,8 @@ const navItems = [
 
 export function DashboardNav() {
   const pathname = usePathname();
-  const currentPage = navItems.find((item) => item.href === pathname)?.label || "Dashboard";
+  const currentPage =
+    navItems.find((item) => item.href === pathname)?.label || "Dashboard";
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b">
@@ -27,7 +28,9 @@ export function DashboardNav() {
               </Link>
             </Button>
             <div className="hidden md:block h-6 w-px bg-border shrink-0" />
-            <h1 className="text-base md:text-lg font-semibold truncate">{currentPage}</h1>
+            <h1 className="text-base md:text-lg font-semibold truncate">
+              {currentPage}
+            </h1>
           </div>
           <nav className="flex gap-1 shrink-0 items-center">
             <ThemeToggle />

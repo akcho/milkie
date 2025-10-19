@@ -1,12 +1,8 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export function GoogleSigninButton() {
   return (
-    <Button
-      type="submit"
-      className="w-full"
-      size="lg"
-    >
+    <Button type="submit" className="w-full" size="lg">
       <svg className="w-5 h-5" viewBox="0 0 24 24">
         <path
           fill="currentColor"
@@ -27,5 +23,5 @@ export function GoogleSigninButton() {
       </svg>
       Continue with Google
     </Button>
-  )
+  );
 }

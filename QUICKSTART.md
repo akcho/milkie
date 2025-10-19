@@ -1,10 +1,101 @@
 # Quick Start
 
-Get Milkie running in under 15 minutes - locally or on Vercel.
+Get started with Milkie in minutes - either use the package in your project or run the demo locally.
+
+---
+
+## ⚡ Quick Start - Using @milkie/react (5 minutes)
+
+Add subscriptions to your existing Next.js app.
+
+### 1. Install the package
+
+```bash
+npm install @milkie/react
+```
+
+### 2. Set up your backend
+
+Create 3 API routes using Milkie's factory functions:
+
+```tsx
+// app/api/subscription/status/route.ts
+import { createSubscriptionStatusRoute } from "@milkie/react/api";
+import { dbAdapter } from "@/lib/milkie-adapter";
+
+export const GET = createSubscriptionStatusRoute({ adapter: dbAdapter });
+```
+
+```tsx
+// app/api/checkout/route.ts
+import { createCheckoutRoute } from "@milkie/react/api";
+import { dbAdapter } from "@/lib/milkie-adapter";
+import { stripe } from "@/lib/stripe";
+
+export const POST = createCheckoutRoute({
+  adapter: dbAdapter,
+  stripe,
+  priceId: process.env.STRIPE_PRICE_ID!,
+  successUrl: "/dashboard",
+});
+```
+
+```tsx
+// app/api/webhooks/stripe/route.ts
+import { createWebhookRoute } from "@milkie/react/api";
+import { dbAdapter } from "@/lib/milkie-adapter";
+import { stripe } from "@/lib/stripe";
+
+export const POST = createWebhookRoute({
+  adapter: dbAdapter,
+  stripe,
+  webhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+});
+```
+
+See [BACKEND_SETUP.md](docs/BACKEND_SETUP.md) for database adapter implementation.
+
+### 3. Wrap your app with MilkieProvider
+
+```tsx
+import { MilkieProvider } from "@milkie/react";
+
+export default function RootLayout({ children }) {
+  const session = await auth(); // Your auth solution
+
+  return (
+    <MilkieProvider email={session?.user?.email}>{children}</MilkieProvider>
+  );
+}
+```
+
+### 4. Gate your content
+
+```tsx
+import { PaywallGate } from "@milkie/react";
+
+export default function PremiumPage() {
+  return (
+    <PaywallGate>
+      <PremiumContent />
+    </PaywallGate>
+  );
+}
+```
+
+**That's it!** Your content is now behind a paywall.
+
+**Next steps:**
+
+- [Backend Setup Guide](docs/BACKEND_SETUP.md) - Complete API routes and database setup
+- [Auth Integration](docs/AUTH_INTEGRATION.md) - Works with any auth solution
+- [Paywall Patterns](docs/PAYWALL_PATTERNS.md) - Implementation patterns and examples
+
+---
 
 ## 🚀 Try the Live Demo (30 seconds)
 
-**[milkie.dev](https://milkie.dev)** *(coming soon)*
+**[milkie.dev](https://milkie.dev)**
 
 1. Sign in with Google
 2. Try accessing premium content - see the paywall
@@ -16,9 +107,12 @@ Get Milkie running in under 15 minutes - locally or on Vercel.
 
 ---
 
-## 💻 Run Locally (15 min)
+## 💻 Run the Demo Locally (15 min)
+
+Want to explore the code and see how it works under the hood?
 
 ### Prerequisites
+
 - Node.js 18+
 - Google account (for OAuth setup)
 - Stripe account (free test mode)
@@ -93,6 +187,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 **Generate AUTH_SECRET:**
+
 ```bash
 openssl rand -base64 32
 ```
@@ -100,11 +195,13 @@ openssl rand -base64 32
 ## Step 5: Run It (2 min)
 
 **Terminal 1 - Start the app:**
+
 ```bash
 npm run dev
 ```
 
 **Terminal 2 - Forward webhooks:**
+
 ```bash
 stripe listen --forward-to localhost:3000/api/webhooks/stripe
 ```
@@ -112,6 +209,7 @@ stripe listen --forward-to localhost:3000/api/webhooks/stripe
 **Important**: Copy the webhook secret from Terminal 2 (starts with `whsec_`)
 
 Add it to `.env.local`:
+
 ```env
 STRIPE_WEBHOOK_SECRET=whsec_YOUR_SECRET_HERE
 ```
@@ -141,22 +239,26 @@ Restart Terminal 1 (Ctrl+C then `npm run dev` again)
 ## Troubleshooting
 
 ### "Configuration" error or can't sign in with Google
+
 - Make sure your Google Client ID and Client Secret are correct
 - Check that the redirect URI `http://localhost:3000/api/auth/callback/google` is added in Google Cloud Console
 - Make sure `AUTH_SECRET` is set in `.env.local`
 - Restart the dev server after adding credentials
 
 ### "Webhook signature verification failed"
+
 - Make sure you copied the webhook secret from Terminal 2
 - Make sure you added it to `.env.local`
 - Make sure you restarted the dev server
 
 ### "Failed to create checkout session"
+
 - Check your Stripe secret key is correct
 - Check the price ID is correct (starts with `price_`, not `prod_`)
 - Look at Terminal 1 for error messages
 
 ### "Subscription status check failed"
+
 - Make sure the webhook secret is set up
 - Check that Terminal 2 (stripe listen) is running
 - Look at Terminal 2 to see if webhooks are being received
@@ -168,16 +270,19 @@ Restart Terminal 1 (Ctrl+C then `npm run dev` again)
 Once you have it running:
 
 1. **Explore the patterns:**
+
    - [/free](http://localhost:3000/free) - Public content
    - [/mixed](http://localhost:3000/mixed) - Component-level gating
    - [/dashboard](http://localhost:3000/dashboard) - Layout-level gating
 
 2. **Check the code:**
+
    - `demo/lib/milkie/` - The SDK (what becomes the npm package)
    - `demo/app/mixed/page.tsx` - Component gating example
    - `demo/app/dashboard/layout.tsx` - Layout gating example
 
 3. **Verify persistence:**
+
    - Your subscription persists in the local database
    - Sign out and back in - you still have access
    - Refresh the page - no re-authentication needed
@@ -191,6 +296,7 @@ Once you have it running:
 ## What You've Validated
 
 If you made it this far, you've proven:
+
 - ✅ Stripe integration works
 - ✅ Webhooks work in real-time
 - ✅ The SDK is simple to use
@@ -202,6 +308,7 @@ Ready to integrate into your own app? The SDK in `demo/lib/milkie/` is all you n
 ---
 
 **Need help?** Check the docs:
+
 - [README.md](README.md) - Project overview and vision
 - [docs/PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md) - Implementation patterns
 - [docs/AUTH_INTEGRATION.md](docs/AUTH_INTEGRATION.md) - Works with any auth

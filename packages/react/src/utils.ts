@@ -3,9 +3,7 @@
  * @returns Encoded callback URL containing pathname and search params
  */
 export function buildCallbackUrl(): string {
-  return encodeURIComponent(
-    window.location.pathname + window.location.search
-  );
+  return encodeURIComponent(window.location.pathname + window.location.search);
 }
 
 /**

@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Shield } from "lucide-react";
 
 export function ProtectedContentCard() {
@@ -9,15 +15,16 @@ export function ProtectedContentCard() {
           <Shield className="h-5 w-5 text-primary" />
           <CardTitle>Protected Content</CardTitle>
         </div>
-        <CardDescription>
-          Page-level protection in action
-        </CardDescription>
+        <CardDescription>Page-level protection in action</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm">
           This page is protected with{" "}
-          <code className="text-xs bg-muted px-1.5 py-0.5 rounded">PaywallGate</code>{" "}
-          while other pages like Settings and Billing remain accessible to all logged-in users.
+          <code className="text-xs bg-muted px-1.5 py-0.5 rounded">
+            PaywallGate
+          </code>{" "}
+          while other pages like Settings and Billing remain accessible to all
+          logged-in users.
         </p>
         <div className="bg-muted/50 rounded-lg p-4 space-y-2">
           <p className="text-sm font-medium">Benefits of Page-Level Gating:</p>

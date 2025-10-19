@@ -62,6 +62,7 @@ paywall-gate/
 All props are optional except `children`. See the TypeScript interface in [index.tsx](./index.tsx) for complete prop documentation with JSDoc comments.
 
 Key props:
+
 - `children` - Premium content to protect (required)
 - `title`, `subtitle` - Customize paywall messaging
 - `customUi` - Replace default UI entirely
@@ -146,7 +147,7 @@ import { Crown } from "lucide-react";
   title="Premium Members Only"
 >
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 ### 6. Custom Sign-In Handler
@@ -156,12 +157,9 @@ Override default sign-in redirect:
 ```tsx
 import { signIn } from "next-auth/react";
 
-<PaywallGate
-  onSignIn={() => signIn()}
-  signInButtonText="Sign in with GitHub"
->
+<PaywallGate onSignIn={() => signIn()} signInButtonText="Sign in with GitHub">
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 ### 7. Custom Checkout Handler
@@ -197,7 +195,7 @@ import { toast } from "sonner";
   }}
 >
   <PremiumContent />
-</PaywallGate>
+</PaywallGate>;
 ```
 
 ### 9. Fully Custom UI
@@ -209,9 +207,7 @@ Replace the entire paywall UI:
   customUi={
     <div className="custom-paywall">
       <h2>Custom Paywall Design</h2>
-      <button onClick={handleCustomCheckout}>
-        Subscribe Now
-      </button>
+      <button onClick={handleCustomCheckout}>Subscribe Now</button>
     </div>
   }
 >
@@ -225,16 +221,18 @@ Protect entire sections of your app:
 
 ```tsx
 // app/dashboard/layout.tsx
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <PaywallGate
       title="Premium Dashboard"
       subtitle="Subscribe to access advanced features"
     >
       <DashboardNav />
-      <div className="dashboard-content">
-        {children}
-      </div>
+      <div className="dashboard-content">{children}</div>
     </PaywallGate>
   );
 }

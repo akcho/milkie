@@ -7,7 +7,10 @@ interface ImplementationTipProps {
   children: ReactNode;
 }
 
-export function ImplementationTip({ title = "Implementation Tip", children }: ImplementationTipProps) {
+export function ImplementationTip({
+  title = "Implementation Tip",
+  children,
+}: ImplementationTipProps) {
   return (
     <Card className="border-primary/50 bg-primary/5">
       <CardHeader>

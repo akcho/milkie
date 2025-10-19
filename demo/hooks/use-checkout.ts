@@ -14,7 +14,8 @@ export function useCheckout() {
         },
         body: JSON.stringify({
           email,
-          callbackUrl: callbackUrl || window.location.pathname + window.location.search,
+          callbackUrl:
+            callbackUrl || window.location.pathname + window.location.search,
         }),
       });
 

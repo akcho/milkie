@@ -55,6 +55,7 @@ auth-gate/
 All props are optional except `children`. See the TypeScript interface in [index.tsx](./index.tsx) for complete prop documentation with JSDoc comments.
 
 Key props:
+
 - `children` - Content to protect (required)
 - `title`, `subtitle` - Customize sign-in overlay messaging
 - `customUi` - Replace default overlay entirely
@@ -140,7 +141,7 @@ import { signIn } from "next-auth/react";
   signInButtonText="Sign in with Google"
 >
   <ProtectedContent />
-</AuthGate>
+</AuthGate>;
 ```
 
 ### 6. Multiple Authentication Providers
@@ -154,20 +155,14 @@ import { signIn } from "next-auth/react";
   customUi={
     <div className="flex flex-col gap-4 p-8">
       <h2 className="text-2xl font-bold">Choose sign-in method</h2>
-      <button onClick={() => signIn("google")}>
-        Sign in with Google
-      </button>
-      <button onClick={() => signIn("github")}>
-        Sign in with GitHub
-      </button>
-      <button onClick={() => signIn("email")}>
-        Sign in with Email
-      </button>
+      <button onClick={() => signIn("google")}>Sign in with Google</button>
+      <button onClick={() => signIn("github")}>Sign in with GitHub</button>
+      <button onClick={() => signIn("email")}>Sign in with Email</button>
     </div>
   }
 >
   <ProtectedContent />
-</AuthGate>
+</AuthGate>;
 ```
 
 ### 7. Layout-Level Gating
@@ -176,16 +171,18 @@ Protect entire sections of your app:
 
 ```tsx
 // app/dashboard/layout.tsx
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <AuthGate
       title="Dashboard Access"
       subtitle="Please sign in to access your dashboard"
     >
       <DashboardNav />
-      <div className="dashboard-content">
-        {children}
-      </div>
+      <div className="dashboard-content">{children}</div>
     </AuthGate>
   );
 }
@@ -319,6 +316,7 @@ The component includes basic accessibility features:
 ## AuthGate vs PaywallGate
 
 **Use AuthGate when:**
+
 - Free member-only content
 - Comments sections
 - User profiles
@@ -326,6 +324,7 @@ The component includes basic accessibility features:
 - Download areas for registered users
 
 **Use PaywallGate when:**
+
 - Premium paid content
 - Subscription features
 - Metered paywalls

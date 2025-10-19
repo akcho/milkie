@@ -9,7 +9,12 @@ interface StatCardProps {
   subtitle?: string | ReactNode;
 }
 
-export function StatCard({ title, value, icon: Icon, subtitle }: StatCardProps) {
+export function StatCard({
+  title,
+  value,
+  icon: Icon,
+  subtitle,
+}: StatCardProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

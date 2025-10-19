@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   hasViewedArticle,
   hasReachedLimit,
-  recordArticleView
+  recordArticleView,
 } from "@/lib/metered-access";
 
 export function useArticleView() {
@@ -30,6 +30,6 @@ export function useArticleView() {
     selectedArticle,
     setSelectedArticle,
     handleArticleClick,
-    canViewArticle
+    canViewArticle,
   };
 }

@@ -47,7 +47,13 @@ export function OverlayGrid({
   return (
     <div className="w-full grid grid-cols-1 grid-rows-1 items-center justify-items-center">
       <div className="col-start-1 row-start-1 w-full">{children}</div>
-      <div className={`col-start-1 row-start-1 w-full z-10 ${overlayClassName || ''}`}>{overlay}</div>
+      <div
+        className={`col-start-1 row-start-1 w-full z-10 ${
+          overlayClassName || ""
+        }`}
+      >
+        {overlay}
+      </div>
     </div>
   );
 }

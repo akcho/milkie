@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export function MoreFreeContentCard() {
@@ -15,8 +21,8 @@ export function MoreFreeContentCard() {
       </CardHeader>
       <CardContent className="prose prose-sm max-w-none">
         <p>
-          Notice how you can intersperse free and premium content throughout the same page.
-          This is perfect for:
+          Notice how you can intersperse free and premium content throughout the
+          same page. This is perfect for:
         </p>
         <ul>
           <li>Blog posts with premium sections</li>

@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { BillingInfoRow } from "./billing-info-row";
 import { PremiumPlanCard } from "./premium-plan-card";
 import { SubscriptionStatus } from "./subscription-status";

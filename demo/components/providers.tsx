@@ -12,9 +12,7 @@ interface SessionProvidersProps {
 export function SessionProviders({ children, session }: SessionProvidersProps) {
   return (
     <SessionProvider session={session}>
-      <MilkieProvider email={session?.user?.email}>
-        {children}
-      </MilkieProvider>
+      <MilkieProvider email={session?.user?.email}>{children}</MilkieProvider>
     </SessionProvider>
   );
 }

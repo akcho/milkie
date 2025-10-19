@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, LucideIcon } from "lucide-react";
 
@@ -10,7 +16,12 @@ interface DemoCardProps {
   href: string;
 }
 
-export function DemoCard({ icon: Icon, title, description, href }: DemoCardProps) {
+export function DemoCard({
+  icon: Icon,
+  title,
+  description,
+  href,
+}: DemoCardProps) {
   return (
     <Card className="hover:shadow-lg transition-shadow flex flex-col">
       <CardHeader className="flex-grow">
