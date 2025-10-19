@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@source "../node_modules/@milkie/react/dist";
+@source "../../packages/react/dist";
 
 @custom-variant dark (&:is(.dark *));
 

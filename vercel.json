@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run build:pkg && npm run build:demo",
+  "outputDirectory": "demo/.next",
+  "installCommand": "npm install",
+  "framework": null
+}
