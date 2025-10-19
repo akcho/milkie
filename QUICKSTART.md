@@ -93,7 +93,7 @@ export default function PremiumPage() {
 
 ---
 
-## 🚀 Try the Live Demo (30 seconds)
+## 🚀 Try the Live Demo
 
 **[milkie.dev](https://milkie.dev)**
 
@@ -273,13 +273,14 @@ Once you have it running:
 
 1. **Explore the patterns:**
 
-   - [/free](http://localhost:3000/free) - Public content
-   - [/mixed](http://localhost:3000/mixed) - Component-level gating
-   - [/dashboard](http://localhost:3000/dashboard) - Layout-level gating
+   - [/mixed](http://localhost:3000/mixed) - Component-level gating (mixed free/premium content)
+   - [/metered](http://localhost:3000/metered) - Metered access (free article limit)
+   - [/dashboard](http://localhost:3000/dashboard) - Layout-level gating (full protected section)
 
 2. **Check the code:**
 
    - `demo/app/mixed/page.tsx` - Component gating example
+   - `demo/app/metered/page.tsx` - Metered access example
    - `demo/app/dashboard/layout.tsx` - Layout gating example
    - `demo/lib/milkie-adapter.ts` - Database adapter implementation
    - `packages/react/` - The actual npm package source code
