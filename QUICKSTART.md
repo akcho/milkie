@@ -103,7 +103,7 @@ export default function PremiumPage() {
 4. Use test card: `4242 4242 4242 4242` (any expiry/CVC)
 5. Access unlocked!
 
-**Zero setup required - see it working in 30 seconds.**
+**Zero setup required.**
 
 ---
 
@@ -214,7 +214,7 @@ Add it to `.env.local`:
 STRIPE_WEBHOOK_SECRET=whsec_YOUR_SECRET_HERE
 ```
 
-Restart Terminal 1 (Ctrl+C then `npm run dev` again)
+Restart Terminal 1 (Ctrl+C / Cmd+C then `npm run dev` again)
 
 ## Step 6: Test the Flow
 
@@ -302,8 +302,6 @@ If you made it this far, you've proven:
 - ✅ The SDK is simple to use
 - ✅ Auth-agnostic approach works
 - ✅ The developer experience is smooth
-
-Ready to integrate into your own app? The SDK in `demo/lib/milkie/` is all you need.
 
 ---
 
