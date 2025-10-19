@@ -403,6 +403,6 @@ console.log("Found user:", user);
 
 ## Related
 
-- [Paywall Patterns](../paywall-patterns/) - Implementation patterns
+- [Implementation Guide](../IMPLEMENTATION_GUIDE.md) - 7 paywall patterns (component gating, metered access, custom checkout, etc.)
 - [API Reference](api-reference.md) - Technical details
 - [Customization](customization.md) - UI customization options

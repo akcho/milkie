@@ -412,4 +412,4 @@ try {
 
 - [Backend Setup](../BACKEND_SETUP.md) - Complete setup guide with database examples
 - [Best Practices](best-practices.md) - Security and performance tips
-- [Paywall Patterns](../paywall-patterns/) - Implementation patterns
+- [Implementation Guide](../IMPLEMENTATION_GUIDE.md) - 7 paywall patterns (component gating, metered access, custom checkout, etc.)

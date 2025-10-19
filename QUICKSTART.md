@@ -89,7 +89,7 @@ export default function PremiumPage() {
 
 - [Backend Setup Guide](docs/BACKEND_SETUP.md) - Complete API routes and database setup
 - [Auth Integration](docs/AUTH_INTEGRATION.md) - Works with any auth solution
-- [Paywall Patterns](docs/PAYWALL_PATTERNS.md) - Implementation patterns and examples
+- [Implementation Guide](docs/IMPLEMENTATION_GUIDE.md) - Complete guide to implementing paywalls: component gating, metered access, custom checkout, and more
 
 ---
 
@@ -288,7 +288,7 @@ Once you have it running:
    - Refresh the page - no re-authentication needed
 
 4. **Read the docs:**
-   - [PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md) - Implementation patterns
+   - [IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md) - 7 proven patterns, customization, API reference, best practices
    - [AUTH_INTEGRATION.md](docs/AUTH_INTEGRATION.md) - Works with any auth
 
 ---
@@ -308,5 +308,5 @@ If you made it this far, you've proven:
 **Need help?** Check the docs:
 
 - [README.md](README.md) - Project overview and vision
-- [docs/PAYWALL_PATTERNS.md](docs/PAYWALL_PATTERNS.md) - Implementation patterns
+- [docs/IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md) - 7 proven patterns, customization, API reference, best practices
 - [docs/AUTH_INTEGRATION.md](docs/AUTH_INTEGRATION.md) - Works with any auth

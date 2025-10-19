@@ -155,7 +155,10 @@ export default function PremiumPage() {
 - **[@milkie/react README](packages/react/README.md)** - Full package documentation
 - **[Backend Setup Guide](docs/BACKEND_SETUP.md)** - API routes and database setup
 - **[Auth Integration](docs/AUTH_INTEGRATION.md)** - Works with any auth solution
-- **[Paywall Patterns](docs/PAYWALL_PATTERNS.md)** - Implementation patterns and examples
+- **[Implementation Guide](docs/IMPLEMENTATION_GUIDE.md)** - 7 proven paywall patterns with code examples
+- **[API Reference](docs/reference/api-reference.md)** - Component props and hook documentation
+- **[Customization Guide](docs/reference/customization.md)** - Styling and custom UI patterns
+- **[Best Practices](docs/reference/best-practices.md)** - Production deployment and optimization tips
 
 ---
 
@@ -392,9 +395,11 @@ milkie/
 │       │       └── webhooks.ts      # createWebhookRoute
 │       └── README.md          # Package documentation
 ├── docs/
-│   ├── BACKEND_SETUP.md       # Complete backend guide
-│   ├── AUTH_INTEGRATION.md    # Works with any auth
-│   └── PAYWALL_PATTERNS.md    # Implementation patterns
+│   ├── BACKEND_SETUP.md        # Complete backend guide
+│   ├── AUTH_INTEGRATION.md     # Works with any auth
+│   ├── IMPLEMENTATION_GUIDE.md # Complete guide with 7 paywall patterns
+│   ├── paywall-patterns/       # Detailed pattern docs
+│   └── reference/              # API docs, customization, best practices
 └── demo/                       # Working demo app
     ├── .env.example           # Environment variables template
     ├── app/                    # Next.js app directory
@@ -420,7 +425,7 @@ milkie/
 1. **[Try the demo](https://milkie.dev)** - See it in action
 2. **[Install the package](packages/react/README.md)** - `npm install @milkie/react`
 3. **[Set up backend](docs/BACKEND_SETUP.md)** - 3 API routes
-4. **[Learn the patterns](docs/PAYWALL_PATTERNS.md)** - Component vs layout gating
+4. **[Learn the patterns](docs/IMPLEMENTATION_GUIDE.md)** - Component gating, metered paywalls, custom checkout, and more
 5. **[Integrate with your auth](docs/AUTH_INTEGRATION.md)** - Works with any provider
 
 ---

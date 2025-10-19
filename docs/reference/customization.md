@@ -366,5 +366,5 @@ See these patterns in action:
 
 ## Related
 
-- [Paywall Patterns](../paywall-patterns/) - Implementation patterns
+- [Implementation Guide](../IMPLEMENTATION_GUIDE.md) - 7 paywall patterns (component gating, metered access, custom checkout, etc.)
 - [Best Practices](best-practices.md) - UX and design tips

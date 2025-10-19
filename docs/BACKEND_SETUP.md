@@ -841,5 +841,5 @@ app.post("/api/checkout", async (req, res) => {
 ## Next Steps
 
 - **[Auth Integration Guide](./AUTH_INTEGRATION.md)** - Connect with NextAuth, Clerk, etc.
-- **[Paywall Patterns](./PAYWALL_PATTERNS.md)** - Implementation examples
+- **[Implementation Guide](./IMPLEMENTATION_GUIDE.md)** - 7 paywall implementation patterns (component gating, metered access, custom checkout, etc.)
 - **[Live Demo](https://milkie.dev)** - See it in action

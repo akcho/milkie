@@ -508,7 +508,7 @@ The components use CSS variables for theming (compatible with shadcn/ui):
 - **[Live Demo](https://milkie.dev)** - Interactive examples
 - **[Backend Setup](https://github.com/akcho/milkie/blob/main/docs/BACKEND_SETUP.md)** - Database & API routes
 - **[Auth Integration](https://github.com/akcho/milkie/blob/main/docs/AUTH_INTEGRATION.md)** - Works with any auth
-- **[Implementation Patterns](https://github.com/akcho/milkie/blob/main/docs/PAYWALL_PATTERNS.md)** - Advanced usage
+- **[Implementation Guide](https://github.com/akcho/milkie/blob/main/docs/IMPLEMENTATION_GUIDE.md)** - 7 paywall patterns (component gating, metered access, custom checkout, etc.)
 
 ---
 
