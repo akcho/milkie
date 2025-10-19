@@ -167,7 +167,7 @@ export function PaywallCard({
             >
               Powered by{" "}
               <a
-                href="https://github.com/akcho/milkie"
+                href="https://milkie.dev"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-muted-foreground/70 hover:text-muted-foreground transition-colors"

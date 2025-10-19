@@ -1,0 +1,4 @@
+{
+  "buildCommand": "cd .. && npm run build:pkg && cd demo && npm run build",
+  "installCommand": "cd .. && npm install && cd demo"
+}
