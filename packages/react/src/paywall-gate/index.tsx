@@ -26,6 +26,7 @@ import { handleCheckoutProcess, redirectToCheckout } from "./utils";
  * @property {boolean} [showBranding=true] - Whether to show "Powered by milkie" footer in the paywall card
  * @property {boolean} [applyBlur=true] - When true, shows blurred content preview behind paywall card
  * @property {string} [overlayClassName] - Optional className to apply to the overlay element (e.g., "pt-8" to add top padding)
+ * @property {"center" | "top"} [position="center"] - Vertical position of the paywall card: "center" for middle, "top" for top alignment
  *
  * @example
  * // Basic usage - protect premium content
@@ -78,6 +79,7 @@ interface PaywallGateProps {
   showBranding?: boolean;
   applyBlur?: boolean;
   overlayClassName?: string;
+  position?: "center" | "top";
 }
 
 /**
@@ -152,6 +154,7 @@ export function PaywallGate({
   showBranding = true,
   applyBlur = true,
   overlayClassName,
+  position = "center",
 }: PaywallGateProps) {
   const { hasAccess, loading, email } = usePaywall();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -228,7 +231,7 @@ export function PaywallGate({
 
   // Default: show with blur effect
   return (
-    <OverlayGrid overlay={paywallCard} overlayClassName={overlayClassName}>
+    <OverlayGrid overlay={paywallCard} overlayClassName={overlayClassName} position={position}>
       <BlurredContent>{children}</BlurredContent>
     </OverlayGrid>
   );

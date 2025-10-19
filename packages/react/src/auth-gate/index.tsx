@@ -18,6 +18,7 @@ import { handleSignInRedirect } from "../utils";
  * @property {string} [subtitle="Please sign in to access this content."] - Subtitle text displayed on the authentication overlay
  * @property {string} [signInButtonText="Sign in"] - Label for the sign-in button
  * @property {string} [overlayClassName] - Optional className to apply to the overlay element (e.g., "pt-8" to add top padding)
+ * @property {"center" | "top"} [position="center"] - Vertical position of the auth card: "center" for middle, "top" for top alignment
  *
  * @example
  * // Basic usage - protect content
@@ -53,6 +54,7 @@ interface AuthGateProps {
   subtitle?: string;
   signInButtonText?: string;
   overlayClassName?: string;
+  position?: "center" | "top";
 }
 
 /**
@@ -119,6 +121,7 @@ export function AuthGate({
   subtitle = "Please sign in to access this content.",
   signInButtonText = "Sign in",
   overlayClassName,
+  position = "center",
 }: AuthGateProps) {
   const { loading, email } = usePaywall();
 
@@ -153,6 +156,7 @@ export function AuthGate({
         />
       }
       overlayClassName={overlayClassName}
+      position={position}
     >
       <BlurredContent>{children}</BlurredContent>
     </OverlayGrid>

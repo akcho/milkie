@@ -24,6 +24,7 @@ All available props for customizing the paywall experience:
   showBranding={false}
   applyBlur={false}
   overlayClassName="pt-8"
+  position="top"
 >
   <PremiumContent />
 </PaywallGate>
@@ -51,11 +52,12 @@ All available props for customizing the paywall experience:
 
 ### Visual Props
 
-| Prop               | Type      | Default | Description                          |
-| ------------------ | --------- | ------- | ------------------------------------ |
-| `showBranding`     | `boolean` | true    | Show "Powered by milkie" footer      |
-| `applyBlur`        | `boolean` | true    | Show blurred content preview         |
-| `overlayClassName` | `string`  | ""      | Custom className for overlay element |
+| Prop               | Type                  | Default    | Description                             |
+| ------------------ | --------------------- | ---------- | --------------------------------------- |
+| `showBranding`     | `boolean`             | true       | Show "Powered by milkie" footer         |
+| `applyBlur`        | `boolean`             | true       | Show blurred content preview            |
+| `overlayClassName` | `string`              | ""         | Custom className for overlay element    |
+| `position`         | `"center" \| "top"`   | `"center"` | Vertical position of paywall card       |
 
 ## Visual Design Features
 
@@ -102,6 +104,16 @@ The paywall uses a CSS Grid-based overlay system:
   <PremiumContent />
 </PaywallGate>
 ```
+
+**Position card at top:**
+
+```tsx
+<PaywallGate position="top">
+  <LongNewsArticle />
+</PaywallGate>
+```
+
+Useful for long scrolling content where a centered card might appear off-screen on mobile.
 
 ### Dark Mode Support
 
@@ -277,6 +289,34 @@ All components are mobile-optimized:
   <PremiumContent />
 </PaywallGate>
 ```
+
+### Mobile-Specific Optimizations
+
+For long content on mobile, consider disabling blur to prevent off-screen centering:
+
+```tsx
+"use client";
+import { useIsMobile } from "@/hooks/use-is-mobile";
+
+export default function ArticlePage() {
+  const isMobile = useIsMobile();
+
+  return (
+    <PaywallGate
+      position="top"
+      applyBlur={!isMobile}
+    >
+      <LongNewsArticle />
+    </PaywallGate>
+  );
+}
+```
+
+**Why this helps:**
+- Long blurred content on mobile can push the paywall card far down the page
+- Disabling blur on mobile shows the card inline at the top
+- Desktop users still get the blurred preview effect
+- Better UX when content height exceeds viewport
 
 ## Branding
 

@@ -137,6 +137,8 @@ Gate content behind a subscription paywall with built-in checkout flow.
 - `subscribeButtonText?: string` - Subscribe button text
 - `showBranding?: boolean` - Show "Powered by milkie" (default: true)
 - `onSignIn?: () => void` - Custom sign-in handler
+- `applyBlur?: boolean` - Show blurred content preview (default: true)
+- `position?: "center" | "top"` - Vertical card position (default: "center")
 
 **Basic usage:**
 
@@ -176,6 +178,9 @@ Gate content that requires sign-in but NOT an active subscription.
 
 - `children: ReactNode` - Content requiring authentication
 - `signInUrl?: string` - Where to redirect for sign-in (default: `/signin`)
+- `title?: string` - Sign-in card title
+- `subtitle?: string` - Sign-in card subtitle
+- `position?: "center" | "top"` - Vertical card position (default: "center")
 
 **Usage:**
 

@@ -4,10 +4,15 @@ import { ArrowLeft, Clock, User } from "lucide-react";
 import { Header } from "@/components/site-header/header";
 import { ArticleViewProps } from "../types";
 import { ArticleContent, PreviewContent } from "./article-content";
+import { useScrollBlock } from "../hooks/use-scroll-block";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 
 export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
   const isMobile = useIsMobile();
+
+  // Block scrolling when paywall is shown (desktop only, since mobile shows inline)
+  useScrollBlock(!canView && !isMobile);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -52,6 +57,7 @@ export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
                 subscribeButtonText="Get unlimited access"
                 overlayClassName="py-8"
                 applyBlur={!isMobile}
+                position="top"
               >
                 <ArticleContent />
               </PaywallGate>

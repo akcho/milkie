@@ -49,6 +49,7 @@ All props are optional except `children`. Key props:
 - `onSignIn` - Custom sign-in handler
 - `signInButtonText` - Customize button label
 - `overlayClassName` - Custom Tailwind classes for card positioning
+- `position` - Vertical card position: `"center"` (default) or `"top"`
 
 See [index.tsx](./index.tsx) for complete TypeScript documentation.
 
@@ -168,6 +169,16 @@ export default function ArticlePage() {
     </div>
   );
 }
+```
+
+### 9. Top-Positioned Card
+
+For long content where top alignment works better:
+
+```tsx
+<AuthGate position="top">
+  <LongNewsArticle />
+</AuthGate>
 ```
 
 ## Styling

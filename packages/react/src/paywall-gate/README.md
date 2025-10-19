@@ -54,6 +54,7 @@ All props are optional except `children`. Key props:
 - `onToast` - Toast notification callback
 - `showBranding` - Toggle "Powered by milkie" footer
 - `overlayClassName` - Custom Tailwind classes for card positioning
+- `position` - Vertical card position: `"center"` (default) or `"top"`
 
 See [index.tsx](./index.tsx) for complete TypeScript documentation.
 
@@ -194,6 +195,16 @@ export default function ArticlePage() {
     </PaywallGate>
   );
 }
+```
+
+### 9. Top-Positioned Card
+
+For long scrolling content, position the card at the top to keep it visible:
+
+```tsx
+<PaywallGate position="top">
+  <LongNewsArticle />
+</PaywallGate>
 ```
 
 ## Styling

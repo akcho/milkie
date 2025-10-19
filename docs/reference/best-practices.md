@@ -280,6 +280,52 @@ POSTGRES_URL=postgresql://...
 # ❌ Bad - Never commit these
 ```
 
+## Responsive Design
+
+### Handling Long Content on Mobile
+
+For long scrolling content, the default centered paywall card can appear off-screen on mobile devices. Consider these optimizations:
+
+**1. Disable blur on mobile for inline display:**
+
+```tsx
+"use client";
+import { useIsMobile } from "@/hooks/use-is-mobile";
+
+export default function ArticlePage() {
+  const isMobile = useIsMobile();
+
+  return (
+    <PaywallGate
+      position="top"
+      applyBlur={!isMobile}
+    >
+      <LongNewsArticle />
+    </PaywallGate>
+  );
+}
+```
+
+**Why this approach:**
+- On mobile, long blurred content creates excessive height, pushing the centered card off-screen
+- Disabling blur shows the paywall card inline at the top (no scrolling needed)
+- Desktop keeps the blurred preview effect for better visual context
+- Prevents users from having to scroll to find the subscribe button
+
+**2. Use top positioning for article-style content:**
+
+```tsx
+<PaywallGate position="top">
+  <ArticleContent />
+</PaywallGate>
+```
+
+**When to use top positioning:**
+- Long articles or blog posts
+- Content that naturally scrolls
+- Mobile-first designs
+- When preview content is shown above the paywall
+
 ## Performance
 
 ### 1. Database Indexes

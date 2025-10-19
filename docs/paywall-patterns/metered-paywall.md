@@ -39,6 +39,7 @@ export default function MeteredContentPage({ article, userViewCount }) {
           title="You've reached your free article limit"
           subtitle="Subscribe for unlimited access to all premium content"
           subscribeButtonText="Get unlimited access"
+          position="top"
         >
           <div className="blur-sm">{article.content}</div>
         </PaywallGate>
