@@ -257,7 +257,7 @@ Milkie includes production-ready security protections:
 - **Webhook Signature Verification** - Validates Stripe webhook signatures
 - **Email Normalization** - Consistent email handling across the system
 
-These security features are built-in and active by default - no configuration needed.
+These security features are built-in and active by default.
 
 ---
 
@@ -366,8 +366,8 @@ milkie/
 1. **[Try the demo](https://milkie.dev)** - See it in action
 2. **[Install the package](packages/react/README.md)** - `npm install @milkie/react`
 3. **[Set up backend](docs/BACKEND_SETUP.md)** - 3 API routes
-4. **[Learn the patterns](docs/IMPLEMENTATION_GUIDE.md)** - Component gating, metered paywalls, custom checkout, and more
-5. **[Integrate with your auth](docs/AUTH_INTEGRATION.md)** - Works with any provider
+4. **[Integrate with your auth](docs/AUTH_INTEGRATION.md)** - Works with any provider
+5. **[Learn the patterns](docs/IMPLEMENTATION_GUIDE.md)** - Component gating, metered paywalls, custom checkout, and more
 
 ---
 
