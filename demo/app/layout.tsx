@@ -17,8 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Milkie Demo",
-  description: "Demo app showing Milkie paywall integration with NextAuth",
+  title: "Milkie - Easy paywalls for Next.js",
+  description:
+    "Beautiful, customizable paywall components for Next.js applications. Add paywalls to your app in minutes.",
 };
 
 export default async function RootLayout({
@@ -39,9 +40,7 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <SessionProviders session={session}>
-            {children}
-          </SessionProviders>
+          <SessionProviders session={session}>{children}</SessionProviders>
           <Toaster />
         </ThemeProvider>
       </body>
