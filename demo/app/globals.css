@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@source "../node_modules/@milkie/react/dist";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
