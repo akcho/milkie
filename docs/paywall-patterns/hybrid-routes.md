@@ -14,7 +14,7 @@ Use Next.js App Router layouts to cleanly separate public and protected routes:
 
 ```tsx
 // app/layout.tsx (root layout)
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 import { SessionProvider } from "next-auth/react";
 
 export default function RootLayout({ children }) {
@@ -47,7 +47,7 @@ export default function FreePage() {
 }
 
 // app/dashboard/layout.tsx - Protected app section
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 
 export default function DashboardLayout({ children }) {
   return <PaywallGate>{children}</PaywallGate>;
@@ -105,7 +105,7 @@ Use conditional rendering in shared navigation:
 
 ```tsx
 // components/nav.tsx
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 
 export function Nav() {
   const { hasAccess } = usePaywall();

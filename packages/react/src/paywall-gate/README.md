@@ -23,7 +23,7 @@ The `PaywallGate` component is the primary building block for implementing subsc
 ## Basic Usage
 
 ```tsx
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 
 export default function PremiumPage() {
   return (
@@ -174,7 +174,7 @@ Implement article view limits:
 
 ```tsx
 "use client";
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 import { getArticleViewCount } from "@/lib/analytics";
 
 export default function ArticlePage() {
@@ -219,7 +219,7 @@ The PaywallGate expects a checkout API endpoint at `/api/checkout`:
 
 ```ts
 // app/api/checkout/route.ts
-import { createCheckoutRoute } from "@milkie/react/api";
+import { createCheckoutRoute } from "milkie/api";
 import { stripe } from "@/lib/stripe";
 import { checkoutAdapter } from "@/lib/milkie-adapter";
 

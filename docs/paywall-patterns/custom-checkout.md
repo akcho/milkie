@@ -14,7 +14,7 @@ Override the default checkout behavior with your own logic.
 ```tsx
 "use client";
 
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 
 export default function CustomCheckoutPage() {
   const handleCustomCheckout = async (email: string) => {

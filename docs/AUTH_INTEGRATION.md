@@ -5,7 +5,7 @@ Milkie is **auth-agnostic** - it works with any authentication solution that pro
 ## Quick Start
 
 ```tsx
-import { MilkieProvider } from '@milkie/react'
+import { MilkieProvider } from 'milkie'
 
 export default function App() {
   const email = // ... get from your auth solution
@@ -49,7 +49,7 @@ export default async function RootLayout({ children }) {
 ("use client");
 
 import { SessionProvider } from "next-auth/react";
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 
 export function SessionProviders({ children, session }) {
   return (
@@ -64,7 +64,7 @@ For Next.js Pages Router:
 
 ```tsx
 import { useSession } from "next-auth/react";
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 
 export default function App({ Component, pageProps }) {
   const { data: session } = useSession();
@@ -81,7 +81,7 @@ export default function App({ Component, pageProps }) {
 
 ```tsx
 import { useUser } from "@clerk/nextjs";
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 
 export default function App({ children }) {
   const { user } = useUser();
@@ -98,7 +98,7 @@ export default function App({ children }) {
 
 ```tsx
 import { useAuth } from "@/lib/auth";
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 
 export default function App({ children }) {
   const { user } = useAuth();
@@ -111,7 +111,7 @@ export default function App({ children }) {
 
 ```tsx
 import { useSupabaseUser } from "@/lib/supabase";
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 
 export default function App({ children }) {
   const user = useSupabaseUser();
@@ -124,7 +124,7 @@ export default function App({ children }) {
 
 ```tsx
 import { useSession } from "better-auth/react";
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 
 export default function App({ children }) {
   const { data: session } = useSession();
@@ -168,7 +168,7 @@ Milkie provides two gating components:
 Requires users to have an active subscription. Shows a paywall with subscription button for authenticated non-subscribers, or sign-in prompt for unauthenticated users.
 
 ```tsx
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 
 <PaywallGate>
   <PremiumContent />
@@ -180,7 +180,7 @@ import { PaywallGate } from "@milkie/react";
 Only requires users to be signed in (no subscription needed). Useful for member-only content that doesn't require payment.
 
 ```tsx
-import { AuthGate } from "@milkie/react";
+import { AuthGate } from "milkie";
 
 <AuthGate>
   <MembersOnlyContent />

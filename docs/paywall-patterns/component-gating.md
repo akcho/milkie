@@ -14,7 +14,7 @@ Wrap premium components with `PaywallGate` to create a seamless freemium experie
 
 ```tsx
 // app/mixed/page.tsx
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 
 export default function ArticlePage() {
   return (

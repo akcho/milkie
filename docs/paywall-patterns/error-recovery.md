@@ -14,7 +14,7 @@ Handle checkout errors gracefully without disrupting the user experience.
 ```tsx
 "use client";
 
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 import { toast } from "sonner";
 
 export default function RobustPaywallPage() {
@@ -98,7 +98,7 @@ For advanced use cases, use the `usePaywall` hook:
 ```tsx
 "use client";
 
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 import { AlertTriangle } from "lucide-react";
 
 export function CustomErrorHandling() {
@@ -220,7 +220,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
 ```tsx
 "use client";
 
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 import { toast } from "sonner";
 import * as Sentry from "@sentry/nextjs";
 

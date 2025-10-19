@@ -116,10 +116,7 @@ Milkie is database-agnostic. You implement simple adapters that connect your dat
 ```ts
 // lib/milkie-adapter.ts
 import { eq } from "drizzle-orm";
-import type {
-  CheckoutDatabaseAdapter,
-  CreateUserData,
-} from "@milkie/react/api";
+import type { CheckoutDatabaseAdapter, CreateUserData } from "milkie/api";
 import { db } from "./db";
 import * as schema from "./db/schema";
 
@@ -145,7 +142,7 @@ export const checkoutAdapter: CheckoutDatabaseAdapter = {
 ### 2. Subscription Status Adapter
 
 ```ts
-import type { SubscriptionDatabaseAdapter } from "@milkie/react/api";
+import type { SubscriptionDatabaseAdapter } from "milkie/api";
 
 export const subscriptionAdapter: SubscriptionDatabaseAdapter = {
   async findUserWithSubscription(email: string) {
@@ -169,10 +166,7 @@ export const subscriptionAdapter: SubscriptionDatabaseAdapter = {
 ### 3. Webhook Adapter
 
 ```ts
-import type {
-  WebhookDatabaseAdapter,
-  SubscriptionData,
-} from "@milkie/react/api";
+import type { WebhookDatabaseAdapter, SubscriptionData } from "milkie/api";
 
 export const webhookAdapter: WebhookDatabaseAdapter = {
   async findUserByCustomerId(customerId: string) {
@@ -220,7 +214,7 @@ export const webhookAdapter: WebhookDatabaseAdapter = {
 #### Basic Setup (Email in Request Body)
 
 ```ts
-import { createCheckoutRoute } from "@milkie/react/api";
+import { createCheckoutRoute } from "milkie/api";
 import { stripe } from "@/lib/stripe";
 import { checkoutAdapter } from "@/lib/milkie-adapter";
 
@@ -303,7 +297,7 @@ With `authenticate`, the email is extracted from the authenticated session inste
 **`app/api/subscription/status/route.ts`**
 
 ```ts
-import { createSubscriptionStatusRoute } from "@milkie/react/api";
+import { createSubscriptionStatusRoute } from "milkie/api";
 import { subscriptionAdapter } from "@/lib/milkie-adapter";
 
 export const GET = createSubscriptionStatusRoute({
@@ -353,7 +347,7 @@ export const GET = createSubscriptionStatusRoute({
 **`app/api/webhooks/stripe/route.ts`**
 
 ```ts
-import { createWebhookRoute } from "@milkie/react/api";
+import { createWebhookRoute } from "milkie/api";
 import { stripe } from "@/lib/stripe";
 import { webhookAdapter } from "@/lib/milkie-adapter";
 
@@ -530,7 +524,7 @@ import type {
   WebhookDatabaseAdapter,
   CreateUserData,
   SubscriptionData,
-} from "@milkie/react/api";
+} from "milkie/api";
 ```
 
 These ensure your adapters implement the correct interface.
@@ -715,7 +709,7 @@ While our examples use Next.js, Milkie's factory functions work with any framewo
 
 ```ts
 import express from "express";
-import { createCheckoutRoute } from "@milkie/react/api";
+import { createCheckoutRoute } from "milkie/api";
 
 const app = express();
 

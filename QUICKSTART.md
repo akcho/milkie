@@ -11,7 +11,7 @@ Add subscriptions to your existing Next.js app.
 ### 1. Install the package
 
 ```bash
-npm install @milkie/react
+npm install milkie
 ```
 
 ### 2. Set up your backend
@@ -20,7 +20,7 @@ Create 3 API routes using Milkie's factory functions:
 
 ```tsx
 // app/api/subscription/status/route.ts
-import { createSubscriptionStatusRoute } from "@milkie/react/api";
+import { createSubscriptionStatusRoute } from "milkie/api";
 import { dbAdapter } from "@/lib/milkie-adapter";
 
 export const GET = createSubscriptionStatusRoute({ adapter: dbAdapter });
@@ -28,7 +28,7 @@ export const GET = createSubscriptionStatusRoute({ adapter: dbAdapter });
 
 ```tsx
 // app/api/checkout/route.ts
-import { createCheckoutRoute } from "@milkie/react/api";
+import { createCheckoutRoute } from "milkie/api";
 import { dbAdapter } from "@/lib/milkie-adapter";
 import { stripe } from "@/lib/stripe";
 
@@ -42,7 +42,7 @@ export const POST = createCheckoutRoute({
 
 ```tsx
 // app/api/webhooks/stripe/route.ts
-import { createWebhookRoute } from "@milkie/react/api";
+import { createWebhookRoute } from "milkie/api";
 import { dbAdapter } from "@/lib/milkie-adapter";
 import { stripe } from "@/lib/stripe";
 
@@ -58,7 +58,7 @@ See [BACKEND_SETUP.md](docs/BACKEND_SETUP.md) for database adapter implementatio
 ### 3. Wrap your app with MilkieProvider
 
 ```tsx
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 
 export default function RootLayout({ children }) {
   const session = await auth(); // Your auth solution
@@ -72,7 +72,7 @@ export default function RootLayout({ children }) {
 ### 4. Gate your content
 
 ```tsx
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 
 export default function PremiumPage() {
   return (
@@ -111,7 +111,7 @@ export default function PremiumPage() {
 
 Want to explore the code and see how it works under the hood?
 
-**Note:** The demo uses the **published `@milkie/react` package from npm**, not the local workspace version. This ensures the demo always reflects what users will actually install.
+**Note:** The demo uses the **published `milkie` package from npm**, not the local workspace version. This ensures the demo always reflects what users will actually install.
 
 ### Prerequisites
 
@@ -311,7 +311,7 @@ If you made it this far, you've proven:
 
 ## 🔧 Local Development (Package Contributors)
 
-If you're contributing to the `@milkie/react` package and want to test changes before publishing:
+If you're contributing to the `milkie` package and want to test changes before publishing:
 
 ```bash
 # 1. Build the package

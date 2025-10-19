@@ -19,7 +19,7 @@ The `AuthGate` component is a lightweight building block for implementing authen
 ## Basic Usage
 
 ```tsx
-import { AuthGate } from "@milkie/react";
+import { AuthGate } from "milkie";
 
 export default function ProtectedPage() {
   return (

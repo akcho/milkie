@@ -1,6 +1,6 @@
 "use client";
 
-import { usePaywall, PaywallGate } from "@milkie/react";
+import { usePaywall, PaywallGate } from "milkie";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Mail, CreditCard } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
@@ -12,7 +12,7 @@ import { useIsMobile } from "@/hooks/use-is-mobile";
 
 // Code example displayed in the implementation tip section
 const IMPLEMENTATION_CODE = `// app/dashboard/page.tsx
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 
 export default function DashboardPage() {
   return (

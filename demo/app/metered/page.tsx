@@ -1,6 +1,6 @@
 "use client";
 
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 import { FREE_ARTICLE_LIMIT } from "@/lib/metered-access";
 import { Header } from "@/components/site-header/header";
 import { SAMPLE_ARTICLES } from "./constants";

@@ -1,7 +1,7 @@
-# @milkie/react
+# milkie
 
-[![npm version](https://img.shields.io/npm/v/@milkie/react.svg)](https://www.npmjs.com/package/@milkie/react)
-[![license](https://img.shields.io/npm/l/@milkie/react.svg)](https://github.com/akcho/milkie/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/milkie.svg)](https://www.npmjs.com/package/milkie)
+[![license](https://img.shields.io/npm/l/milkie.svg)](https://github.com/akcho/milkie/blob/main/LICENSE)
 
 > Stripe-powered paywall SDK for Next.js apps
 
@@ -30,7 +30,7 @@ See it in action with multiple gating patterns, metered paywalls, and more.
 ## Installation
 
 ```bash
-npm install @milkie/react
+npm install milkie
 ```
 
 ## Requirements
@@ -55,7 +55,7 @@ npm install @milkie/react
 
 ```tsx
 // app/layout.tsx
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 import { auth } from "./auth"; // Your auth solution
 
 export default async function RootLayout({ children }) {
@@ -75,7 +75,7 @@ export default async function RootLayout({ children }) {
 
 ```tsx
 // app/premium/page.tsx
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 
 export default function PremiumPage() {
   return (
@@ -91,7 +91,7 @@ export default function PremiumPage() {
 
 ```tsx
 "use client";
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 
 export function MyComponent() {
   const { hasAccess, loading, email } = usePaywall();
@@ -214,7 +214,7 @@ Hook to access subscription state in client components.
 
 ```tsx
 "use client";
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 
 export function PremiumFeature() {
   const { hasAccess, loading } = usePaywall();
@@ -237,7 +237,7 @@ Milkie provides **factory functions** to generate your API routes. You just need
 **1. Checkout Route** (`app/api/checkout/route.ts`)
 
 ```ts
-import { createCheckoutRoute } from "@milkie/react/api";
+import { createCheckoutRoute } from "milkie/api";
 import { stripe } from "@/lib/stripe";
 import { checkoutAdapter } from "@/lib/milkie-adapter";
 
@@ -252,7 +252,7 @@ export const POST = createCheckoutRoute({
 **2. Subscription Status Route** (`app/api/subscription/status/route.ts`)
 
 ```ts
-import { createSubscriptionStatusRoute } from "@milkie/react/api";
+import { createSubscriptionStatusRoute } from "milkie/api";
 import { subscriptionAdapter } from "@/lib/milkie-adapter";
 
 export const GET = createSubscriptionStatusRoute({
@@ -287,7 +287,7 @@ export const GET = createSubscriptionStatusRoute({
 **3. Webhook Route** (`app/api/webhooks/stripe/route.ts`)
 
 ```ts
-import { createWebhookRoute } from "@milkie/react/api";
+import { createWebhookRoute } from "milkie/api";
 import { stripe } from "@/lib/stripe";
 import { webhookAdapter } from "@/lib/milkie-adapter";
 
@@ -307,7 +307,7 @@ Implement simple adapters for your database (Drizzle, Prisma, etc.):
 import type {
   CheckoutDatabaseAdapter,
   SubscriptionDatabaseAdapter,
-} from "@milkie/react/api";
+} from "milkie/api";
 
 export const checkoutAdapter: CheckoutDatabaseAdapter = {
   async findUserByEmail(email: string) {
@@ -456,7 +456,7 @@ export default function DashboardLayout({ children }) {
 
 ```tsx
 "use client";
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 
 export default function ArticlePage() {
   const { hasAccess } = usePaywall();

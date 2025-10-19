@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthGate } from "@milkie/react";
+import { AuthGate } from "milkie";
 import { ImplementationTip } from "@/components/implementation-tip";
 import { PageHeader } from "@/components/page-header";
 import { AccountSettingsCard } from "./components/account-settings-card";

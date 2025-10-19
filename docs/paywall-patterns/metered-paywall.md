@@ -20,7 +20,7 @@ Metered paywalls track unique content views and show the paywall after a limit i
 ```tsx
 "use client";
 
-import { PaywallGate, usePaywall } from "@milkie/react";
+import { PaywallGate, usePaywall } from "milkie";
 
 export default function MeteredContentPage({ article, userViewCount }) {
   const { hasAccess: isPremium } = usePaywall();

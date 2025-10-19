@@ -190,7 +190,7 @@ See [Error Recovery](paywall-patterns/error-recovery.md) for more details.
 Use the `checkSubscription()` function from the `usePaywall` hook:
 
 ```tsx
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 import { useEffect } from "react";
 
 const { checkSubscription } = usePaywall();

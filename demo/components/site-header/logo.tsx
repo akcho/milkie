@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MilkieIcon } from "@milkie/react";
+import { MilkieIcon } from "milkie";
 
 export function Logo() {
   return (

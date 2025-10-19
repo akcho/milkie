@@ -136,7 +136,7 @@ return <PremiumContent />;
 Use `checkSubscription()` to manually refresh subscription status after checkout:
 
 ```tsx
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 import { useEffect } from "react";
 
 export default function DashboardPage() {
@@ -221,7 +221,7 @@ MilkieProvider works seamlessly with SSR:
 ```tsx
 // app/layout.tsx (server component)
 import { auth } from "@/auth";
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 
 export default async function RootLayout({ children }) {
   const session = await auth();
@@ -296,10 +296,7 @@ export default function ArticlePage() {
   const isMobile = useIsMobile();
 
   return (
-    <PaywallGate
-      position="top"
-      showBlurredChildren={!isMobile}
-    >
+    <PaywallGate position="top" showBlurredChildren={!isMobile}>
       <LongNewsArticle />
     </PaywallGate>
   );
@@ -307,6 +304,7 @@ export default function ArticlePage() {
 ```
 
 **Why this approach:**
+
 - On mobile, long blurred content creates excessive height, pushing the centered card off-screen
 - Disabling blur shows the paywall card inline at the top (no scrolling needed)
 - Desktop keeps the blurred preview effect for better visual context
@@ -321,6 +319,7 @@ export default function ArticlePage() {
 ```
 
 **When to use top positioning:**
+
 - Long articles or blog posts
 - Content that naturally scrolls
 - Mobile-first designs

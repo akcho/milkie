@@ -1,4 +1,4 @@
-import { createCheckoutRoute } from "@milkie/react/api";
+import { createCheckoutRoute } from "milkie/api";
 import { stripe } from "@/lib/stripe";
 import { checkoutAdapter } from "@/lib/milkie-adapter";
 

@@ -14,7 +14,7 @@ Use the `usePaywall` hook for fine-grained control and custom experiences.
 ```tsx
 "use client";
 
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 
 export default function FeaturePage() {
   const { hasAccess, loading, email, status } = usePaywall();
@@ -117,7 +117,7 @@ Useful after checkout or webhook updates:
 
 ```tsx
 import { useEffect } from "react";
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 
 export function DashboardPage() {
   const { hasAccess, checkSubscription } = usePaywall();

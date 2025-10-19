@@ -1,4 +1,4 @@
-import { createSubscriptionStatusRoute } from "@milkie/react/api";
+import { createSubscriptionStatusRoute } from "milkie/api";
 import { subscriptionAdapter } from "@/lib/milkie-adapter";
 
 export const GET = createSubscriptionStatusRoute({

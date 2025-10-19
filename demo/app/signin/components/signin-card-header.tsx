@@ -1,5 +1,5 @@
 import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { MilkieIcon } from "@milkie/react";
+import { MilkieIcon } from "milkie";
 
 export function SigninCardHeader() {
   return (

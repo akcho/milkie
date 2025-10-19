@@ -127,7 +127,7 @@ type SubscriptionData = {
 
 ```typescript
 // app/api/subscription/status/route.ts
-import { createSubscriptionStatusRoute } from "@milkie/react/api";
+import { createSubscriptionStatusRoute } from "milkie/api";
 import { db } from "@/lib/db";
 
 const handler = createSubscriptionStatusRoute({
@@ -170,7 +170,7 @@ export { handler as GET };
 
 ```typescript
 // app/api/checkout/route.ts
-import { createCheckoutRoute } from "@milkie/react/api";
+import { createCheckoutRoute } from "milkie/api";
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
 
@@ -214,7 +214,7 @@ stripe-signature: <webhook signature>
 
 ```typescript
 // app/api/webhooks/stripe/route.ts
-import { createWebhookRoute } from "@milkie/react/api";
+import { createWebhookRoute } from "milkie/api";
 import { db } from "@/lib/db";
 
 const handler = createWebhookRoute({

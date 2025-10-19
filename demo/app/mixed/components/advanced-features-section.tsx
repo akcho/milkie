@@ -1,4 +1,4 @@
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 import { AdvancedFeaturesLocked } from "./advanced-features-locked";
 import { AdvancedFeaturesUnlocked } from "./advanced-features-unlocked";
 

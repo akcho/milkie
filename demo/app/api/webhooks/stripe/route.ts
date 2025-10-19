@@ -1,4 +1,4 @@
-import { createWebhookRoute } from "@milkie/react/api";
+import { createWebhookRoute } from "milkie/api";
 import { stripe } from "@/lib/stripe";
 import { webhookAdapter } from "@/lib/milkie-adapter";
 

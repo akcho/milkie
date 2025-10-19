@@ -1,6 +1,6 @@
 "use client";
 
-import { usePaywall, AuthGate } from "@milkie/react";
+import { usePaywall, AuthGate } from "milkie";
 import { ActiveSubscriptionCard } from "./components/active-subscription-card";
 import { NoSubscriptionCard } from "./components/no-subscription-card";
 import { ImplementationTip } from "@/components/implementation-tip";

@@ -1,7 +1,7 @@
 # Milkie
 
-[![npm version](https://img.shields.io/npm/v/@milkie/react.svg)](https://www.npmjs.com/package/@milkie/react)
-[![license](https://img.shields.io/npm/l/@milkie/react.svg)](https://github.com/akcho/milkie/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/milkie.svg)](https://www.npmjs.com/package/milkie)
+[![license](https://img.shields.io/npm/l/milkie.svg)](https://github.com/akcho/milkie/blob/main/LICENSE)
 
 > Drop-in paywall infrastructure for Next.js apps
 
@@ -70,7 +70,7 @@ On the roadmap:
 ## 📦 Installation
 
 ```bash
-npm install @milkie/react
+npm install milkie
 ```
 
 ## ⚡ Quick Start
@@ -109,7 +109,7 @@ npm install @milkie/react
 Protect premium content behind a subscription paywall:
 
 ```tsx
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 
 <PaywallGate>
   <PremiumContent />
@@ -139,7 +139,7 @@ import { PaywallGate } from "@milkie/react";
 Require sign-in without requiring a subscription:
 
 ```tsx
-import { AuthGate } from "@milkie/react";
+import { AuthGate } from "milkie";
 
 <AuthGate>
   <AuthenticatedContent />
@@ -167,7 +167,7 @@ import { AuthGate } from "@milkie/react";
 For complete control over your paywall logic:
 
 ```tsx
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 
 function CustomComponent() {
   const { hasAccess, loading, status, email } = usePaywall();
@@ -230,7 +230,7 @@ The `overlayClassName` accepts any Tailwind CSS classes. The overlay is placed i
 Replace the entire paywall card with your own component:
 
 ```tsx
-import { usePaywall } from "@milkie/react";
+import { usePaywall } from "milkie";
 
 function YourCustomPaywall() {
   const { email, loading } = usePaywall();
@@ -294,7 +294,7 @@ Adding subscriptions shouldn't take 2 days. Here's what Milkie handles for you:
 - Tailwind CSS + shadcn/ui
 - Sonner (toast notifications)
 
-**Package:** (`@milkie/react`)
+**Package:** (`milkie`)
 
 - Published on npm
 - React Context for state management
@@ -312,7 +312,7 @@ milkie/
 ├── README.md                   # You are here
 ├── QUICKSTART.md               # Get running in 15 min
 ├── packages/
-│   └── react/                  # @milkie/react npm package (v0.1.0)
+│   └── react/                  # milkie npm package (v0.1.0)
 │       ├── src/
 │       │   ├── provider.tsx   # MilkieProvider & usePaywall hook
 │       │   ├── paywall-gate/  # PaywallGate component
@@ -347,12 +347,12 @@ milkie/
     │   ├── mixed/             # Component-level gating example
     │   ├── premium/           # Full-page gating example
     │   ├── dashboard/         # Layout-level gating example
-    │   └── api/               # API routes (using @milkie/react factories)
+    │   └── api/               # API routes (using milkie factories)
     │       ├── checkout/      # Stripe checkout session
     │       ├── subscription/  # Subscription status check
     │       └── webhooks/      # Stripe webhook handler
     ├── lib/
-    │   ├── milkie-adapter.ts  # Database adapters for @milkie/react
+    │   ├── milkie-adapter.ts  # Database adapters for milkie
     │   ├── db/                # Database schema & client
     │   └── stripe.ts          # Stripe configuration
     └── auth.ts                # NextAuth configuration
@@ -363,7 +363,7 @@ milkie/
 ## Get Started
 
 1. **[Try the demo](https://milkie.dev)** - See it in action
-2. **[Install the package](packages/react/README.md)** - `npm install @milkie/react`
+2. **[Install the package](packages/react/README.md)** - `npm install milkie`
 3. **[Set up backend](docs/BACKEND_SETUP.md)** - 3 API routes
 4. **[Integrate with your auth](docs/AUTH_INTEGRATION.md)** - Works with any provider
 5. **[Learn the patterns](docs/IMPLEMENTATION_GUIDE.md)** - Component gating, metered paywalls, custom checkout, and more

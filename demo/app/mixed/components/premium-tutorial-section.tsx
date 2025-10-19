@@ -1,4 +1,4 @@
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 import { PremiumTutorialLocked } from "./premium-tutorial-locked";
 import { PremiumTutorialUnlocked } from "./premium-tutorial-unlocked";
 

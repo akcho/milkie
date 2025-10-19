@@ -1,7 +1,7 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import { MilkieProvider } from "@milkie/react";
+import { MilkieProvider } from "milkie";
 import { Session } from "next-auth";
 
 interface SessionProvidersProps {

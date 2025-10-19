@@ -1,6 +1,6 @@
 # Milkie Demo
 
-This demo showcases the published `@milkie/react` package in action.
+This demo showcases the published `milkie` package in action.
 
 ## Running Locally
 
@@ -20,19 +20,22 @@ npm run dev
 If you're developing the package and want to test changes before publishing:
 
 1. Build the package:
+
    ```bash
    cd packages/react
    npm run build
    ```
 
 2. Update demo to use workspace:
+
    ```bash
    cd demo
-   # Edit package.json: "@milkie/react": "workspace:*"
+   # Edit package.json: "milkie": "workspace:*"
    npm install
    ```
 
 3. Update globals.css:
+
    ```css
    @source "../../packages/react/dist";
    ```

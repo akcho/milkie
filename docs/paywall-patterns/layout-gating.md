@@ -15,7 +15,7 @@ Protect entire route sections at the page level for flexible access control.
 
 ```tsx
 // app/dashboard/page.tsx (main dashboard)
-import { PaywallGate } from "@milkie/react";
+import { PaywallGate } from "milkie";
 
 export default function DashboardPage() {
   return (
@@ -35,7 +35,7 @@ For pages that require sign-in but **not** an active subscription (like billing 
 
 ```tsx
 // app/dashboard/billing/page.tsx
-import { AuthGate } from "@milkie/react";
+import { AuthGate } from "milkie";
 
 export default function BillingPage() {
   return (

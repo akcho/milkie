@@ -6,7 +6,7 @@ import type {
   CreateUserData,
   SubscriptionData,
   User,
-} from "@milkie/react/api";
+} from "milkie/api";
 import { db } from "./db";
 import * as schema from "./db/schema";
 
