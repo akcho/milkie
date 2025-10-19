@@ -129,7 +129,7 @@ import { PaywallGate } from "milkie";
   title="Unlock Premium Features"
   subtitle="Get access to all premium content"
   subscribeButtonLabel="Upgrade Now"
-  blur={true} // Show blurred preview of content
+  showBlurredChildren={true} // Show blurred preview of content
   overlayClassName="items-start pt-20" // Custom positioning
 />
 ```
@@ -158,7 +158,7 @@ import { AuthGate } from "milkie";
   title="Sign in to continue"
   subtitle="Access your account"
   signInButtonLabel="Sign In"
-  blur={false} // No blur, just show the overlay
+  showBlurredChildren={false} // No blur, just show the overlay
 />
 ```
 

@@ -1,10 +1,10 @@
 # Milkie Demo
 
-This demo showcases the published `milkie` package in action.
+This demo showcases the `milkie` package in action.
 
 ## Running Locally
 
-**Important:** This demo uses the published npm package, not the local workspace version.
+**Important:** This demo uses the local workspace version of the package for development.
 
 ### Quick Start
 
