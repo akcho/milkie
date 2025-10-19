@@ -44,7 +44,7 @@ That's it. Your content is now behind a paywall.
 
 ## Current Status
 
-**v0.1.0 - Production Ready** ✅
+**v0.4.0 - Production Ready** ✅
 
 Fully functional:
 
