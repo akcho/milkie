@@ -20,6 +20,17 @@ That's it. Your content is now behind a paywall.
 
 ---
 
+## ✨ Features at a Glance
+
+- 🔒 **Subscription Gating** - `<PaywallGate>` for premium content
+- 🚪 **Auth Gating** - `<AuthGate>` for authenticated-only content
+- 🎨 **Fully Customizable** - Custom UIs, messaging, styling
+- 🔐 **Security Built-In** - Callback validation, idempotency, PII sanitization
+- 🔌 **Auth-Agnostic** - Works with NextAuth, Clerk, Lucia, Supabase, etc.
+- ⚡ **3 API Routes** - That's all you need on the backend
+
+---
+
 ## 🚀 Try the Live Demo
 
 **[milkie.dev](https://milkie.dev)**
@@ -34,18 +45,21 @@ That's it. Your content is now behind a paywall.
 
 ## Current Status
 
-**Working Demo** ✅
+**v0.1.0 - Production Ready** ✅
 
 Fully functional:
 
 - ✅ Stripe checkout & subscription management
 - ✅ Real-time webhook handling
 - ✅ Auth-agnostic design (works with any auth provider)
+- ✅ **Subscription gating** with `<PaywallGate>`
+- ✅ **Authentication gating** with `<AuthGate>`
 - ✅ Component-level and layout-level gating patterns
 - ✅ Smart sign-in redirects with callback URLs
-- ✅ Customizable paywall UI
+- ✅ **Fully customizable** UIs, messaging, and styling
 - ✅ Built-in blurred content previews
 - ✅ Toast notifications for errors
+- ✅ **Security features** (callback validation, idempotency, PII sanitization)
 
 On the roadmap:
 
@@ -60,15 +74,84 @@ On the roadmap:
 npm install @milkie/react
 ```
 
-Or explore the demo locally:
+## ⚡ Quick Start (5 minutes)
 
-```bash
-cd demo
-npm install
-cp .env.example .env.local
-# Edit .env.local with your keys
-npm run dev
+### 1. Set up your backend
+
+Create 3 API routes using Milkie's factory functions:
+
+```tsx
+// app/api/subscription/status/route.ts
+import { createSubscriptionStatusRoute } from "@milkie/react/api";
+import { dbAdapter } from "@/lib/milkie-adapter";
+
+export const GET = createSubscriptionStatusRoute({ adapter: dbAdapter });
 ```
+
+```tsx
+// app/api/checkout/route.ts
+import { createCheckoutRoute } from "@milkie/react/api";
+import { dbAdapter } from "@/lib/milkie-adapter";
+import { stripe } from "@/lib/stripe";
+
+export const POST = createCheckoutRoute({
+  adapter: dbAdapter,
+  stripe,
+  priceId: process.env.STRIPE_PRICE_ID!,
+  successUrl: "/dashboard",
+});
+```
+
+```tsx
+// app/api/webhooks/stripe/route.ts
+import { createWebhookRoute } from "@milkie/react/api";
+import { dbAdapter } from "@/lib/milkie-adapter";
+import { stripe } from "@/lib/stripe";
+
+export const POST = createWebhookRoute({
+  adapter: dbAdapter,
+  stripe,
+  webhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+});
+```
+
+See [BACKEND_SETUP.md](docs/BACKEND_SETUP.md) for database adapter implementation.
+
+### 2. Wrap your app with MilkieProvider
+
+```tsx
+import { MilkieProvider } from "@milkie/react";
+
+export default function RootLayout({ children }) {
+  const session = await auth(); // Your auth solution
+
+  return (
+    <MilkieProvider email={session?.user?.email}>
+      {children}
+    </MilkieProvider>
+  );
+}
+```
+
+### 3. Gate your content
+
+```tsx
+import { PaywallGate } from "@milkie/react";
+
+export default function PremiumPage() {
+  return (
+    <PaywallGate>
+      <PremiumContent />
+    </PaywallGate>
+  );
+}
+```
+
+**That's it!** Your content is now behind a paywall.
+
+For the complete setup guide: **[QUICKSTART.md](QUICKSTART.md)**
+
+---
 
 ## 📚 Documentation
 
@@ -82,30 +165,156 @@ npm run dev
 
 ## How It Works
 
-### The SDK
+### Subscription Gating
+
+Protect premium content behind a subscription paywall:
 
 ```tsx
-// 1. Wrap your app with MilkieProvider
-import { MilkieProvider } from "@milkie/react";
-
-<MilkieProvider email={session.user.email}>
-  <YourApp />
-</MilkieProvider>;
-
-// 2. Protect content with PaywallGate
 import { PaywallGate } from "@milkie/react";
 
 <PaywallGate>
   <PremiumContent />
-</PaywallGate>;
-
-// 3. Or use the hook for custom logic
-import { usePaywall } from "@milkie/react";
-
-const { hasAccess, loading } = usePaywall();
+</PaywallGate>
 ```
 
-**Three components. That's the entire SDK.**
+**What happens:**
+- Unauthenticated users see a sign-in prompt
+- Authenticated users without subscription see the paywall with checkout
+- Subscribers see the content
+
+**Customization options:**
+
+```tsx
+<PaywallGate
+  title="Unlock Premium Features"
+  subtitle="Get access to all premium content"
+  subscribeButtonLabel="Upgrade Now"
+  blur={true} // Show blurred preview of content
+  overlayClassName="items-start pt-20" // Custom positioning
+/>
+```
+
+### Authentication Gating
+
+Require sign-in without requiring a subscription:
+
+```tsx
+import { AuthGate } from "@milkie/react";
+
+<AuthGate>
+  <AuthenticatedContent />
+</AuthGate>
+```
+
+**What happens:**
+- Unauthenticated users see a sign-in prompt
+- Authenticated users see the content (no subscription required)
+
+**Customization options:**
+
+```tsx
+<AuthGate
+  title="Sign in to continue"
+  subtitle="Access your account"
+  signInButtonLabel="Sign In"
+  blur={false} // No blur, just show the overlay
+/>
+```
+
+### Custom Logic with Hooks
+
+For complete control over your paywall logic:
+
+```tsx
+import { usePaywall } from "@milkie/react";
+
+function CustomComponent() {
+  const { hasAccess, loading, status, email } = usePaywall();
+
+  if (loading) return <LoadingSpinner />;
+  if (!hasAccess) return <YourCustomPaywall />;
+
+  return <PremiumContent />;
+}
+```
+
+**Available from the hook:**
+- `hasAccess` - boolean indicating subscription status
+- `loading` - boolean for loading state
+- `status` - Stripe subscription status string
+- `email` - user email from provider
+- `error` - error message if any
+- `checkSubscription()` - manually refresh subscription status
+- `clearError()` - clear error state
+
+---
+
+## 🎨 Customization
+
+Milkie is designed to be fully customizable to match your app's design.
+
+### Custom Messaging
+
+Tailor the paywall messaging to your brand:
+
+```tsx
+<PaywallGate
+  title="Upgrade to Pro"
+  subtitle="Get unlimited access to all features"
+  subscribeButtonLabel="Start Free Trial"
+  signInButtonLabel="Sign in to subscribe"
+/>
+```
+
+### Custom Overlay Position
+
+Position the paywall card anywhere on the page:
+
+```tsx
+// Top of page
+<PaywallGate overlayClassName="items-start pt-20" />
+
+// Bottom of page
+<PaywallGate overlayClassName="items-end pb-20" />
+
+// Left side
+<PaywallGate overlayClassName="justify-start pl-20" />
+```
+
+The `overlayClassName` accepts any Tailwind CSS classes. The overlay is placed in a CSS Grid container with `items-center justify-items-center` by default, so you can use alignment classes like `items-start`, `items-end`, `justify-items-start`, or `justify-items-end` to reposition it.
+
+### Fully Custom UI
+
+Replace the entire paywall card with your own component:
+
+```tsx
+import { usePaywall } from "@milkie/react";
+
+function YourCustomPaywall() {
+  const { email, loading } = usePaywall();
+  // Your custom logic and UI
+}
+
+<PaywallGate customUi={<YourCustomPaywall />} />
+```
+
+With `customUi`, you have complete control over the paywall appearance and behavior.
+
+**See all customization options:** [packages/react/README.md](packages/react/README.md)
+
+---
+
+## 🔐 Security Features
+
+Milkie includes production-ready security protections:
+
+- **Callback URL Validation** - Prevents open redirect attacks by validating redirect URLs
+- **Idempotency Keys** - Prevents duplicate Stripe checkout sessions and charges
+- **PII Sanitization** - Removes sensitive data from error logs
+- **Webhook Signature Verification** - Validates Stripe webhook signatures
+- **Email Normalization** - Consistent email handling across the system
+
+These security features are built-in and active by default - no configuration needed.
 
 ---
 
@@ -161,10 +370,27 @@ milkie/
 ├── README.md                   # You are here
 ├── QUICKSTART.md               # Get running in 15 min
 ├── packages/
-│   └── react/                  # @milkie/react npm package
-│       ├── src/                # Source code
-│       │   ├── components/    # MilkieProvider, PaywallGate, etc.
+│   └── react/                  # @milkie/react npm package (v0.1.0)
+│       ├── src/
+│       │   ├── provider.tsx   # MilkieProvider & usePaywall hook
+│       │   ├── paywall-gate/  # PaywallGate component
+│       │   │   └── components/
+│       │   │       ├── paywall-card.tsx
+│       │   │       ├── user-info.tsx
+│       │   │       └── checkout-error.tsx
+│       │   ├── auth-gate/     # AuthGate component
+│       │   │   └── components/
+│       │   │       └── auth-card.tsx
+│       │   ├── components/    # Shared components
+│       │   │   ├── loading-state.tsx
+│       │   │   ├── blurred-content.tsx
+│       │   │   ├── overlay-grid.tsx
+│       │   │   ├── milkie-icon.tsx
+│       │   │   └── ui/        # shadcn/ui components
 │       │   └── api/           # Factory functions for routes
+│       │       ├── subscription.ts  # createSubscriptionStatusRoute
+│       │       ├── checkout.ts      # createCheckoutRoute
+│       │       └── webhooks.ts      # createWebhookRoute
 │       └── README.md          # Package documentation
 ├── docs/
 │   ├── BACKEND_SETUP.md       # Complete backend guide
@@ -182,10 +408,10 @@ milkie/
     │       ├── subscription/  # Subscription status check
     │       └── webhooks/      # Stripe webhook handler
     ├── lib/
-    │   ├── milkie-adapter.ts # Database adapters for @milkie/react
-    │   ├── db/               # Database schema & client
-    │   └── stripe.ts         # Stripe configuration
-    └── auth.ts               # NextAuth configuration
+    │   ├── milkie-adapter.ts  # Database adapters for @milkie/react
+    │   ├── db/                # Database schema & client
+    │   └── stripe.ts          # Stripe configuration
+    └── auth.ts                # NextAuth configuration
 ```
 
 ---
