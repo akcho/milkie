@@ -22,7 +22,7 @@ All available props for customizing the paywall experience:
   onToast={(message, type) => toast[type](message)}
   // Visual customization
   showBranding={false}
-  disableBlur={true}
+  applyBlur={false}
   overlayClassName="pt-8"
 >
   <PremiumContent />
@@ -54,7 +54,7 @@ All available props for customizing the paywall experience:
 | Prop               | Type      | Default | Description                          |
 | ------------------ | --------- | ------- | ------------------------------------ |
 | `showBranding`     | `boolean` | true    | Show "Powered by milkie" footer      |
-| `disableBlur`      | `boolean` | false   | Disable blurred content preview      |
+| `applyBlur`        | `boolean` | true    | Show blurred content preview         |
 | `overlayClassName` | `string`  | ""      | Custom className for overlay element |
 
 ## Visual Design Features
@@ -79,7 +79,7 @@ PaywallGate renders protected content behind the overlay with a blur effect:
 **Disable blur:**
 
 ```tsx
-<PaywallGate disableBlur={true}>
+<PaywallGate applyBlur={false}>
   <PremiumContent /> {/* Paywall card shown inline without blur */}
 </PaywallGate>
 ```

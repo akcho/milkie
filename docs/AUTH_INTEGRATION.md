@@ -223,7 +223,7 @@ Both components support extensive customization:
   subscribeButtonText="Subscribe now"
   signInUrl="/signin"
   showBranding={true} // Show "Powered by milkie" footer
-  disableBlur={false} // Show without blur effect
+  applyBlur={true} // Show blurred content preview
   overlayClassName="pt-8" // Custom overlay positioning
   onSignIn={() => {
     // Custom sign-in logic

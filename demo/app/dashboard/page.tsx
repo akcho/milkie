@@ -8,6 +8,7 @@ import { StatCard } from "./components/stat-card";
 import { ProtectedContentCard } from "./components/protected-content-card";
 import { ImplementationTip } from "@/components/implementation-tip";
 import { CodeBlock } from "@/components/code-block";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 
 // Code example displayed in the implementation tip section
 const IMPLEMENTATION_CODE = `// app/dashboard/page.tsx
@@ -27,9 +28,10 @@ export default function DashboardPage() {
 
 export default function DashboardPage() {
   const { email, status } = usePaywall();
+  const isMobile = useIsMobile();
 
   return (
-    <PaywallGate>
+    <PaywallGate applyBlur={!isMobile}>
       <div className="space-y-8 max-w-5xl mx-auto">
         <PageHeader
           title="Dashboard"

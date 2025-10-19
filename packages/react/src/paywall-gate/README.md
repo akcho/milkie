@@ -12,7 +12,7 @@ The `PaywallGate` component is the primary building block for implementing subsc
 - **Built-in Checkout Flow**: Stripe checkout integration out of the box
 - **Flexible Display Modes**:
   - Blurred content preview (default)
-  - Inline paywall card (with `disableBlur`)
+  - Inline paywall card (with `applyBlur={false}`)
   - Fully custom UI (with `customUi` prop)
 - **Smart Error Handling**: Network errors, checkout failures, with retry capability
 - **Loading States**: Skeleton loaders while checking subscription status
@@ -49,7 +49,7 @@ All props are optional except `children`. Key props:
 - `children` - Premium content to protect (required)
 - `title`, `subtitle` - Customize paywall messaging
 - `customUi` - Replace default UI entirely
-- `disableBlur` - Show card inline without blur effect
+- `applyBlur` - Show blurred content preview (default: true)
 - `onCheckout` - Custom checkout handler
 - `onToast` - Toast notification callback
 - `showBranding` - Toggle "Powered by milkie" footer
@@ -120,7 +120,7 @@ import { signIn } from "next-auth/react";
   icon={<Crown className="h-12 w-12 text-yellow-500" />}
   title="Premium Members Only"
   onSignIn={() => signIn()}
-  disableBlur // No blur effect
+  applyBlur={false} // No blur effect
 >
   <PremiumContent />
 </PaywallGate>;
@@ -239,7 +239,7 @@ For custom checkout endpoints, use the `onCheckout` prop.
 - Implement `onToast` for better error UX
 - Use `onCheckout` for complex pricing models
 - Place PaywallGate as close to protected content as possible
-- Use blur effect (default) to show users what they're missing
+- Use blur effect (default: true) to show users what they're missing
 
 ## Troubleshooting
 

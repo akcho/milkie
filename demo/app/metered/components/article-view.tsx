@@ -4,8 +4,10 @@ import { ArrowLeft, Clock, User } from "lucide-react";
 import { Header } from "@/components/site-header/header";
 import { ArticleViewProps } from "../types";
 import { ArticleContent, PreviewContent } from "./article-content";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 
 export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
+  const isMobile = useIsMobile();
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -49,6 +51,7 @@ export function ArticleView({ article, canView, onBack }: ArticleViewProps) {
                 subtitle="Subscribe for unlimited access to all premium content"
                 subscribeButtonText="Get unlimited access"
                 overlayClassName="py-8"
+                applyBlur={!isMobile}
               >
                 <ArticleContent />
               </PaywallGate>
