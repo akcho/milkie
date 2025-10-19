@@ -61,6 +61,7 @@ Key props:
 - `signInUrl` - URL to redirect for sign-in (default: `/signin`)
 - `onSignIn` - Custom sign-in handler
 - `signInButtonText` - Customize button label
+- `overlayClassName` - Custom Tailwind classes for positioning the card (e.g., `"py-8"` for vertical padding)
 
 ## Usage Examples
 

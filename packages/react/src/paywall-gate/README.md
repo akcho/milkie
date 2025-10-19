@@ -69,6 +69,7 @@ Key props:
 - `onCheckout` - Custom checkout handler
 - `onToast` - Toast notification callback
 - `showBranding` - Toggle "Powered by milkie" footer
+- `overlayClassName` - Custom Tailwind classes for positioning the card (e.g., `"py-8"` for vertical padding)
 
 ## Usage Examples
 

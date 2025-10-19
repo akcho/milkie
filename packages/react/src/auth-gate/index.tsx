@@ -58,7 +58,7 @@ interface AuthGateProps {
 /**
  * AuthGate - A component that protects content from unauthenticated users.
  *
- * This component acts as a gatekeeper for member-only content, handling two states:
+ * This component acts as a gatekeeper for member-only content, handling three states:
  * 1. Loading: Shows a loading indicator while checking authentication status
  * 2. Authenticated: Renders the protected children content for signed-in users
  * 3. Not Authenticated: Shows a sign-in overlay with blurred content preview
