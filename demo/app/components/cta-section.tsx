@@ -15,7 +15,7 @@ export function CtaSection() {
           our documentation.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button asChild size="lg">
+          <Button asChild size="lg" className="w-full sm:w-48">
             <Link
               href="https://github.com/akcho/milkie#readme"
               target="_blank"
@@ -24,7 +24,7 @@ export function CtaSection() {
               Get started
             </Link>
           </Button>
-          <Button asChild size="lg" variant="secondary">
+          <Button asChild size="lg" variant="secondary" className="w-full sm:w-48">
             <Link
               href="https://github.com/akcho/milkie"
               target="_blank"
