@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2025-10-20
+
+### Changed
+
+- **Expanded npm keywords for better discoverability** - Added 17 new keywords including:
+  - SEO-focused: `nextjs-paywall`, `react-paywall`, `stripe-subscriptions`
+  - Tech stack: `shadcn`, `shadcn-ui`, `tailwind`, `tailwindcss`, `typescript`
+  - Use cases: `content-gating`, `monetization`, `membership`, `premium-content`
+  - Functionality: `stripe-checkout`, `subscription-management`, `payment-gateway`
+- Improved npm search ranking for target keywords like "nextjs paywall" and "react paywall component"
+
+---
+
 ## [0.4.0] - 2025-10-19
 
 ### Changed

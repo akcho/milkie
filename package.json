@@ -1,6 +1,43 @@
 {
   "name": "milkie-monorepo",
   "private": true,
+  "description": "Drop-in paywall infrastructure for Next.js apps. Add Stripe subscriptions in minutes. Works with any auth provider.",
+  "version": "0.4.1",
+  "keywords": [
+    "paywall",
+    "stripe",
+    "subscriptions",
+    "nextjs",
+    "react",
+    "saas",
+    "stripe-checkout",
+    "subscription-management",
+    "payment-gateway",
+    "membership",
+    "premium-content",
+    "content-gating",
+    "monetization",
+    "next-js",
+    "typescript",
+    "nextjs-paywall",
+    "react-paywall",
+    "stripe-subscriptions",
+    "shadcn",
+    "shadcn-ui",
+    "theming",
+    "tailwind",
+    "tailwindcss"
+  ],
+  "author": "Andrew Cho",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akcho/milkie.git"
+  },
+  "homepage": "https://milkie.dev",
+  "bugs": {
+    "url": "https://github.com/akcho/milkie/issues"
+  },
   "workspaces": [
     "packages/*",
     "demo"
