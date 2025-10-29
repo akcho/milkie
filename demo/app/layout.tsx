@@ -20,6 +20,30 @@ export const metadata: Metadata = {
   title: "Milkie - Easy paywalls for Next.js",
   description:
     "Beautiful, customizable paywall components for Next.js applications. Add paywalls to your app in minutes.",
+  openGraph: {
+    title: "Milkie - Easy paywalls for Next.js",
+    description:
+      "Beautiful, customizable paywall components for Next.js applications. Add paywalls to your app in minutes.",
+    url: "https://milkie.dev",
+    siteName: "Milkie",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Milkie - Easy paywalls for Next.js",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Milkie - Easy paywalls for Next.js",
+    description:
+      "Beautiful, customizable paywall components for Next.js applications. Add paywalls to your app in minutes.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default async function RootLayout({
