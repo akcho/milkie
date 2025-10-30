@@ -5,6 +5,8 @@ import { auth } from "@/auth";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { SessionProviders } from "@/components/providers";
+import { GoogleAnalytics } from "@/components/google-analytics";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -67,6 +69,8 @@ export default async function RootLayout({
           <SessionProviders session={session}>{children}</SessionProviders>
           <Toaster />
         </ThemeProvider>
+        <GoogleAnalytics />
+        <VercelAnalytics />
       </body>
     </html>
   );

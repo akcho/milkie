@@ -9,15 +9,16 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "milkie": "*",
     "@neondatabase/serverless": "^1.0.2",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@types/stripe": "^8.0.416",
+    "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.6",
     "lucide-react": "^0.545.0",
+    "milkie": "*",
     "next": "15.5.5",
     "next-auth": "^5.0.0-beta.29",
     "next-themes": "^0.4.6",
